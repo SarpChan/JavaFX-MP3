@@ -24,7 +24,7 @@ public class PlaylistManager {
 			}
 			
 		} catch(IOException e) {
-			System.out.println("laden von " + nameOfPlaylist + ".m3u ist fehlgeschlagen.");
+			System.out.println("laden von " + nameOfPlaylist + ".m3u ist fehlgeschlagen. nicht");
 			e.printStackTrace();
 		}finally {
 		 try {
