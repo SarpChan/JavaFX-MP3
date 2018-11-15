@@ -1,0 +1,14 @@
+.icon-button {
+    -icon-paint: white;
+    -fx-background-color: -icon-paint;
+    -size: 26;
+    -fx-min-height: -size;
+    -fx-min-width: -size;
+    -fx-max-height: -size;
+    -fx-max-width: -size;
+
+    }
+
+.icon-button:hover {
+    -icon-paint: linear-gradient(to bottom, white, black);
+}
