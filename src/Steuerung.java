@@ -1,12 +1,12 @@
-import java.io.File;
+import de.hsrm.mi.prog.util.StaticScanner;
+
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Steuerung {
 	
 	
-	public static void main(String[]args) {
+	public static void main() throws keinSongException {
 		
 		MP3Player player = new MP3Player();
 	
@@ -14,7 +14,7 @@ public class Steuerung {
 //		player.play("KOKAIN.mp3");
 		
 		PlaylistManager manager = new PlaylistManager();
-		ArrayList<String> mp3s = new ArrayList<String>();
+		ArrayList<String> mp3s = new ArrayList<>();
 		
 		try {
 			manager.savePlaylist(manager.getAllTracks(), "Test");
@@ -32,9 +32,10 @@ public class Steuerung {
 		
 		do {
 			eingabe = StaticScanner.nextString();
-			
+
 			switch (eingabe){
-			case "play": try {
+			case "play":
+						try {
 						player.play();
 						} catch (keinSongException e) {
 						e.printStackTrace();

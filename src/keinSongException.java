@@ -1,4 +1,3 @@
-
 public class keinSongException extends Exception{
 	
 	keinSongException(){
