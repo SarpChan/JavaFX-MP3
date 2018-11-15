@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="InspectionProjectProfileManager">
+    <profile version="1.0">
+      <option name="myName" value="Project Default" />
+    </profile>
+    <version value="1.0" />
+  </component>
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/CoolsteGruppe.iml" filepath="$PROJECT_DIR$/CoolsteGruppe.iml" />
+    </modules>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+  <component name="VcsDirectoryMappings">
+    <mapping directory="" vcs="Git" />
+  </component>
+  <component name="libraryTable">
+    <library name="CoolsteGruppe">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/mp3agic.jar!/" />
+        <root url="jar://$PROJECT_DIR$/minim.jar!/" />
+        <root url="jar://$PROJECT_DIR$/mp3spi1.9.5.jar!/" />
+        <root url="jar://$PROJECT_DIR$/jl1.0.1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/eibo_simpleminim.jar!/" />
+        <root url="jar://$PROJECT_DIR$/jsminim.jar!/" />
+        <root url="jar://$PROJECT_DIR$/tritonus_share.jar!/" />
+        <root url="jar://$PROJECT_DIR$/eibo_staticscanner.jar!/" />
+        <root url="jar://$PROJECT_DIR$/tritonus_aos.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+  </component>
+</project>

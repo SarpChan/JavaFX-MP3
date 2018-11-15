@@ -18,7 +18,7 @@ public class PlaylistManager {
 		try {
 			
 			reader = new BufferedReader(new FileReader(nameOfPlaylist + ".m3u"));
-			String line = null;
+			String line;
 			while ((line = reader.readLine()) != null) {
 				playlist.add(line);
 			}
@@ -59,8 +59,10 @@ public class PlaylistManager {
 	public ArrayList<String> getAllTracks() {
 		
 		ArrayList <String> allMp3s = new ArrayList <String> ();
+
+		String username = System.getProperty("user.name");
 		
-		allMp3s.addAll(searchForMp3("/Users/"));
+		allMp3s.addAll(searchForMp3("/Users/"+ username +"/Music"));
 		
 		HashMap<String, String>songs = new HashMap<String, String>();
 		
