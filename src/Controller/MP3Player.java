@@ -3,6 +3,7 @@ package Controller;
 import de.hsrm.mi.eibo.simpleplayer.SimpleAudioPlayer;
 import de.hsrm.mi.eibo.simpleplayer.SimpleMinim;
 
+
 public class MP3Player {
 	private SimpleMinim minim;
 	private SimpleAudioPlayer audioPlayer;
@@ -10,6 +11,11 @@ public class MP3Player {
 	MP3Player(){
 		minim = new SimpleMinim(true);
 	}
+
+	MP3Player(String s){
+	    minim = new SimpleMinim(true);
+	    audioPlayer = minim.loadMP3File(s);
+    }
 	
 	protected void play(String fileName) {
 		audioPlayer = minim.loadMP3File(fileName);
@@ -38,18 +44,28 @@ public class MP3Player {
 		audioPlayer.pause();
 		audioPlayer.rewind();
 	}
-	
+
 	protected void volume (float value) {
-		
-		
+		audioPlayer.setGain(LinearToDecibel(value));
 	}
-	
-	
+
 	protected void getMeta() {
 		audioPlayer.getMetaData();
 	}
-	
+
 	protected void exit() {
 		minim.dispose();
+	}
+
+	private float LinearToDecibel(float linear)
+	{
+		float db;
+
+		if (linear != 0.0f)
+			db = (float) (20.0f * Math.log10(linear));
+		else
+			db = -144.0f;  // effectively minus infinity
+
+		return db;
 	}
 }
