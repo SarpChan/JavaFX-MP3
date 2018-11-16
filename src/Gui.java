@@ -37,27 +37,6 @@ public class Gui extends Application {
         Scene scene = new Scene(root, 300, 500);
         scene.setFill(Color.WHITE);
 
-//		Pane steuerung = new VBox();
-//
-//		HBox buttons = new HBox();
-//		buttons.setAlignment(Pos.CENTER);
-//		HBox.setMargin(buttons, new Insets(20));
-//
-//		Button playButton = new Button();
-//		playButton.setText("PLAY");
-//		Button pauseButton = new Button();
-//		pauseButton.setText("PAUSE");
-//		Button nextButton = new Button();
-//		nextButton.setText("NEXT");
-//		Button prevButton = new Button();
-//		prevButton.setText("PREV");
-//		Slider volume = new Slider();
-//		volume.autosize();
-//
-//		buttons.getChildren().addAll(prevButton, playButton, pauseButton, nextButton);
-//		steuerung.getChildren().addAll(volume, buttons);
-
-
         root.getChildren().addAll(SongControl());
 
         primaryStage.setScene(scene);
