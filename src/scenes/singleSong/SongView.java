@@ -1,10 +1,12 @@
 package scenes.singleSong;
 
+import Controller.keinSongException;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.control.Button;
@@ -31,6 +33,19 @@ public class SongView implements EventHandler<ActionEvent> {
         play.setStyle("-fx-shape: \"" + getPathFromSVG("play2") + "\";");
         play.setPickOnBounds(true);
         play.setOnAction(this);
+        play.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {new Thread(()-> {
+
+                try {
+                    Controller.Steuerung2.control();
+
+
+                } catch (keinSongException e) {
+                    e.printStackTrace();
+                }
+
+        }).start();
+
+        });
 
 
         Button previous = new Button();

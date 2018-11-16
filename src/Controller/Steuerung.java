@@ -1,3 +1,5 @@
+package Controller;
+
 import de.hsrm.mi.prog.util.StaticScanner;
 
 import java.io.IOException;
@@ -6,7 +8,7 @@ import java.util.ArrayList;
 public class Steuerung {
 	
 	
-	public static void main() throws keinSongException {
+	public static void main(String [] args) throws keinSongException {
 		
 		MP3Player player = new MP3Player();
 	
