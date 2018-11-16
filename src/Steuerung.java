@@ -1,4 +1,5 @@
 import de.hsrm.mi.prog.util.StaticScanner;
+import javafx.application.Application;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -6,10 +7,12 @@ import java.util.ArrayList;
 public class Steuerung {
 	
 	
-	public static void main() throws keinSongException {
+	public static void main(String args[]) throws keinSongException {
 		
 		MP3Player player = new MP3Player();
-	
+
+		Application.launch(Gui.class, args);
+
 		String eingabe;
 //		player.play("KOKAIN.mp3");
 		
@@ -27,6 +30,7 @@ public class Steuerung {
 		
 		for (String i : mp3s) {
 			System.out.println(i);
+
 		}
 		
 		
@@ -63,5 +67,6 @@ public class Steuerung {
 		player.exit();
 		
 	}
+
 	
 }
