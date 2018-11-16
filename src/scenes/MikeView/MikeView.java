@@ -1,4 +1,6 @@
-import javafx.application.Application;
+package scenes.MikeView;
+
+import Exceptions.keinSongException;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -12,19 +14,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-public class Gui extends Application {
 
-    MP3Player player;
+public class MikeView {
 
-    public void init() {
-        this.player = new MP3Player("KOKAIN.mp3");
-    }
+    Controller.MP3Player player = new Controller.MP3Player("KOKAIN.mp3");
 
-
-    @Override
-    public void start(Stage primaryStage) throws Exception {
+    public Scene buildScene(){
 
 
         Pane root = new VBox();
@@ -39,10 +34,8 @@ public class Gui extends Application {
 
         root.getChildren().addAll(SongControl());
 
-        primaryStage.setScene(scene);
-        primaryStage.initStyle(StageStyle.DECORATED);
-        primaryStage.setTitle("CooleGruppe MP3");
-        primaryStage.show();
+        return scene;
+
 
     }
 
@@ -138,5 +131,4 @@ public class Gui extends Application {
             }
         };
     }
-
 }

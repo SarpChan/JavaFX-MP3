@@ -1,12 +1,12 @@
-package Controller;
+package Exceptions;
 
 public class keinSongException extends Exception{
 	
-	keinSongException(){
+	public keinSongException(){
 		super("es wurde kein Song ausgewählt");
 	}
 	
-	keinSongException(String msg){
+	public keinSongException(String msg){
 		super (msg);
 	}
 }

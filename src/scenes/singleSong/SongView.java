@@ -1,8 +1,9 @@
 package scenes.singleSong;
 
-import Controller.keinSongException;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import Controller.MP3Player;
+import Controller.PlaylistManager;
+import Exceptions.keinSongException;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -15,36 +16,51 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import scenes.MikeView.MikeView;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 
-public class SongView implements EventHandler<ActionEvent> {
+public class SongView {
 
     public Scene buildScene() {
+
+        MP3Player player = new MP3Player();
+
         BorderPane root = new BorderPane();
         root.setBackground(new Background(new BackgroundFill(Color.GREY, CornerRadii.EMPTY, Insets.EMPTY)));
 
 
+
         Button play = new Button();
+        play.setText(getFirstSongFromPlaylist("Test.m3u"));
         play.getStyleClass().add("icon-button");
         play.setStyle("-fx-shape: \"" + getPathFromSVG("play2") + "\";");
         play.setPickOnBounds(true);
-        play.setOnAction(this);
-        play.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {new Thread(()-> {
+        play.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            try {
+                player.play(play.getText());
+            } catch (keinSongException e) {
+                e.printStackTrace();
+            }
+        });
 
-                try {
-                    Controller.Steuerung2.control();
 
-
-                } catch (keinSongException e) {
-                    e.printStackTrace();
-                }
-
-        }).start();
-
+        Button pause = new Button();
+        pause.getStyleClass().add("icon-button");
+        pause.setStyle("-fx-shape: \"" + getPathFromSVG("pause") + "\";");
+        pause.setPickOnBounds(true);
+        pause.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            try {
+                player.pause();
+            } catch (keinSongException e) {
+                e.printStackTrace();
+            }
         });
 
 
@@ -57,16 +73,31 @@ public class SongView implements EventHandler<ActionEvent> {
         next.getStyleClass().add("icon-button");
         next.setStyle("-fx-shape: \"" + getPathFromSVG("next") + "\";");
         next.setPickOnBounds(true);
-
-        Button pause = new Button();
-        pause.getStyleClass().add("icon-button");
-        pause.setStyle("-fx-shape: \"" + getPathFromSVG("pause") + "\";");
-        pause.setPickOnBounds(true);
+        next.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            try {
+                player.next();
+            }  catch (keinSongException e) {
+                e.printStackTrace();
+            }
+        });
 
         Button volume = new Button();
         volume.getStyleClass().add("icon-button");
         volume.setStyle("-fx-shape: \"" + getPathFromSVG("volume") + "\";");
         volume.setPickOnBounds(true);
+
+
+        Button search = new Button();
+        search.getStyleClass().add("icon-button");
+        search.setStyle("-fx-shape: \"" + getPathFromSVG("createPlaylist") + "\";");
+        search.setPickOnBounds(true);
+        search.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            try {
+                PlaylistManager.savePlaylist(PlaylistManager.getAllTracks(), "Test");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
 
         Button repeater = new Button();
         repeater.getStyleClass().add("icon-button");
@@ -76,7 +107,7 @@ public class SongView implements EventHandler<ActionEvent> {
         Pane bot = new HBox(8);
         bot.setPadding(new Insets(2, 0, 10, 0));
         ((HBox) bot).setAlignment(Pos.CENTER);
-        bot.getChildren().addAll(volume, previous, play, next, repeater);
+        bot.getChildren().addAll(search, volume, previous, play, pause, next, repeater);
 
         root.setBottom(bot);
 
@@ -85,12 +116,30 @@ public class SongView implements EventHandler<ActionEvent> {
         return x;
     }
 
+    private String getFirstSongFromPlaylist(String x) {
+        String zeile;
+
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(x));
+
+
+            if ((zeile = reader.readLine()) != null){
+                return zeile;
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "nichts gefunden";
+    }
+
     private static String getPathFromSVG(String filename){
         String d = "abc";
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         try {
             DocumentBuilder builder =  factory.newDocumentBuilder();
-            Document doc = builder.parse("src/resources/icons/"+ filename+".svg");
+            Document doc = builder.parse("resources/icons/"+ filename+".svg");
             NodeList elemente = doc.getElementsByTagName("path");
             Element element = (Element) elemente.item(0);
 
@@ -106,8 +155,5 @@ public class SongView implements EventHandler<ActionEvent> {
         return d;
     }
 
-    @Override
-    public void handle(ActionEvent event) {
 
-    }
 }

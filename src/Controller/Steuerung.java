@@ -1,5 +1,6 @@
 package Controller;
 
+import Exceptions.keinSongException;
 import de.hsrm.mi.prog.util.StaticScanner;
 import javafx.application.Application;
 
@@ -9,9 +10,8 @@ import java.util.ArrayList;
 public class Steuerung {
 	
 	
-	public static void main(String [] args) throws Exceptions.keinSongException {
-
-
+	public static void main(String args[]) throws keinSongException {
+		
 		MP3Player player = new MP3Player();
 
 		Application.launch(Applikation.PlayerGUI.class, args);

@@ -40,7 +40,7 @@ public class PlaylistManager {
 		
 	}
 	
-	public void savePlaylist(ArrayList<String> playlist, String name) throws IOException {
+	public static void savePlaylist(ArrayList<String> playlist, String name) throws IOException {
 		
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(name + ".m3u"))){
 			
@@ -58,7 +58,7 @@ public class PlaylistManager {
 		
 	}
 	
-	public ArrayList<String> getAllTracks() {
+	public static ArrayList<String> getAllTracks() {
 		
 		ArrayList <String> allMp3s = new ArrayList <String> ();
 
@@ -86,7 +86,7 @@ public class PlaylistManager {
 		return allMp3s;
 	}
 	
-	private ArrayList<String> searchForMp3(String path) {
+	private static ArrayList<String> searchForMp3(String path) {
 		
 		File  files[];
 		ArrayList<String> mp3s = new ArrayList<String>();
