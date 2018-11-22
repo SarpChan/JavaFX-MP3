@@ -26,12 +26,14 @@ public class MP3Player {
 	public MP3Player(String s){
 	    minim = new SimpleMinim(true);
 	    audioPlayer = minim.loadMP3File(s);
+	    
     }
 
 	public void play(String filename) throws keinSongException {
 		if (paused && !playing){
 			paused = false;
 			playing = true;
+
 			audioPlayer.play();
 
 		} else if (!paused && playing){
@@ -86,6 +88,7 @@ public class MP3Player {
 		audioPlayer.play();
 		paused = false;
 		playing = true;
+
 	}
 	
 	public void pause() throws keinSongException {

@@ -1,5 +1,6 @@
 package Applikation;
 
+import Controller.MP3Player;
 import de.hsrm.mi.prog.util.StaticScanner;
 import javafx.application.Application;
 
@@ -10,30 +11,33 @@ import javafx.stage.Stage;
 
 
 public class PlayerGUI extends Application {
+    MP3Player player;
+    Stage main;
 
+    @Override
+    public void init(){
+        player = new MP3Player();
+
+
+
+    }
 
 
     @Override
-    public void start(Stage primaryStage){
+    public void start(Stage primaryStage) {
 
+        main = primaryStage;
+            scenes.singleSong.SongView a = new scenes.singleSong.SongView();
 
-
-        scenes.singleSong.SongView a = new scenes.singleSong.SongView();
-        scenes.MikeView.MikeView b = new scenes.MikeView.MikeView();
-        Scene scene;
-        System.out.println("Möchtest du [m]ikes View oder [s]arps View?");
-        switch (StaticScanner.nextString().toLowerCase()){
-            case "m":  scene = b.buildScene();
-            break;
-            case "s": scene = a.buildScene();
-            break;
-            default: scene = a.buildScene();
-        }
+            Scene scene = a.buildScene(this, player);
 
 
         primaryStage.setTitle("Coolste Gruppe");
         primaryStage.setScene(scene);
+
         primaryStage.show();
+
+
     }
 
 
@@ -44,5 +48,14 @@ public class PlayerGUI extends Application {
 
 
 
+    public void switchScene(PlayerGUI bruder, int code){
 
+        switch (code){
+            case 01:
+                main.setScene(new scenes.MikeView.MikeView().buildScene());
+                break;
+        }
+    }
 }
+
+

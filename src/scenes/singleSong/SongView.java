@@ -1,5 +1,6 @@
 package scenes.singleSong;
 
+import Applikation.PlayerGUI;
 import Controller.MP3Player;
 import Controller.PlaylistManager;
 import Exceptions.keinSongException;
@@ -28,14 +29,19 @@ import java.io.IOException;
 
 public class SongView {
 
-    public Scene buildScene() {
+    public Scene buildScene(PlayerGUI bruder, MP3Player a) {
 
-        MP3Player player = new MP3Player();
+        MP3Player player = a;
+        PlayerGUI homie = bruder;
+
 
         BorderPane root = new BorderPane();
-        root.setBackground(new Background(new BackgroundFill(Color.GREY, CornerRadii.EMPTY, Insets.EMPTY)));
+        root.setBackground(new Background(new BackgroundFill(new Color(0.2, 0.2, 0.2, 1.0), CornerRadii.EMPTY, Insets.EMPTY)));
+        Pane bot = new HBox(8);
+        bot.setPadding(new Insets(2, 0, 10, 0));
+        ((HBox) bot).setAlignment(Pos.CENTER);
 
-
+       //Buttons Anfang
 
         Button play = new Button();
         play.setText(getFirstSongFromPlaylist("Test.m3u"));
@@ -49,6 +55,7 @@ public class SongView {
                 e.printStackTrace();
             }
         });
+
 
 
         Button pause = new Button();
@@ -103,10 +110,13 @@ public class SongView {
         repeater.getStyleClass().add("icon-button");
         repeater.setStyle("-fx-shape: \"" + getPathFromSVG("repeat") + "\";");
         repeater.setPickOnBounds(true);
+        repeater.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            bruder.switchScene(bruder, 01);
 
-        Pane bot = new HBox(8);
-        bot.setPadding(new Insets(2, 0, 10, 0));
-        ((HBox) bot).setAlignment(Pos.CENTER);
+        });
+
+        // Buttons Ende
+
         bot.getChildren().addAll(search, volume, previous, play, pause, next, repeater);
 
         root.setBottom(bot);
