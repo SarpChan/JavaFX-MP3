@@ -29,10 +29,8 @@ import java.io.IOException;
 
 public class SongView {
 
-    public Scene buildScene(PlayerGUI bruder, MP3Player a) {
-
-        MP3Player player = a;
-        PlayerGUI homie = bruder;
+    boolean paused = true;
+    public Scene buildScene(PlayerGUI gui, MP3Player player) {
 
 
         BorderPane root = new BorderPane();
@@ -42,7 +40,7 @@ public class SongView {
         ((HBox) bot).setAlignment(Pos.CENTER);
 
        //Buttons Anfang
-
+        Button pause = new Button();
         Button play = new Button();
         play.setText(getFirstSongFromPlaylist("Test.m3u"));
         play.getStyleClass().add("icon-button");
@@ -50,17 +48,31 @@ public class SongView {
         play.setPickOnBounds(true);
         play.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             try {
-                player.play(play.getText());
+                if (paused) {
+                    player.play(play.getText());
+                    play.setStyle("-fx-shape: \"" + getPathFromSVG("pause") + "\";");
+                    changePause();
+
+                } else{
+                    player.pause();
+                    play.setStyle("-fx-shape: \"" + getPathFromSVG("play2") + "\";");
+                    changePause();
+                }
+
             } catch (keinSongException e) {
                 e.printStackTrace();
             }
+
+
+
+
         });
 
 
 
-        Button pause = new Button();
+
         pause.getStyleClass().add("icon-button");
-        pause.setStyle("-fx-shape: \"" + getPathFromSVG("pause") + "\";");
+
         pause.setPickOnBounds(true);
         pause.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             try {
@@ -68,6 +80,8 @@ public class SongView {
             } catch (keinSongException e) {
                 e.printStackTrace();
             }
+
+
         });
 
 
@@ -111,13 +125,13 @@ public class SongView {
         repeater.setStyle("-fx-shape: \"" + getPathFromSVG("repeat") + "\";");
         repeater.setPickOnBounds(true);
         repeater.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            bruder.switchScene(bruder, 01);
+            gui.switchScene(gui, "01");
 
         });
 
         // Buttons Ende
 
-        bot.getChildren().addAll(search, volume, previous, play, pause, next, repeater);
+        bot.getChildren().addAll(search, volume, previous, play, next, repeater);
 
         root.setBottom(bot);
 
@@ -165,5 +179,8 @@ public class SongView {
         return d;
     }
 
+    private void changePause(){
+        paused = !paused;
+    }
 
 }

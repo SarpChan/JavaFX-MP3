@@ -1,18 +1,19 @@
 package Applikation;
 
 import Controller.MP3Player;
-import de.hsrm.mi.prog.util.StaticScanner;
 import javafx.application.Application;
 
 
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.util.HashMap;
 
 
 public class PlayerGUI extends Application {
     MP3Player player;
     Stage main;
+    HashMap<String,Scene > szenen;
 
     @Override
     public void init(){
@@ -27,13 +28,15 @@ public class PlayerGUI extends Application {
     public void start(Stage primaryStage) {
 
         main = primaryStage;
-            scenes.singleSong.SongView a = new scenes.singleSong.SongView();
 
-            Scene scene = a.buildScene(this, player);
+        szenen = new HashMap<>();
+        szenen.put("01", new scenes.singleSong.SongView().buildScene(this, player));
+        szenen.put("02", new scenes.MikeView.MikeView().buildScene(this,player));
+
 
 
         primaryStage.setTitle("Coolste Gruppe");
-        primaryStage.setScene(scene);
+        primaryStage.setScene(szenen.get("01"));
 
         primaryStage.show();
 
@@ -48,11 +51,11 @@ public class PlayerGUI extends Application {
 
 
 
-    public void switchScene(PlayerGUI bruder, int code){
+    public void switchScene(PlayerGUI gui, String code){
 
         switch (code){
-            case 01:
-                main.setScene(new scenes.MikeView.MikeView().buildScene());
+            case "01":
+                main.setScene(new scenes.MikeView.MikeView().buildScene(this, player));
                 break;
         }
     }
