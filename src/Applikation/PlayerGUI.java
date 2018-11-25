@@ -38,7 +38,7 @@ public class PlayerGUI extends Application {
         BorderPane root = new BorderPane();
 
         primaryStage.setTitle("Coolste Gruppe");
-        primaryStage.setScene(szenen.get("03"));
+        primaryStage.setScene(szenen.get("01"));
 
         primaryStage.show();
 
