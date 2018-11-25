@@ -60,7 +60,7 @@ public class SongView {
         Text title = new Text(player.getTrack());
         Text interpret = new Text(player.getSongArtist());
         Text songLength = new Text();
-        songLength.setText(zeitanzeige.format(endTime));
+        songLength.setText(zeitanzeige.format(player.getSongLength()));
 
         Text timeLabel = new Text();
         final Timeline timeline = new Timeline(
@@ -78,6 +78,7 @@ public class SongView {
                                     title.setText(player.getTrack());
                                     interpret.setText(player.getSongArtist());
                                     img.setImage(player.getAlbumImage());
+                                    songLength.setText(zeitanzeige.format(player.getSongLength()));
                                 } catch (keinSongException e) {
                                     e.printStackTrace();
                                 }
@@ -144,6 +145,7 @@ public class SongView {
                 title.setText(player.getTrack());
                 interpret.setText(player.getSongArtist());
                 img.setImage(player.getAlbumImage());
+                songLength.setText(zeitanzeige.format(player.getSongLength()));
             }  catch (keinSongException e) {
                 e.printStackTrace();
             }

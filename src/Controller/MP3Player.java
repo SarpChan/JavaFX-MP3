@@ -58,10 +58,15 @@ public class MP3Player {
     }
 
     public String getSongArtist(){
+
         if (mp3File.hasId3v1Tag()) {
-            return mp3File.getId3v1Tag().getArtist();
+            if (mp3File.getId3v1Tag().getArtist() != null) {
+                return mp3File.getId3v1Tag().getArtist();
+            }
         } else if (mp3File.hasId3v2Tag()) {
-            return mp3File.getId3v1Tag().getArtist();
+            if(mp3File.getId3v2Tag().getArtist() != null) {
+                return mp3File.getId3v1Tag().getArtist();
+            }
         }
         return "Keine Info";
     }
