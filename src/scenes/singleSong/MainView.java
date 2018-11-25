@@ -4,20 +4,16 @@ import Applikation.PlayerGUI;
 import Controller.MP3Player;
 import Controller.PlaylistManager;
 import Exceptions.keinSongException;
-
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.control.Button;
-import javafx.scene.layout.HBox;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-import scenes.MikeView.MikeView;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -27,19 +23,14 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class SongView {
+public class MainView {
 
     boolean paused = true;
     public Scene buildScene(PlayerGUI gui, MP3Player player) {
-
-
         BorderPane root = new BorderPane();
         root.setBackground(new Background(new BackgroundFill(new Color(0.2, 0.2, 0.2, 1.0), CornerRadii.EMPTY, Insets.EMPTY)));
         Pane bot = new HBox(8);
         bot.setPadding(new Insets(2, 0, 10, 0));
-        ((HBox) bot).setAlignment(Pos.CENTER);
-
-       //Buttons Anfang
 
         Button play = new Button();
         play.setText(getFirstSongFromPlaylist("Test.m3u"));
@@ -113,13 +104,11 @@ public class SongView {
 
         });
 
-        // Buttons Ende
-
         bot.getChildren().addAll(search, volume, previous, play, next, repeater);
 
         root.setBottom(bot);
 
-        Scene x = new Scene(root, 375, 568);
+        Scene x = new Scene(root, 1024, 750);
         x.getStylesheets().add("scenes/singleSong/stylesheet.css");
         return x;
     }
@@ -166,5 +155,4 @@ public class SongView {
     private void changePause(){
         paused = !paused;
     }
-
 }

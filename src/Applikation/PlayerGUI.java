@@ -5,6 +5,7 @@ import javafx.application.Application;
 
 
 import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.util.HashMap;
@@ -32,11 +33,12 @@ public class PlayerGUI extends Application {
         szenen = new HashMap<>();
         szenen.put("01", new scenes.singleSong.SongView().buildScene(this, player));
         szenen.put("02", new scenes.MikeView.MikeView().buildScene(this,player));
+        szenen.put("03", new scenes.singleSong.MainView().buildScene(this, player));
 
-
+        BorderPane root = new BorderPane();
 
         primaryStage.setTitle("Coolste Gruppe");
-        primaryStage.setScene(szenen.get("01"));
+        primaryStage.setScene(szenen.get("03"));
 
         primaryStage.show();
 
