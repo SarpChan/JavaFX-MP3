@@ -38,6 +38,9 @@ public class MP3Player {
         }
     }
 
+    public int getAktZeit(){
+        return audioPlayer.position();
+    }
     public long getSongLength(){
 
         if (mp3File.hasId3v1Tag()) {
@@ -69,9 +72,9 @@ public class MP3Player {
 
     public String getTrack(){
         if (mp3File.hasId3v1Tag()) {
-            return mp3File.getId3v2Tag().getTrack();
+            return mp3File.getId3v2Tag().getTitle();
         } else if (mp3File.hasId3v2Tag()) {
-            return mp3File.getId3v2Tag().getTrack();
+            return mp3File.getId3v2Tag().getTitle();
         }
         return "Keine Info";
     }
@@ -168,7 +171,7 @@ public class MP3Player {
 							paused = false;
 						}
 						aktSong = zeile;
-                        setMp3File(zeile);
+                        setMp3File(aktSong);
 					}
 				}
 			}

@@ -13,6 +13,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -46,6 +47,15 @@ public class SongView {
         img.setFitWidth(116);
         img.setFitHeight(110);
 
+        Pane songInfo = new HBox();
+        Text title = new Text(player.getTrack());
+        Text interpret = new Text(player.getSongArtist());
+
+
+        interpret.setStrikethrough(true);
+        songInfo.getChildren().addAll(title, interpret);
+        ((HBox) songInfo).setAlignment(Pos.CENTER_LEFT);
+        songInfo.setPadding(new Insets(0, 0, 0, 45));
        //Buttons Anfang
 
         Button play = new Button();
@@ -89,6 +99,9 @@ public class SongView {
         next.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             try {
                 player.next();
+                title.setText(player.getTrack());
+                interpret.setText(player.getSongArtist());
+                img.setImage(player.getAlbumImage());
             }  catch (keinSongException e) {
                 e.printStackTrace();
             }
@@ -123,7 +136,7 @@ public class SongView {
 
         // Buttons Ende
 
-        bot.getChildren().addAll(img, search, volume, previous, play, next, repeater);
+        bot.getChildren().addAll(img,title, interpret, search, volume, previous, play, next, repeater);
 
         root.setBottom(bot);
 
