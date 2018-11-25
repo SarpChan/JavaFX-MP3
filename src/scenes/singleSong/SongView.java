@@ -5,15 +5,20 @@ import Controller.MP3Player;
 import Controller.PlaylistManager;
 import Exceptions.keinSongException;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -29,6 +34,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 public class SongView {
 
@@ -47,9 +54,44 @@ public class SongView {
         img.setFitWidth(116);
         img.setFitHeight(110);
 
-        Pane songInfo = new HBox();
+        DateFormat zeitanzeige = new SimpleDateFormat("mm:ss");
+
+        long endTime = player.getSongLength();
         Text title = new Text(player.getTrack());
         Text interpret = new Text(player.getSongArtist());
+        Text songLength = new Text();
+        songLength.setText(String.valueOf(endTime));
+
+        Text timeLabel = new Text();
+        final Timeline timeline = new Timeline(
+                new KeyFrame(
+                        Duration.millis( 500 ),
+                        event -> {
+
+
+                            if ( player.getAktZeit() == 0 ) {
+
+                                timeLabel.setText( zeitanzeige.format( 0 ) );
+                            } else if (player.getAktZeit() == endTime){
+                                try {
+                                    player.next();
+                                    title.setText(player.getTrack());
+                                    interpret.setText(player.getSongArtist());
+                                    img.setImage(player.getAlbumImage());
+                                } catch (keinSongException e) {
+                                    e.printStackTrace();
+                                }
+                            } else {
+                                timeLabel.setText( zeitanzeige.format( player.getAktZeit() ) );
+                            }
+                        }
+                )
+        );
+        timeline.setCycleCount( Animation.INDEFINITE );
+        timeline.play();
+
+        Pane songInfo = new HBox();
+
 
 
         interpret.setStrikethrough(true);
@@ -136,7 +178,7 @@ public class SongView {
 
         // Buttons Ende
 
-        bot.getChildren().addAll(img,title, interpret, search, volume, previous, play, next, repeater);
+        bot.getChildren().addAll(timeLabel, songLength,img,title, interpret, search, volume, previous, play, next, repeater);
 
         root.setBottom(bot);
 
