@@ -60,7 +60,7 @@ public class SongView {
         Text title = new Text(player.getTrack());
         Text interpret = new Text(player.getSongArtist());
         Text songLength = new Text();
-        songLength.setText(String.valueOf(endTime));
+        songLength.setText(zeitanzeige.format(endTime));
 
         Text timeLabel = new Text();
         final Timeline timeline = new Timeline(

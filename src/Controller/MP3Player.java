@@ -21,6 +21,7 @@ public class MP3Player {
 	private SimpleAudioPlayer audioPlayer;
 	private boolean paused = false, playing = false;
 	private String aktPlaylist="Test.m3u", aktSong;
+	private int aktZeit = 0;
 
 
 	// Mp3agic
