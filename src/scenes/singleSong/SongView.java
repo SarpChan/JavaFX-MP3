@@ -18,6 +18,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import scenes.MikeView.MikeView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -39,6 +41,11 @@ public class SongView {
         bot.setPadding(new Insets(2, 0, 10, 0));
         ((HBox) bot).setAlignment(Pos.CENTER);
 
+        ImageView img = new ImageView();
+        img.setImage(new Image("/default.png"));
+        img.setFitWidth(116);
+        img.setFitHeight(110);
+
        //Buttons Anfang
 
         Button play = new Button();
@@ -52,6 +59,7 @@ public class SongView {
                     player.play(play.getText());
                     play.setStyle("-fx-shape: \"" + getPathFromSVG("pause") + "\";");
                     changePause();
+                    img.setImage(player.getAlbumImage());
 
                 } else{
                     player.pause();
@@ -115,7 +123,7 @@ public class SongView {
 
         // Buttons Ende
 
-        bot.getChildren().addAll(search, volume, previous, play, next, repeater);
+        bot.getChildren().addAll(img, search, volume, previous, play, next, repeater);
 
         root.setBottom(bot);
 

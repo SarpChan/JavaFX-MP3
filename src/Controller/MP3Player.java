@@ -2,14 +2,18 @@ package Controller;
 
 
 import Exceptions.keinSongException;
+import com.mpatric.mp3agic.InvalidDataException;
+import com.mpatric.mp3agic.Mp3File;
+import com.mpatric.mp3agic.UnsupportedTagException;
 import de.hsrm.mi.eibo.simpleplayer.SimpleAudioPlayer;
 import de.hsrm.mi.eibo.simpleplayer.SimpleMinim;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
 
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.*;
 
 
 public class MP3Player {
@@ -19,7 +23,95 @@ public class MP3Player {
 	private String aktPlaylist="Test.m3u", aktSong;
 
 
-	public MP3Player(){
+	// Mp3agic
+	Mp3File mp3File;
+
+    {
+        try {
+            mp3File = new Mp3File("/Users/sarpcan/Music/The Police - Roxanne.mp3");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (UnsupportedTagException e) {
+            e.printStackTrace();
+        } catch (InvalidDataException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public long getSongLength(){
+
+        if (mp3File.hasId3v1Tag()) {
+            return mp3File.getLengthInSeconds();
+        } else if (mp3File.hasId3v2Tag()) {
+            return mp3File.getLengthInSeconds();
+        }
+        return 69;
+
+    }
+
+    public String getSongArtist(){
+        if (mp3File.hasId3v1Tag()) {
+            return mp3File.getId3v1Tag().getArtist();
+        } else if (mp3File.hasId3v2Tag()) {
+            return mp3File.getId3v1Tag().getArtist();
+        }
+        return "Keine Info";
+    }
+
+    public String getAlbum(){
+        if (mp3File.hasId3v1Tag()) {
+            return mp3File.getId3v2Tag().getAlbum();
+        } else if (mp3File.hasId3v2Tag()) {
+            return mp3File.getId3v2Tag().getAlbum();
+        }
+        return "Keine Info";
+    }
+
+    public String getTrack(){
+        if (mp3File.hasId3v1Tag()) {
+            return mp3File.getId3v2Tag().getTrack();
+        } else if (mp3File.hasId3v2Tag()) {
+            return mp3File.getId3v2Tag().getTrack();
+        }
+        return "Keine Info";
+    }
+
+    public void setMp3File(String filename){
+        try {
+            this.mp3File = new Mp3File(filename);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (UnsupportedTagException e) {
+            e.printStackTrace();
+        } catch (InvalidDataException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    public Image getAlbumImage(){
+        Image img = null;
+
+
+        try {
+            if (mp3File.getId3v2Tag().getAlbumImage() != null){
+                img = SwingFXUtils.toFXImage(ImageIO.read(new ByteArrayInputStream(mp3File.getId3v2Tag().getAlbumImage())), null);
+            } else {
+                img = new Image("/default.png");
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return img;
+    }
+
+    //Mp3agic Ende
+
+
+    public MP3Player(){
 		minim = new SimpleMinim(true);
 	}
 
@@ -31,12 +123,15 @@ public class MP3Player {
 
 	public void play(String filename) throws keinSongException {
 
+
+
 	    // vllt. in Eventhandler von Pause/Play-Button einbauen
 	    if (paused && !playing){
 			paused = false;
 			playing = true;
 
 			audioPlayer.play();
+
 
 		} else if (!paused && playing){
 
@@ -45,6 +140,7 @@ public class MP3Player {
 				audioPlayer = minim.loadMP3File(filename);
 				audioPlayer.play();
 				aktSong = filename;
+				setMp3File(filename);
 				playing = true;
 
 			} catch (Exception e) {
@@ -72,6 +168,7 @@ public class MP3Player {
 							paused = false;
 						}
 						aktSong = zeile;
+                        setMp3File(zeile);
 					}
 				}
 			}
