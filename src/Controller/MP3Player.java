@@ -105,7 +105,7 @@ public class MP3Player {
     public Image getAlbumImage(){
 
 
-        Image img = new Image("/defaultCover.png");
+        Image img = new Image("defaultCover.png");
 
 		if (mp3File!= null) {
 			try {

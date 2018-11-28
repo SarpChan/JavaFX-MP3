@@ -1,0 +1,72 @@
+
+.primarytext{
+    -fx-fill:#74CCDB;
+    -fx-font-weight:bold;
+}
+
+.secondarytext{
+    -fx-fill:#74CCDB;
+    -fx-opacity:0.5;
+}
+
+#progress .track{
+        -fx-background-color:null;
+        -fx-background-insets: 1 0 -1 0, 0, 1;
+        -fx-background-radius: 2.5, 2.5, 1.5;
+        -fx-padding: 0.208333em;
+}
+
+#progress .thumb{
+     -fx-background-color:none;
+}
+
+#progress:hover .thumb{
+     -fx-background-color:#74CCDB;
+
+}
+
+
+#volume .track{
+        -fx-background-color:null;
+        -fx-background-insets: 1 0 -1 0, 0, 1;
+        -fx-background-radius: 2.5, 2.5, 1.5;
+        -fx-padding: 0.208333em;
+}
+
+#volume .thumb{
+     -fx-background-color:none;
+}
+
+#volume:hover .thumb{
+     -fx-background-color:#74CCDB;
+
+}
+
+#pb1 .bar{
+    -fx-background-color: #74CCDB;
+    -fx-background-radius:0.0;
+     -fx-border-radius:0.0;
+     -fx-background-insets: 0 0 0 0;
+    -fx-padding: 0.1em;
+
+}
+
+#pb2 .bar{
+    -fx-background-color: #74CCDB;
+    -fx-background-radius:0.0;
+     -fx-border-radius:0.0;
+     -fx-background-insets: 0 0 0 0;
+    -fx-padding: 0.1em;
+
+}
+
+
+.progressLine{
+    -fx-stroke: #FFFFFF;
+    -fx-opacity:0.1;
+}
+
+#progressBackground{
+    -fx-fill:#2F2F2F;
+
+}
