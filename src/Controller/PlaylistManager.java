@@ -1,5 +1,8 @@
 package Controller;
 
+
+import javafx.scene.control.Label;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -42,7 +45,7 @@ public class PlaylistManager {
 	
 	public static void savePlaylist(ArrayList<String> playlist, String name) throws IOException {
 		
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter(name + ".m3u"))){
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter("/Users/"+ System.getProperty("user.name") +"/Music/" + name + ".m3u"))){
 			
 			for (String i : playlist) {
 				
@@ -57,6 +60,33 @@ public class PlaylistManager {
 		}
 		
 	}
+
+	public static ArrayList<String> getAllPlaylists(){
+        ArrayList <String> allM3us = new ArrayList <String> ();
+
+        String username = System.getProperty("user.name");
+
+        allM3us.addAll(searchForM3u("/Users/"+ username +"/Music"));
+
+        HashMap<String, String>songs = new HashMap<String, String>();
+
+        for (String i : allM3us) {
+            String name;
+            String path[];
+            path = i.split("/");
+
+            name = path[path.length - 1];
+            path = name.split("\\.");
+            name = path[0];
+
+            if (!songs.containsKey(name)) {
+                songs.put(name, i);
+            }
+        }
+        allM3us = new ArrayList <String>(songs.values());
+
+        return allM3us;
+    }
 	
 	public static ArrayList<String> getAllTracks() {
 		
@@ -111,4 +141,28 @@ public class PlaylistManager {
 
 	}
 
+    private static ArrayList<String> searchForM3u(String path) {
+
+        File  files[];
+        ArrayList<String> m3us = new ArrayList<String>();
+
+        File dir = new File (path);
+        files = dir.listFiles();
+
+        if (files != null) {
+            for (File i: files) {
+
+                if (i.isDirectory() && !i.getAbsolutePath().endsWith("Library")) {
+                    m3us.addAll(searchForM3u(i.getAbsolutePath()));
+                }
+                else if (i.toString().endsWith(".m3u")) {
+                    m3us.add(i.getAbsolutePath());
+                }
+
+            }
+        }
+
+        return m3us;
+
+    }
 }
