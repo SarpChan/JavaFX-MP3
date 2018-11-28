@@ -1,1 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16.5 12.43"><title>repeat</title><path d="M13.12.31V4l2.6-2Z" transform="translate(-0.1 -0.31)" fill="#fff"/><path d="M3.73,12.74V9L1.14,11Z" transform="translate(-0.1 -0.31)" fill="#fff"/><path d="M13,2.5H1.5c-.3,0-.6-.2-.6-.4s.3-.4.6-.4H13c.3,0,.6.2.6.4S13.3,2.5,13,2.5Z" transform="translate(-0.1 -0.31)" fill="#fff"/><path d="M.5,7a.43.43,0,0,1-.4-.4V2.1a.43.43,0,0,1,.4-.4h.8a.43.43,0,0,1,.4.4.43.43,0,0,1-.4.4H.9v4A.46.46,0,0,1,.5,7Z" transform="translate(-0.1 -0.31)" fill="#fff"/><path d="M16.2,11.3H3.5a.4.4,0,0,1,0-.8H15.8v-4a.46.46,0,0,1,.4-.5.43.43,0,0,1,.4.4v4.4A.46.46,0,0,1,16.2,11.3Z" transform="translate(-0.1 -0.31)" fill="#fff"/></svg>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 23.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 16.5 12.4" style="enable-background:new 0 0 16.5 12.4;" xml:space="preserve">
+<title>repeat</title>
+<path d="M15.6,1.7L13,0v1.4h-0.1H1.4H1.3c0,0,0,0-0.1,0H0.4C0.2,1.4,0,1.6,0,1.8v4.5c0,0.2,0.2,0.4,0.4,0.4s0.4-0.3,0.4-0.5v-4h0.4
+	h0.1h0.1h11.5H13v1.5L15.6,1.7z M16.1,5.7c-0.2,0-0.4,0.3-0.4,0.5v4H3.6V8.7l-2.6,2l2.6,1.7V11h12.5c0.2,0,0.4-0.3,0.4-0.5V6.1
+	C16.5,5.9,16.3,5.7,16.1,5.7z"/>
+</svg>

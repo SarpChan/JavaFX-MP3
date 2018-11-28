@@ -21,23 +21,13 @@ public class MP3Player {
 	private SimpleAudioPlayer audioPlayer;
 	private boolean paused = false, playing = false;
 	private String aktPlaylist="Test.m3u", aktSong;
-	private int aktZeit = 0;
+
 
 
 	// Mp3agic
 	Mp3File mp3File;
 
-    {
-        try {
-            mp3File = new Mp3File("/Users/sarpcan/Music/The Police - Roxanne.mp3");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (UnsupportedTagException e) {
-            e.printStackTrace();
-        } catch (InvalidDataException e) {
-            e.printStackTrace();
-        }
-    }
+
 
     public int getAktZeit(){
             if (audioPlayer == null){
@@ -48,44 +38,53 @@ public class MP3Player {
     }
     public long getSongLength(){
 
-        if (mp3File.hasId3v1Tag()) {
-            return mp3File.getLengthInMilliseconds();
-        } else if (mp3File.hasId3v2Tag()) {
-            return mp3File.getLengthInMilliseconds();
-        }
+    	if (mp3File!= null) {
+
+			if (mp3File.hasId3v1Tag()) {
+				return mp3File.getLengthInMilliseconds();
+			} else if (mp3File.hasId3v2Tag()) {
+				return mp3File.getLengthInMilliseconds();
+			}
+		}
         return 0;
 
     }
 
     public String getSongArtist(){
+		if (mp3File!= null) {
 
-        if (mp3File.hasId3v1Tag()) {
-            if (mp3File.getId3v1Tag().getArtist() != null) {
-                return mp3File.getId3v1Tag().getArtist();
-            }
-        } else if (mp3File.hasId3v2Tag()) {
-            if(mp3File.getId3v2Tag().getArtist() != null) {
-                return mp3File.getId3v1Tag().getArtist();
-            }
-        }
+			if (mp3File.hasId3v1Tag()) {
+				if (mp3File.getId3v1Tag().getArtist() != null) {
+					return mp3File.getId3v1Tag().getArtist();
+				}
+			} else if (mp3File.hasId3v2Tag()) {
+				if (mp3File.getId3v2Tag().getArtist() != null) {
+					return mp3File.getId3v1Tag().getArtist();
+				}
+			}
+		}
         return "Keine Info";
     }
 
     public String getAlbum(){
-        if (mp3File.hasId3v1Tag()) {
-            return mp3File.getId3v2Tag().getAlbum();
-        } else if (mp3File.hasId3v2Tag()) {
-            return mp3File.getId3v2Tag().getAlbum();
-        }
+		if (mp3File!= null) {
+			if (mp3File.hasId3v1Tag()) {
+				return mp3File.getId3v2Tag().getAlbum();
+			} else if (mp3File.hasId3v2Tag()) {
+				return mp3File.getId3v2Tag().getAlbum();
+			}
+		}
         return "Keine Info";
     }
 
     public String getTrack(){
-        if (mp3File.hasId3v1Tag()) {
-            return mp3File.getId3v2Tag().getTitle();
-        } else if (mp3File.hasId3v2Tag()) {
-            return mp3File.getId3v2Tag().getTitle();
-        }
+		if (mp3File!= null) {
+			if (mp3File.hasId3v1Tag()) {
+				return mp3File.getId3v2Tag().getTitle();
+			} else if (mp3File.hasId3v2Tag()) {
+				return mp3File.getId3v2Tag().getTitle();
+			}
+		}
         return "Keine Info";
     }
 
@@ -104,21 +103,22 @@ public class MP3Player {
     }
 
     public Image getAlbumImage(){
-        Image img = null;
 
 
-        try {
-            if (mp3File.getId3v2Tag().getAlbumImage() != null){
-                img = SwingFXUtils.toFXImage(ImageIO.read(new ByteArrayInputStream(mp3File.getId3v2Tag().getAlbumImage())), null);
-            } else {
-                img = new Image("/default.png");
-            }
+        Image img = new Image("/defaultCover.png");
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+		if (mp3File!= null) {
+			try {
+				if (mp3File.getId3v2Tag().getAlbumImage() != null) {
+					img = SwingFXUtils.toFXImage(ImageIO.read(new ByteArrayInputStream(mp3File.getId3v2Tag().getAlbumImage())), null);
+				}
 
-        return img;
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+        return img ;
     }
 
     //Mp3agic Ende
@@ -155,10 +155,12 @@ public class MP3Player {
 		} else{
 			try {
 				audioPlayer = minim.loadMP3File(filename);
+				setMp3File(filename);
 				audioPlayer.play();
 				aktSong = filename;
-				setMp3File(filename);
+
 				playing = true;
+				paused = false;
 
 			} catch (Exception e) {
 				throw new keinSongException();

@@ -30,10 +30,7 @@ import javafx.scene.image.ImageView;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
@@ -41,6 +38,12 @@ public class SongView {
 
     boolean paused = true;
     public Scene buildScene(PlayerGUI gui, MP3Player player) {
+
+        try {
+            PlaylistManager.savePlaylist(PlaylistManager.getAllTracks(), "Test");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
         BorderPane root = new BorderPane();
@@ -50,7 +53,7 @@ public class SongView {
         ((HBox) bot).setAlignment(Pos.CENTER);
 
         ImageView img = new ImageView();
-        img.setImage(new Image("/default.png"));
+        img.setImage(player.getAlbumImage());
         img.setFitWidth(116);
         img.setFitHeight(110);
 
@@ -99,12 +102,14 @@ public class SongView {
         songInfo.getChildren().addAll(title, interpret);
         ((HBox) songInfo).setAlignment(Pos.CENTER_LEFT);
         songInfo.setPadding(new Insets(0, 0, 0, 45));
+
        //Buttons Anfang
+
 
         Button play = new Button();
         play.setText(getFirstSongFromPlaylist("Test.m3u"));
         play.getStyleClass().add("icon-button");
-        play.setStyle("-fx-shape: \"" + getPathFromSVG("play2") + "\";");
+        play.setStyle("-fx-shape: \"" + getPathFromSVG("play") + "\";");
         play.setPickOnBounds(true);
         play.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             try {
@@ -112,11 +117,16 @@ public class SongView {
                     player.play(play.getText());
                     play.setStyle("-fx-shape: \"" + getPathFromSVG("pause") + "\";");
                     changePause();
+                    title.setText(player.getTrack());
+                    interpret.setText(player.getSongArtist());
                     img.setImage(player.getAlbumImage());
+                    songLength.setText(zeitanzeige.format(player.getSongLength()));
+
+
 
                 } else{
                     player.pause();
-                    play.setStyle("-fx-shape: \"" + getPathFromSVG("play2") + "\";");
+                    play.setStyle("-fx-shape: \"" + getPathFromSVG("play") + "\";");
                     changePause();
                 }
 
@@ -153,7 +163,8 @@ public class SongView {
 
         Button volume = new Button();
         volume.getStyleClass().add("icon-button");
-        volume.setStyle("-fx-shape: \"" + getPathFromSVG("volume") + "\";");
+
+        volume.setStyle("-fx-shape: \"" + getPathFromSVG("mute") + "\";");
         volume.setPickOnBounds(true);
 
 
@@ -213,7 +224,8 @@ public class SongView {
         try {
             DocumentBuilder builder =  factory.newDocumentBuilder();
             Document doc = builder.parse("resources/icons/"+ filename+".svg");
-            NodeList elemente = doc.getElementsByTagName("path");
+            NodeList elemente = doc.getElementsByTagName("g");
+            elemente = doc.getElementsByTagName("path");
             Element element = (Element) elemente.item(0);
 
             return element.getAttribute("d");

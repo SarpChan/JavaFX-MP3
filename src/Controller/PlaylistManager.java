@@ -87,28 +87,28 @@ public class PlaylistManager {
 	}
 	
 	private static ArrayList<String> searchForMp3(String path) {
-		
+
 		File  files[];
 		ArrayList<String> mp3s = new ArrayList<String>();
-		
+
 		File dir = new File (path);
 			files = dir.listFiles();
-			
+
 			if (files != null) {
 				for (File i: files) {
-					
+
 					if (i.isDirectory() && !i.getAbsolutePath().endsWith("Library")) {
 						mp3s.addAll(searchForMp3(i.getAbsolutePath()));
 					}
 					else if (i.toString().endsWith("mp3")) {
 						mp3s.add(i.getAbsolutePath());
 					}
-					
+
 				}
 			}
-		
+
 		return mp3s;
-		
+
 	}
-	
+
 }
