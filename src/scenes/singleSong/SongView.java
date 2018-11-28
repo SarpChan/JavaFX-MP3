@@ -11,7 +11,6 @@ import javafx.animation.Timeline;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -23,8 +22,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-import scenes.MikeView.MikeView;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -196,7 +193,7 @@ public class SongView {
         root.setBottom(bot);
 
         Scene x = new Scene(root, 375, 568);
-        x.getStylesheets().add("scenes/singleSong/stylesheet.css");
+        x.getStylesheets().add("scenes/singleSong/style.css");
         return x;
     }
 
