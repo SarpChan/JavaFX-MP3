@@ -1,3 +1,8 @@
+*{
+
+    -fx-primarycolor:#74CCDB;
+}
+
 
 .primarytext{
     -fx-fill:#74CCDB;
@@ -86,7 +91,7 @@
      }
 
  .icon-button:hover {
-     -icon-paint: linear-gradient(to bottom, white, black);
+     -icon-paint: -fx-primarycolor;
  }
 
 .play-button {
@@ -103,5 +108,5 @@
     }
 
 .play-button:hover {
-    -icon-paint: linear-gradient(to bottom, white, black);
+    -icon-paint: -fx-primarycolor;
 }
