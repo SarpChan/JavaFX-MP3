@@ -34,6 +34,7 @@ public class PlayerGUI extends Application {
         szenen.put("01", new scenes.singleSong.SongView().buildScene(this, player));
         szenen.put("02", new scenes.MikeView.MikeView().buildScene(this,player));
         szenen.put("03", new scenes.singleSong.MainView().buildScene(this, player));
+        szenen.put("04", new scenes.singleSong.MainView().buildScene(this, player));
 
         BorderPane root = new BorderPane();
 
@@ -57,7 +58,7 @@ public class PlayerGUI extends Application {
 
         switch (code){
             case "01":
-                main.setScene(new scenes.MikeView.MikeView().buildScene(this, player));
+                main.setScene(new scenes.singleSong.MainView().buildScene(this, player));
                 break;
         }
     }
