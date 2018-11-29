@@ -77,6 +77,19 @@
 }
 
 
+.mute-button{
+    -icon-paint: white;
+    -fx-background-color: -icon-paint;
+    -size: 15;
+    -fx-min-height: -size;
+    -fx-min-width: -size;
+    -fx-max-height: -size;
+    -fx-max-width: -size;
+}
+
+.mute-button:hover {
+    -icon-paint: -fx-primarycolor;
+}
 .icon-button {
      -icon-paint: white;
      -fx-background-color: -icon-paint;
@@ -85,10 +98,7 @@
      -fx-min-width: -size;
      -fx-max-height: -size;
      -fx-max-width: -size;
-
-
-
-     }
+}
 
  .icon-button:hover {
      -icon-paint: -fx-primarycolor;

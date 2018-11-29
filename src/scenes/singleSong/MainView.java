@@ -20,7 +20,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import javafx.scene.control.ProgressBar;;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.shape.Line;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -97,20 +97,37 @@ public class MainView {
         songInfo.setPadding(new Insets(0, 0, 0, 45));
 
         //PANE MIDDLE
-        Button play = new Button("play");
-        Button previous = new Button("prev");
-        Button next = new Button("next");
+        Button play = new Button();
+        Button previous = new Button();
+        Button next = new Button();
 
-        Pane controlButtons = new HBox();
+
+        play.getStyleClass().add("play-button");
+        play.setStyle("-fx-shape: \"" + getPathFromSVG("play") + "\";");
+        play.setPadding(new Insets(0, 100, 0, 100));
+
+        previous.getStyleClass().add("icon-button");
+        previous.setStyle("-fx-shape: \"" + getPathFromSVG("previous") + "\";");
+
+        next.getStyleClass().add("icon-button");
+        next.setStyle("-fx-shape: \"" + getPathFromSVG("next") + "\";");
+
+        Pane controlButtons = new HBox(20);
         controlButtons.getChildren().addAll(previous, play, next);
         ((HBox) controlButtons).setAlignment(Pos.CENTER);
 
         //PANE RIGHT
         Button mute = new Button("mute");
+
+        mute.getStyleClass().add("mute-button");
+        mute.setStyle("-fx-shape: \"" + getPathFromSVG("mute") + "\";");
+        mute.setAlignment(Pos.BASELINE_LEFT);
+
         Slider volume = new Slider();
         volume.setId("volume");
         volume.setMin(0);
         volume.setOrientation(Orientation.HORIZONTAL);
+        volume.setPadding(new Insets(0, 0, 0, 10));
 
         ProgressBar pb2 = new ProgressBar(0.0);
         pb2.minWidth(0);
@@ -138,7 +155,7 @@ public class MainView {
 
         Pane rightSide = new HBox();
         rightSide.getChildren().addAll(mute, volumePane, time);
-        ((HBox) rightSide).setAlignment(Pos.BASELINE_RIGHT);
+        ((HBox) rightSide).setAlignment(Pos.CENTER);
         rightSide.setPadding(new Insets(0, 45, 0, 0));
 
         //HINTERGRUND

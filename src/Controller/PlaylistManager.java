@@ -111,6 +111,7 @@ public class PlaylistManager {
 				songs.put(name, i);
 			}
 		}
+
 		allMp3s = new ArrayList <String>(songs.values());
 		
 		return allMp3s;

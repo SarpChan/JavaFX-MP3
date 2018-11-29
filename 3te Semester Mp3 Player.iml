@@ -22,7 +22,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="jl1.0.1.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/jl1.0.1.jar!/" />
@@ -31,7 +31,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="jsminim.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/jsminim.jar!/" />
@@ -40,7 +40,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="minim.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/minim.jar!/" />
@@ -49,7 +49,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="mp3spi1.9.5.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/mp3spi1.9.5.jar!/" />
@@ -58,7 +58,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="tritonus_aos.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/tritonus_aos.jar!/" />
@@ -67,7 +67,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="tritonus_share.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/tritonus_share.jar!/" />
@@ -76,7 +76,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="eibo_simpleminim.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/eibo_simpleminim.jar!/" />
@@ -85,7 +85,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="eibo_staticscanner.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/eibo_staticscanner.jar!/" />
@@ -94,7 +94,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="mp3agic.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/mp3agic.jar!/" />
@@ -103,5 +103,6 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" exported="" name="Java fx" level="application" />
   </component>
 </module>
