@@ -259,7 +259,6 @@ public class MainView {
         bar1.setProgress(1);
 
 
-
         if(actValue == half){
             bar1.setMinWidth(width/2);
 
