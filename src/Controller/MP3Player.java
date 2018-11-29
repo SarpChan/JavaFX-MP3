@@ -19,8 +19,8 @@ import java.io.*;
 public class MP3Player {
 	private SimpleMinim minim;
 	private SimpleAudioPlayer audioPlayer;
-	private boolean paused = false, playing = false;
-	private String aktPlaylist="Test.m3u", aktSong;
+
+	private String aktPlaylist, aktSong;
 
 
 
@@ -28,7 +28,9 @@ public class MP3Player {
 	Mp3File mp3File;
 
 
-
+    public void setAktPlaylist (String playlist){
+        this.aktPlaylist = playlist;
+    }
     public int getAktZeit(){
             if (audioPlayer == null){
                 return 0;
@@ -142,32 +144,56 @@ public class MP3Player {
 
 
 
-	    // vllt. in Eventhandler von Pause/Play-Button einbauen
-	    if (paused && !playing){
-			paused = false;
-			playing = true;
 
-			audioPlayer.play();
-
-
-		} else if (!paused && playing){
-
-		} else{
 			try {
 				audioPlayer = minim.loadMP3File(filename);
 				setMp3File(filename);
 				audioPlayer.play();
 				aktSong = filename;
 
-				playing = true;
-				paused = false;
+
 
 			} catch (Exception e) {
 				throw new keinSongException();
 
 			}
-		}
+
 	}
+    public void play(String filename, String playlist) throws keinSongException {
+
+
+        if(audioPlayer == null) {
+
+            try {
+                audioPlayer = minim.loadMP3File(filename);
+                setMp3File(filename);
+                audioPlayer.play();
+                aktSong = filename;
+                aktPlaylist = playlist;
+
+
+            } catch (Exception e) {
+                throw new keinSongException();
+
+            }
+        } else {
+            minim.stop();
+            try {
+                audioPlayer = minim.loadMP3File(filename);
+                setMp3File(filename);
+                audioPlayer.play();
+                aktSong = filename;
+                aktPlaylist = playlist;
+
+
+            } catch (Exception e) {
+                throw new keinSongException();
+
+            }
+
+        }
+
+    }
 
 	public void next() throws keinSongException{
 		String zeile;
@@ -183,9 +209,7 @@ public class MP3Player {
 						minim.stop();
 						audioPlayer = minim.loadMP3File(zeile);
 						audioPlayer.play();
-						if (paused){
-							paused = false;
-						}
+
 						aktSong = zeile;
                         setMp3File(aktSong);
 					}
@@ -201,11 +225,22 @@ public class MP3Player {
 	
 	public void play() throws keinSongException {
 		if (audioPlayer == null) {
-			throw new keinSongException("Leider wurde kein Song 2ausgewählt");
+            try {
+                String filename = getFirstSongFromPlaylist("/Users/"+ System.getProperty("user.name") +"/Music/default.m3u");
+                audioPlayer = minim.loadMP3File(filename);
+                setMp3File(filename);
+                audioPlayer.play();
+                aktSong = filename;
+                aktPlaylist = "/Users/"+ System.getProperty("user.name") +"/Music/default.m3u";
+
+
+            } catch (Exception e) {
+                throw new keinSongException();
+
+            }
 		}
 		audioPlayer.play();
-		paused = false;
-		playing = true;
+
 
 	}
 	
@@ -215,8 +250,7 @@ public class MP3Player {
 			throw new keinSongException("Leider wurde kein Song ausgewählt");
 		}
 		audioPlayer.pause();
-		paused = true;
-		playing = false;
+
 	}
 	
 	public void stop() throws keinSongException{
@@ -225,8 +259,7 @@ public class MP3Player {
 		}
 		audioPlayer.pause();
 		audioPlayer.rewind();
-		paused = false;
-		playing = false;
+
 	}
 
 	public void volume (float value) {
@@ -252,4 +285,22 @@ public class MP3Player {
 
 		return db;
 	}
+
+    public String getFirstSongFromPlaylist(String x) {
+        String zeile;
+
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(x));
+
+
+            if ((zeile = reader.readLine()) != null){
+                return zeile;
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "nichts gefunden";
+    }
 }

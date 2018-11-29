@@ -1,3 +1,8 @@
+*{
+
+    -fx-primarycolor:#74CCDB;
+}
+
 
 .primarytext{
     -fx-fill:#74CCDB;
@@ -69,4 +74,39 @@
 #progressBackground{
     -fx-fill:#2F2F2F;
 
+}
+
+
+.icon-button {
+     -icon-paint: white;
+     -fx-background-color: -icon-paint;
+     -size: 10, 14;
+     -fx-min-height: -size;
+     -fx-min-width: -size;
+     -fx-max-height: -size;
+     -fx-max-width: -size;
+
+
+
+     }
+
+ .icon-button:hover {
+     -icon-paint: -fx-primarycolor;
+ }
+
+.play-button {
+    -icon-paint: white;
+    -fx-background-color: -icon-paint;
+    -size: 40;
+    -fx-min-height: -size;
+    -fx-min-width: -size;
+    -fx-max-height: -size;
+    -fx-max-width: -size;
+
+
+
+    }
+
+.play-button:hover {
+    -icon-paint: -fx-primarycolor;
 }

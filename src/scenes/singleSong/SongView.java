@@ -8,9 +8,13 @@ import Exceptions.keinSongException;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -37,14 +41,33 @@ public class SongView {
     public Scene buildScene(PlayerGUI gui, MP3Player player) {
 
         try {
-            PlaylistManager.savePlaylist(PlaylistManager.getAllTracks(), "Test");
+            PlaylistManager.savePlaylist(PlaylistManager.getAllTracks(), "default");
         } catch (IOException e) {
             e.printStackTrace();
         }
 
 
+
+
         BorderPane root = new BorderPane();
         root.setBackground(new Background(new BackgroundFill(new Color(0.2, 0.2, 0.2, 1.0), CornerRadii.EMPTY, Insets.EMPTY)));
+
+
+
+
+        /*
+
+
+
+
+        Bot Anfang
+
+
+
+
+
+         */
+
         Pane bot = new HBox(8);
         bot.setPadding(new Insets(2, 0, 10, 0));
         ((HBox) bot).setAlignment(Pos.CENTER);
@@ -91,27 +114,15 @@ public class SongView {
         timeline.setCycleCount( Animation.INDEFINITE );
         timeline.play();
 
-        Pane songInfo = new HBox();
-
-
-
-        interpret.setStrikethrough(true);
-        songInfo.getChildren().addAll(title, interpret);
-        ((HBox) songInfo).setAlignment(Pos.CENTER_LEFT);
-        songInfo.setPadding(new Insets(0, 0, 0, 45));
-
-       //Buttons Anfang
-
-
         Button play = new Button();
-        play.setText(getFirstSongFromPlaylist("Test.m3u"));
-        play.getStyleClass().add("icon-button");
+
+        play.getStyleClass().add("play-button");
         play.setStyle("-fx-shape: \"" + getPathFromSVG("play") + "\";");
         play.setPickOnBounds(true);
         play.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             try {
                 if (paused) {
-                    player.play(play.getText());
+                    player.play();
                     play.setStyle("-fx-shape: \"" + getPathFromSVG("pause") + "\";");
                     changePause();
                     title.setText(player.getTrack());
@@ -186,34 +197,83 @@ public class SongView {
 
         });
 
-        // Buttons Ende
-
         bot.getChildren().addAll(timeLabel, songLength,img,title, interpret, search, volume, previous, play, next, repeater);
 
+
+
+
+
+        /*
+
+
+
+
+         Bot Ende
+
+
+
+
+
+
+          */
+
+
+
+        VBox center = new VBox(10);
+        center.setAlignment(Pos.CENTER);
+
+        ListView <String> playlisten = new ListView<>();
+
+
+
+        ObservableList<String> list = FXCollections.observableArrayList();
+        list.addAll(PlaylistManager.getAllPlaylists());
+        playlisten.getItems().addAll(list);
+        playlisten.setBackground(new Background(new BackgroundFill(new Color(0.2, 0.2, 0.2, 1.0), CornerRadii.EMPTY, Insets.EMPTY)));
+        playlisten.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            try {
+                player.play(player.getFirstSongFromPlaylist(playlisten.getSelectionModel().getSelectedItem()), playlisten.getSelectionModel().getSelectedItem());
+                play.setStyle("-fx-shape: \"" + getPathFromSVG("pause") + "\";");
+                changePause();
+                title.setText(player.getTrack());
+                interpret.setText(player.getSongArtist());
+                img.setImage(player.getAlbumImage());
+                songLength.setText(zeitanzeige.format(player.getSongLength()));
+                player.setAktPlaylist(playlisten.getSelectionModel().getSelectedItem());
+
+            } catch (keinSongException e) {
+                e.printStackTrace();
+            }
+        });
+
+        center.getChildren().add(playlisten);
+        root.setCenter(center);
+
         root.setBottom(bot);
+
+
+
+
 
         Scene x = new Scene(root, 375, 568);
         x.getStylesheets().add("scenes/singleSong/style.css");
         return x;
     }
 
-    private String getFirstSongFromPlaylist(String x) {
-        String zeile;
-
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(x));
 
 
-            if ((zeile = reader.readLine()) != null){
-                return zeile;
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return "nichts gefunden";
-    }
+
+    /*
+
+                Hilfsmethoden
+
+
+     */
+
+
+
+
+
 
     private static String getPathFromSVG(String filename){
         String d = "abc";
