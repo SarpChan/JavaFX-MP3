@@ -15,6 +15,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -27,6 +28,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import javafx.scene.image.ImageView;
+
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -121,21 +123,30 @@ public class SongView {
         play.setPickOnBounds(true);
         play.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             try {
-                if (paused) {
+                if (player.isInitialized()) {
+                    if (!player.isPlaying()) {
+                        player.play();
+                        play.setStyle("-fx-shape: \"" + getPathFromSVG("pause") + "\";");
+
+                        title.setText(player.getTrack());
+                        interpret.setText(player.getSongArtist());
+                        img.setImage(player.getAlbumImage());
+                        songLength.setText(zeitanzeige.format(player.getSongLength()));
+
+
+                    } else {
+                        player.pause();
+                        play.setStyle("-fx-shape: \"" + getPathFromSVG("play") + "\";");
+
+                    }
+                } else {
                     player.play();
                     play.setStyle("-fx-shape: \"" + getPathFromSVG("pause") + "\";");
-                    changePause();
+
                     title.setText(player.getTrack());
                     interpret.setText(player.getSongArtist());
                     img.setImage(player.getAlbumImage());
                     songLength.setText(zeitanzeige.format(player.getSongLength()));
-
-
-
-                } else{
-                    player.pause();
-                    play.setStyle("-fx-shape: \"" + getPathFromSVG("play") + "\";");
-                    changePause();
                 }
 
             } catch (keinSongException e) {
@@ -152,6 +163,17 @@ public class SongView {
         previous.getStyleClass().add("icon-button");
         previous.setStyle("-fx-shape: \"" + getPathFromSVG("previous") + "\";");
         previous.setPickOnBounds(true);
+        previous.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            try{
+                player.previous();
+                title.setText(player.getTrack());
+                interpret.setText(player.getSongArtist());
+                img.setImage(player.getAlbumImage());
+                songLength.setText(zeitanzeige.format(player.getSongLength()));
+            } catch( keinSongException e){
+
+            }
+        });
 
         Button next = new Button();
         next.getStyleClass().add("icon-button");
@@ -234,7 +256,7 @@ public class SongView {
             try {
                 player.play(player.getFirstSongFromPlaylist(playlisten.getSelectionModel().getSelectedItem()), playlisten.getSelectionModel().getSelectedItem());
                 play.setStyle("-fx-shape: \"" + getPathFromSVG("pause") + "\";");
-                changePause();
+
                 title.setText(player.getTrack());
                 interpret.setText(player.getSongArtist());
                 img.setImage(player.getAlbumImage());
@@ -275,6 +297,7 @@ public class SongView {
 
 
 
+
     private static String getPathFromSVG(String filename){
         String d = "abc";
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -297,8 +320,8 @@ public class SongView {
         return d;
     }
 
-    private void changePause(){
-        paused = !paused;
-    }
+
+
+
 
 }

@@ -136,6 +136,14 @@ public class MP3Player {
 
     }
 
+    public boolean isInitialized(){
+        if(audioPlayer == null){
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     public boolean isPlaying() {
         return audioPlayer.isPlaying();
     }
@@ -196,21 +204,21 @@ public class MP3Player {
     }
 
 	public void next() throws keinSongException{
-		String zeile;
+		String nextRow;
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(aktPlaylist));
 
 
-			while ((zeile = reader.readLine()) != null){
-				if(aktSong.compareTo(zeile)==0){
+			while ((nextRow = reader.readLine()) != null){
+				if(aktSong.compareTo(nextRow)==0){
 
-					if ((zeile = reader.readLine()) != null){
+					if ((nextRow = reader.readLine()) != null){
 
 						minim.stop();
-						audioPlayer = minim.loadMP3File(zeile);
+						audioPlayer = minim.loadMP3File(nextRow);
 						audioPlayer.play();
 
-						aktSong = zeile;
+						aktSong = nextRow;
                         setMp3File(aktSong);
 					}
 				}
@@ -222,6 +230,39 @@ public class MP3Player {
 		}
 
 	}
+
+	public boolean previous() throws keinSongException{
+       String alteZeile = null,neueZeile;
+
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(aktPlaylist));
+
+
+            while ((neueZeile = reader.readLine()) != null){
+                if(aktSong.compareTo(neueZeile)==0){
+
+
+                    if(alteZeile == null){
+                        return false;
+                    }
+                        minim.stop();
+                        audioPlayer = minim.loadMP3File(alteZeile);
+                        audioPlayer.play();
+
+                        aktSong = alteZeile;
+                        setMp3File(aktSong);
+                        return true;
+
+                }
+                alteZeile = neueZeile;
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 	
 	public void play() throws keinSongException {
 		if (audioPlayer == null) {
