@@ -4,6 +4,8 @@ import Applikation.PlayerGUI;
 import Controller.MP3Player;
 import Controller.PlaylistManager;
 import Exceptions.keinSongException;
+import controlElements.ControlButtons;
+import controlElements.VolumeAndTime;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -45,13 +47,7 @@ public class MainView {
         bot.setPadding(new Insets(25, 0, 25, 0));
         ((VBox) song).setAlignment(Pos.CENTER);
         bot.setId("bot");
-        // song.setPrefHeight(300);
-        //song.setMinHeight(300);
-        //((VBox) song).setSpacing(20);
-        //((HBox) bot).setAlignment(Pos.CENTER);
-        //bot.setPrefHeight(20);
-
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //SLIDER
         Slider progress = new Slider();
         progress.setMin(0);
@@ -79,15 +75,13 @@ public class MainView {
         StackPane progressPane = new StackPane();
         progressPane.getChildren().addAll( line, pb1, progress);
         progressPane.setAlignment(Pos.CENTER_LEFT);
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         //PANE LEFT
         Text title = new Text(("Track" + " ").toUpperCase());
         title.getStyleClass().add("primarytext");
 
         Text interpret = new Text("Arctic Monkeys");
-        //title.setFill(Color.rgb(116, 204, 219, 1));
-        // interpret.setFill(Color.rgb(85, 129, 137, 1));
         interpret.getStyleClass().add("secondarytext");
 
 
@@ -96,67 +90,11 @@ public class MainView {
         ((HBox) songInfo).setAlignment(Pos.CENTER_LEFT);
         songInfo.setPadding(new Insets(0, 0, 0, 45));
 
-        //PANE MIDDLE
-        Button play = new Button();
-        Button previous = new Button();
-        Button next = new Button();
+        //ControlButtons
+        ControlButtons controlButtons = new ControlButtons();
+        //Volume&Time
+        VolumeAndTime volumeAndTime = new VolumeAndTime();
 
-
-        play.getStyleClass().add("play-button");
-        play.setStyle("-fx-shape: \"" + getPathFromSVG("play") + "\";");
-        play.setPadding(new Insets(0, 100, 0, 100));
-
-        previous.getStyleClass().add("icon-button");
-        previous.setStyle("-fx-shape: \"" + getPathFromSVG("previous") + "\";");
-
-        next.getStyleClass().add("icon-button");
-        next.setStyle("-fx-shape: \"" + getPathFromSVG("next") + "\";");
-
-        Pane controlButtons = new HBox(20);
-        controlButtons.getChildren().addAll(previous, play, next);
-        ((HBox) controlButtons).setAlignment(Pos.CENTER);
-
-        //PANE RIGHT
-        Button mute = new Button("mute");
-
-        mute.getStyleClass().add("mute-button");
-        mute.setStyle("-fx-shape: \"" + getPathFromSVG("mute") + "\";");
-        mute.setAlignment(Pos.BASELINE_LEFT);
-
-        Slider volume = new Slider();
-        volume.setId("volume");
-        volume.setMin(0);
-        volume.setOrientation(Orientation.HORIZONTAL);
-        volume.setPadding(new Insets(0, 0, 0, 10));
-
-        ProgressBar pb2 = new ProgressBar(0.0);
-        pb2.minWidth(0);
-        pb2.setId("pb2");
-
-        volume.boundsInLocalProperty().addListener((observable, oldvar, newvar) -> {
-            calculatePB(volume, pb2);
-        });
-        volume.valueProperty().addListener((observable, oldvar, newvar) -> {
-            calculatePB(volume, pb2);
-        });
-
-        Line line2 = new Line();
-        line2.setStartX(0);
-        line2.setEndX(100);
-        line2.getStyleClass().add("progressLine");
-
-        StackPane volumePane = new StackPane();
-        volumePane.getChildren().addAll(volume,pb2,line2);
-        volumePane.setAlignment(Pos.CENTER_LEFT);
-
-        Text time = new Text("01:35 / 3:75");
-        time.getStyleClass().add("secondarytext");
-        //time.setFill(Color.rgb(116, 204, 219, 1));
-
-        Pane rightSide = new HBox();
-        rightSide.getChildren().addAll(mute, volumePane, time);
-        ((HBox) rightSide).setAlignment(Pos.CENTER);
-        rightSide.setPadding(new Insets(0, 45, 0, 0));
 
         //HINTERGRUND
         Rectangle progressBackground = new Rectangle();
@@ -185,7 +123,7 @@ public class MainView {
         HBox.setHgrow(region2, Priority.ALWAYS);
 
 
-        bot.getChildren().addAll(songInfo, region2, controlButtons, region, rightSide);
+        bot.getChildren().addAll(songInfo, region2, controlButtons, region, volumeAndTime);
         song.getChildren().addAll(progressPane, bot);
         ((VBox) song).setAlignment(Pos.BOTTOM_LEFT);
         StackPane test = new StackPane();

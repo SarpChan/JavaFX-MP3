@@ -112,10 +112,7 @@
     -fx-min-width: -size;
     -fx-max-height: -size;
     -fx-max-width: -size;
-
-
-
-    }
+ }
 
 .play-button:hover {
     -icon-paint: -fx-primarycolor;
