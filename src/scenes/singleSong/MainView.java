@@ -25,6 +25,7 @@ import org.xml.sax.SAXException;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.shape.Line;
 
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -47,7 +48,8 @@ public class MainView {
         bot.setPadding(new Insets(25, 0, 25, 0));
         ((VBox) song).setAlignment(Pos.CENTER);
         bot.setId("bot");
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
         //SLIDER
         Slider progress = new Slider();
         progress.setMin(0);
@@ -55,15 +57,15 @@ public class MainView {
         progress.setId("progress");
 
         //PROGRESSBAR
-        Pane progressBarPane = new Pane();
         ProgressBar pb1 = new ProgressBar(0.0);
         pb1.minWidth(0);
         pb1.setId("pb1");
 
+
         Line line = new Line();
         line.setStartX(0);
-        line.setEndX(1024);
         line.getStyleClass().add("progressLine");
+        line.endXProperty().bind(root.widthProperty());
 
         progress.boundsInLocalProperty().addListener((observable, oldvar, newvar) -> {
             calculatePB(progress, pb1);
@@ -72,9 +74,15 @@ public class MainView {
             calculatePB(progress, pb1);
         });
 
+
+
         StackPane progressPane = new StackPane();
         progressPane.getChildren().addAll( line, pb1, progress);
         progressPane.setAlignment(Pos.CENTER_LEFT);
+        progressPane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        progressPane.setMinSize(Double.MIN_VALUE, Double.MIN_VALUE);
+
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         //PANE LEFT
@@ -100,6 +108,8 @@ public class MainView {
         Rectangle progressBackground = new Rectangle();
         progressBackground.setId("progressBackground");
         progressBackground.setHeight(750);
+        progressBackground.xProperty().bind(root.widthProperty());
+
 
         progress.boundsInLocalProperty().addListener((observable, oldvar, newvar) -> {
             calculateBackgroundProgress(progress, progressBackground);
@@ -109,13 +119,14 @@ public class MainView {
         });
 
 
-        progressBackground.setWidth(1024/2);
+
 
         //REGIONS
         Pane region = new HBox();
         region.setPrefWidth(50);
         region.setMinWidth(50);
         HBox.setHgrow(region, Priority.ALWAYS);
+
 
         Pane region2 = new HBox();
         region2.setPrefWidth(50);

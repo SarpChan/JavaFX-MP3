@@ -1,7 +1,7 @@
 <component name="libraryTable">
-  <library name="tritonus_aos">
+  <library name="mp3agic (2)">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/tritonus_aos.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/mp3agic.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

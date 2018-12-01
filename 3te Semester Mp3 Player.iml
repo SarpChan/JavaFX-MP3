@@ -104,5 +104,15 @@
       </library>
     </orderEntry>
     <orderEntry type="library" exported="" name="Java fx" level="application" />
+    <orderEntry type="library" name="JavaFX" level="application" />
+    <orderEntry type="library" name="eibo_simpleminim (2)" level="project" />
+    <orderEntry type="library" name="eibo_staticscanner (2)" level="project" />
+    <orderEntry type="library" name="jl1.0.1 (2)" level="project" />
+    <orderEntry type="library" name="jsminim (2)" level="project" />
+    <orderEntry type="library" name="minim (2)" level="project" />
+    <orderEntry type="library" name="mp3agic (2)" level="project" />
+    <orderEntry type="library" name="mp3spi1.9.5 (2)" level="project" />
+    <orderEntry type="library" name="tritonus_aos (2)" level="project" />
+    <orderEntry type="library" name="tritonus_share (2)" level="project" />
   </component>
 </module>

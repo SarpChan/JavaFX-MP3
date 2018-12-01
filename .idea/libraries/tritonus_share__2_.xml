@@ -1,7 +1,7 @@
 <component name="libraryTable">
-  <library name="jsminim">
+  <library name="tritonus_share (2)">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/jsminim.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/tritonus_share.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

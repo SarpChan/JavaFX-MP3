@@ -1,7 +1,7 @@
 <component name="libraryTable">
-  <library name="mp3spi1.9.5">
+  <library name="tritonus_aos (2)">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/mp3spi1.9.5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/tritonus_aos.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

@@ -1,7 +1,7 @@
 <component name="libraryTable">
-  <library name="mp3agic">
+  <library name="minim (2)">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/mp3agic.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/minim.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
