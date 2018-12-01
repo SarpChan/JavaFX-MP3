@@ -62,6 +62,7 @@ public class MainView {
         pb1.setId("pb1");
 
 
+
         Line line = new Line();
         line.setStartX(0);
         line.getStyleClass().add("progressLine");
@@ -108,7 +109,7 @@ public class MainView {
         Rectangle progressBackground = new Rectangle();
         progressBackground.setId("progressBackground");
         progressBackground.setHeight(750);
-        progressBackground.xProperty().bind(root.widthProperty());
+        progressBackground.xProperty().bind(bot.widthProperty());
 
 
         progress.boundsInLocalProperty().addListener((observable, oldvar, newvar) -> {
@@ -117,9 +118,6 @@ public class MainView {
         progress.valueProperty().addListener((observable, oldvar, newvar) -> {
             calculateBackgroundProgress(progress, progressBackground);
         });
-
-
-
 
         //REGIONS
         Pane region = new HBox();
