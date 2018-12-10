@@ -11,6 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.nio.file.*;
 
 
 public class PlaylistManager {
@@ -44,6 +45,15 @@ public class PlaylistManager {
 	}
 	
 	public static void savePlaylist(ArrayList<String> playlist, String name) throws IOException {
+
+
+		if (Files.exists(Paths.get("/Users/" + System.getProperty("user.name") + "/Music/" + name + ".m3u"))){
+			int i=1;
+			while(Files.exists(Paths.get("/Users/" + System.getProperty("user.name") + "/Music/" + name +i+ ".m3u"))){
+				i++;
+			}
+			name += i;
+		}
 		
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter("/Users/"+ System.getProperty("user.name") +"/Music/" + name + ".m3u"))){
 			

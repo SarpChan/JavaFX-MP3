@@ -42,13 +42,15 @@ public class SongView {
     boolean paused = true;
     public Scene buildScene(PlayerGUI gui, MP3Player player) {
 
-        try {
-            PlaylistManager.savePlaylist(PlaylistManager.getAllTracks(), "default");
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (PlaylistManager.getAllPlaylists().isEmpty()) {
+
+            try {
+                PlaylistManager.savePlaylist(PlaylistManager.getAllTracks(), "default");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         }
-
-
 
 
         BorderPane root = new BorderPane();

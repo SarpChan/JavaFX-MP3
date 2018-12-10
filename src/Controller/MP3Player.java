@@ -127,11 +127,11 @@ public class MP3Player {
 
 
     public MP3Player(){
-		minim = new SimpleMinim(true);
+		minim = new SimpleMinim();
 	}
 
 	public MP3Player(String s){
-	    minim = new SimpleMinim(true);
+	    minim = new SimpleMinim();
 	    audioPlayer = minim.loadMP3File(s);
 
     }
@@ -151,20 +151,11 @@ public class MP3Player {
     public void play(String filename) throws keinSongException {
 
 
+        audioPlayer = minim.loadMP3File(filename);
 
-
-			try {
-				audioPlayer = minim.loadMP3File(filename);
-				setMp3File(filename);
-				audioPlayer.play();
-				aktSong = filename;
-
-
-
-			} catch (Exception e) {
-				throw new keinSongException();
-
-			}
+        setMp3File(filename);
+        aktSong = filename;
+        play();
 
 	}
     public void play(String filename, String playlist) throws keinSongException {
@@ -173,10 +164,7 @@ public class MP3Player {
         if(audioPlayer == null) {
 
             try {
-                audioPlayer = minim.loadMP3File(filename);
-                setMp3File(filename);
-                audioPlayer.play();
-                aktSong = filename;
+                play(filename);
                 aktPlaylist = playlist;
 
 
@@ -187,10 +175,7 @@ public class MP3Player {
         } else {
             minim.stop();
             try {
-                audioPlayer = minim.loadMP3File(filename);
-                setMp3File(filename);
-                audioPlayer.play();
-                aktSong = filename;
+                play(filename);
                 aktPlaylist = playlist;
 
 
@@ -200,6 +185,32 @@ public class MP3Player {
             }
 
         }
+
+    }
+
+    public void play() throws keinSongException {
+        if (audioPlayer == null) {
+            try {
+                String filename = getFirstSongFromPlaylist("/Users/"+ System.getProperty("user.name") +"/Music/default.m3u");
+                play(filename);
+                aktPlaylist = "/Users/"+ System.getProperty("user.name") +"/Music/default.m3u";
+
+
+            } catch (Exception e) {
+                throw new keinSongException();
+
+            }
+        }
+        Thread playThread = new Thread() {
+
+            public void run() {
+                audioPlayer.play();
+            }
+
+        };
+        playThread.start();
+
+
 
     }
 
@@ -215,11 +226,7 @@ public class MP3Player {
 					if ((nextRow = reader.readLine()) != null){
 
 						minim.stop();
-						audioPlayer = minim.loadMP3File(nextRow);
-						audioPlayer.play();
-
-						aktSong = nextRow;
-                        setMp3File(aktSong);
+						play(nextRow);
 					}
 				}
 			}
@@ -230,6 +237,14 @@ public class MP3Player {
 		}
 
 	}
+
+	public void skip(int mseconds){
+        if(isInitialized()) {
+
+            audioPlayer.skip(mseconds);
+            audioPlayer.play();
+        }
+    }
 
 	public boolean previous() throws keinSongException{
        String alteZeile = null,neueZeile;
@@ -246,11 +261,8 @@ public class MP3Player {
                         return false;
                     }
                         minim.stop();
-                        audioPlayer = minim.loadMP3File(alteZeile);
-                        audioPlayer.play();
+                    play(alteZeile);
 
-                        aktSong = alteZeile;
-                        setMp3File(aktSong);
                         return true;
 
                 }
@@ -264,26 +276,7 @@ public class MP3Player {
         return false;
     }
 	
-	public void play() throws keinSongException {
-		if (audioPlayer == null) {
-            try {
-                String filename = getFirstSongFromPlaylist("/Users/"+ System.getProperty("user.name") +"/Music/default.m3u");
-                audioPlayer = minim.loadMP3File(filename);
-                setMp3File(filename);
-                audioPlayer.play();
-                aktSong = filename;
-                aktPlaylist = "/Users/"+ System.getProperty("user.name") +"/Music/default.m3u";
 
-
-            } catch (Exception e) {
-                throw new keinSongException();
-
-            }
-		}
-		audioPlayer.play();
-
-
-	}
 	
 	public void pause() throws keinSongException {
 		
