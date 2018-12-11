@@ -2,6 +2,7 @@ package scenes.singleSong;
 
 import Applikation.PlayerGUI;
 import Controller.MP3Player;
+import Controller.Playlist;
 import Controller.PlaylistManager;
 import Exceptions.keinSongException;
 
@@ -34,6 +35,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
@@ -42,7 +45,6 @@ public class SongView {
     boolean paused = true;
     public Scene buildScene(PlayerGUI gui, MP3Player player) {
 
-        if (PlaylistManager.getAllPlaylists().isEmpty()) {
 
             try {
                 PlaylistManager.savePlaylist(PlaylistManager.getAllTracks(), "default");
@@ -50,7 +52,7 @@ public class SongView {
                 e.printStackTrace();
             }
 
-        }
+
 
 
         BorderPane root = new BorderPane();
@@ -134,6 +136,7 @@ public class SongView {
                         interpret.setText(player.getSongArtist());
                         img.setImage(player.getAlbumImage());
                         songLength.setText(zeitanzeige.format(player.getSongLength()));
+
 
 
                     } else {
@@ -246,13 +249,18 @@ public class SongView {
         VBox center = new VBox(10);
         center.setAlignment(Pos.CENTER);
 
-        ListView <String> playlisten = new ListView<>();
+        ListView <Playlist> playlisten = new ListView<>();
 
 
 
-        ObservableList<String> list = FXCollections.observableArrayList();
+        ObservableList<Playlist> list = FXCollections.observableArrayList();
         list.addAll(PlaylistManager.getAllPlaylists());
-        playlisten.getItems().addAll(list);
+
+        for (Playlist playlist: list
+             ) {
+            playlisten.getItems().add(playlist);
+        }
+
         playlisten.setBackground(new Background(new BackgroundFill(new Color(0.2, 0.2, 0.2, 1.0), CornerRadii.EMPTY, Insets.EMPTY)));
         playlisten.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             try {

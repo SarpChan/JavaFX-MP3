@@ -110,7 +110,7 @@ public class MikeView {
             @Override
             public void handle(ActionEvent arg0) {
                 try {
-                    player.play("Kokain.mp3");
+                    player.play();
                 } catch (keinSongException e) {
                     e.printStackTrace();
                 }

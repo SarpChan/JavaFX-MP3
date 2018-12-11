@@ -25,13 +25,14 @@ public class Playlist {
     private void compilePlaylist(String path){
         try (BufferedReader reader = new BufferedReader( new FileReader(path))){
 
-            String temp = reader.readLine();
+            String trackAbsolPath = reader.readLine();
 
-            while(temp != null){
-                tracks.addLast(new Track(temp));
+            while(trackAbsolPath != null){
+                tracks.addLast(new Track(trackAbsolPath));
                 playtime += tracks.getLast().getSonglength();
                 numberTracks++;
 
+                trackAbsolPath = reader.readLine();
             }
         } catch (java.io.IOException e) {
             e.printStackTrace();
@@ -72,5 +73,9 @@ public class Playlist {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public LinkedList<Track> getTracks() {
+        return tracks;
     }
 }

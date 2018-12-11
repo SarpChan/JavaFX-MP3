@@ -15,6 +15,8 @@ import java.nio.file.*;
 
 
 public class PlaylistManager {
+
+	private static ArrayList<Playlist> playlistArrayList = new ArrayList<>();
 	
 	public ArrayList<String> getPlaylist(String nameOfPlaylist){
 		
@@ -47,14 +49,7 @@ public class PlaylistManager {
 	public static void savePlaylist(ArrayList<String> playlist, String name) throws IOException {
 
 
-		if (Files.exists(Paths.get("/Users/" + System.getProperty("user.name") + "/Music/" + name + ".m3u"))){
-			int i=1;
-			while(Files.exists(Paths.get("/Users/" + System.getProperty("user.name") + "/Music/" + name +i+ ".m3u"))){
-				i++;
-			}
-			name += i;
-		}
-		
+
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter("/Users/"+ System.getProperty("user.name") +"/Music/" + name + ".m3u"))){
 			
 			for (String i : playlist) {
@@ -71,32 +66,6 @@ public class PlaylistManager {
 		
 	}
 
-	public static ArrayList<String> getAllPlaylists(){
-        ArrayList <String> allM3us = new ArrayList <String> ();
-
-        String username = System.getProperty("user.name");
-
-        allM3us.addAll(searchForM3u("/Users/"+ username +"/Music"));
-
-        HashMap<String, String>songs = new HashMap<String, String>();
-
-        for (String i : allM3us) {
-            String name;
-            String path[];
-            path = i.split("/");
-
-            name = path[path.length - 1];
-            path = name.split("\\.");
-            name = path[0];
-
-            if (!songs.containsKey(name)) {
-                songs.put(name, i);
-            }
-        }
-        allM3us = new ArrayList <String>(songs.values());
-
-        return allM3us;
-    }
 	
 	public static ArrayList<String> getAllTracks() {
 		
@@ -152,6 +121,35 @@ public class PlaylistManager {
 
 	}
 
+
+	public static ArrayList<Playlist> getAllPlaylists(){
+		ArrayList <String> allM3us = new ArrayList <> ();
+
+		String username = System.getProperty("user.name");
+
+		allM3us.addAll(searchForM3u("/Users/"+ username +"/Music"));
+
+		HashMap<String, Playlist>playlists = new HashMap<>();
+
+
+		for (String absolutePath : allM3us) {
+			String name;
+			String path[];
+			path = absolutePath.split("/");
+
+			name = path[path.length - 1];
+			path = name.split("\\.");
+			name = path[0];
+
+			if (!playlists.containsKey(name)) {
+				playlists.put(name, new Playlist(absolutePath, name));
+			}
+		}
+		playlistArrayList = new ArrayList <>(playlists.values());
+
+		return playlistArrayList;
+	}
+
     private static ArrayList<String> searchForM3u(String path) {
 
         File  files[];
@@ -176,4 +174,8 @@ public class PlaylistManager {
         return m3us;
 
     }
+
+	public static ArrayList<Playlist> getPlaylistArrayList() {
+		return playlistArrayList;
+	}
 }

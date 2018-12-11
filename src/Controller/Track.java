@@ -14,32 +14,53 @@ import java.io.IOException;
 public class Track {
 
     private String path, title="N.A.", album="N.A.", artist="N.A.";
-    private int songlength=0;
+    private long songlength=0;
     private Mp3File file;
     private Image image = new Image("defaultCover.png");
 
     public Track(String path){
+
+        this.path = path;
+        loadId3Tags(path);
+
+
+    }
+
+    private void loadId3Tags(String path){
         try {
             file = new Mp3File(path);
-            this.path = path;
-            this.title = file.getId3v2Tag().getTitle();
-            this.album = file.getId3v2Tag().getAlbum();
-            this.artist = file.getId3v2Tag().getAlbumArtist();
-            this.image = SwingFXUtils.toFXImage(ImageIO.read(new ByteArrayInputStream(file.getId3v2Tag().getAlbumImage())), null);
-            this.songlength = file.getId3v2Tag().getLength();
+
+            if(file!= null) {
+                if (file.hasId3v2Tag()) {
+
+                    this.title = file.getId3v2Tag().getTitle();
+                    this.album = file.getId3v2Tag().getAlbum();
+                    this.artist = file.getId3v2Tag().getAlbumArtist();
+                    if (file.getId3v2Tag().getAlbumImage() != null) {
+                        this.image = SwingFXUtils.toFXImage(ImageIO.read(new ByteArrayInputStream(file.getId3v2Tag().getAlbumImage())), null);
+                    }
+                    this.songlength = file.getLengthInMilliseconds();
+                } else if (file.hasId3v1Tag()) {
+                    this.title = file.getId3v1Tag().getTitle();
+                    this.album = file.getId3v1Tag().getAlbum();
+                    this.artist = file.getId3v1Tag().getArtist();
+                    this.songlength = file.getLengthInMilliseconds();
+                }
+            }
         } catch (IOException e) {
             e.printStackTrace();
         } catch (UnsupportedTagException e) {
             e.printStackTrace();
         } catch (InvalidDataException e) {
             e.printStackTrace();
+        }finally{
+            file = null;
         }
-
-
 
     }
 
-    public int getSonglength() {
+    public long getSonglength() {
+
         return songlength;
     }
 

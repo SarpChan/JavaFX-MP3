@@ -20,7 +20,9 @@ public class MP3Player {
 	private SimpleMinim minim;
 	private SimpleAudioPlayer audioPlayer;
 
-	private String aktPlaylist, aktSong;
+	private Playlist aktPlaylist;
+	private Track aktSong;
+    private Thread playThread;
 
 
 
@@ -28,7 +30,7 @@ public class MP3Player {
 	Mp3File mp3File;
 
 
-    public void setAktPlaylist (String playlist){
+    public void setAktPlaylist (Playlist playlist){
         this.aktPlaylist = playlist;
     }
     public int getAktZeit(){
@@ -40,59 +42,29 @@ public class MP3Player {
     }
     public long getSongLength(){
 
-    	if (mp3File!= null) {
 
-			if (mp3File.hasId3v1Tag()) {
-				return mp3File.getLengthInMilliseconds();
-			} else if (mp3File.hasId3v2Tag()) {
-				return mp3File.getLengthInMilliseconds();
-			}
-		}
-        return 0;
+        return aktSong!= null? aktSong.getSonglength():0;
 
     }
 
     public String getSongArtist(){
-		if (mp3File!= null) {
 
-			if (mp3File.hasId3v1Tag()) {
-				if (mp3File.getId3v1Tag().getArtist() != null) {
-					return mp3File.getId3v1Tag().getArtist();
-				}
-			} else if (mp3File.hasId3v2Tag()) {
-				if (mp3File.getId3v2Tag().getArtist() != null) {
-					return mp3File.getId3v1Tag().getArtist();
-				}
-			}
-		}
-        return "Keine Info";
+        return aktSong!=null? aktSong.getArtist():"N.A.";
     }
 
     public String getAlbum(){
-		if (mp3File!= null) {
-			if (mp3File.hasId3v1Tag()) {
-				return mp3File.getId3v2Tag().getAlbum();
-			} else if (mp3File.hasId3v2Tag()) {
-				return mp3File.getId3v2Tag().getAlbum();
-			}
-		}
-        return "Keine Info";
+
+        return aktSong!=null? aktSong.getAlbum():"N.A.";
     }
 
     public String getTrack(){
-		if (mp3File!= null) {
-			if (mp3File.hasId3v1Tag()) {
-				return mp3File.getId3v2Tag().getTitle();
-			} else if (mp3File.hasId3v2Tag()) {
-				return mp3File.getId3v2Tag().getTitle();
-			}
-		}
-        return "Keine Info";
+
+        return aktSong!=null? aktSong.getTitle():"N.A.";
     }
 
-    public void setMp3File(String filename){
+    public void setMp3File(Track filename){
         try {
-            this.mp3File = new Mp3File(filename);
+            this.mp3File = new Mp3File(filename.getPath());
         } catch (IOException e) {
             e.printStackTrace();
         } catch (UnsupportedTagException e) {
@@ -109,18 +81,11 @@ public class MP3Player {
 
         Image img = new Image("defaultCover.png");
 
-		if (mp3File!= null) {
-			try {
-				if (mp3File.getId3v2Tag().getAlbumImage() != null) {
-					img = SwingFXUtils.toFXImage(ImageIO.read(new ByteArrayInputStream(mp3File.getId3v2Tag().getAlbumImage())), null);
-				}
 
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-
-        return img ;
+        if (aktSong!= null) {
+            return aktSong.getImage() != null ? aktSong.getImage() : img;
+        }
+        return img;
     }
 
     //Mp3agic Ende
@@ -148,23 +113,23 @@ public class MP3Player {
         return audioPlayer.isPlaying();
     }
 
-    public void play(String filename) throws keinSongException {
+    public void play(Track track) throws keinSongException {
 
 
-        audioPlayer = minim.loadMP3File(filename);
+        audioPlayer = minim.loadMP3File(track.getPath());
 
-        setMp3File(filename);
-        aktSong = filename;
+        setMp3File(track);
+        aktSong = track;
         play();
 
 	}
-    public void play(String filename, String playlist) throws keinSongException {
+    public void play(Track track, Playlist playlist) throws keinSongException {
 
 
         if(audioPlayer == null) {
 
             try {
-                play(filename);
+                play(track);
                 aktPlaylist = playlist;
 
 
@@ -175,7 +140,7 @@ public class MP3Player {
         } else {
             minim.stop();
             try {
-                play(filename);
+                play(track);
                 aktPlaylist = playlist;
 
 
@@ -189,52 +154,55 @@ public class MP3Player {
     }
 
     public void play() throws keinSongException {
+
         if (audioPlayer == null) {
-            try {
-                String filename = getFirstSongFromPlaylist("/Users/"+ System.getProperty("user.name") +"/Music/default.m3u");
-                play(filename);
-                aktPlaylist = "/Users/"+ System.getProperty("user.name") +"/Music/default.m3u";
+
+                aktSong = getFirstSongFromPlaylist(PlaylistManager.getPlaylistArrayList().get(0));
+                play(aktSong);
+                aktPlaylist = PlaylistManager.getPlaylistArrayList().get(0);
 
 
-            } catch (Exception e) {
-                throw new keinSongException();
 
-            }
         }
-        Thread playThread = new Thread() {
+        playThread = new Thread() {
 
             public void run() {
                 audioPlayer.play();
+                interrupt();
+
             }
+
+            @Override
+            public void interrupt() {
+                super.interrupt();
+                return;
+            }
+
 
         };
         playThread.start();
 
 
 
+
     }
 
 	public void next() throws keinSongException{
-		String nextRow;
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader(aktPlaylist));
 
+        for (Track track: aktPlaylist.getTracks()
+             ) {
+            if(aktSong.equals(track)){
+                int temp = aktPlaylist.getTracks().indexOf(track);
+                if (aktPlaylist.getTracks().get(temp+1)!= null){
+                    aktSong = aktPlaylist.getTracks().get(temp+1);
 
-			while ((nextRow = reader.readLine()) != null){
-				if(aktSong.compareTo(nextRow)==0){
+                    minim.stop();
+                    play(aktSong);
+                    break;
+                }
+            }
 
-					if ((nextRow = reader.readLine()) != null){
-
-						minim.stop();
-						play(nextRow);
-					}
-				}
-			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+        }
 
 	}
 
@@ -247,32 +215,27 @@ public class MP3Player {
     }
 
 	public boolean previous() throws keinSongException{
-       String alteZeile = null,neueZeile;
 
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(aktPlaylist));
+        Track oldTrack = null;
 
+        for (Track track: aktPlaylist.getTracks()
+                ) {
+            if(aktSong.equals(track)){
 
-            while ((neueZeile = reader.readLine()) != null){
-                if(aktSong.compareTo(neueZeile)==0){
-
-
-                    if(alteZeile == null){
-                        return false;
-                    }
-                        minim.stop();
-                    play(alteZeile);
-
-                        return true;
-
+                if(oldTrack != null){
+                    aktSong = oldTrack;
+                    stop();
+                    play(aktSong);
+                    return true;
                 }
-                alteZeile = neueZeile;
+                return false;
+
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            oldTrack = track;
+
         }
+
+
         return false;
     }
 	
@@ -320,21 +283,8 @@ public class MP3Player {
 		return db;
 	}
 
-    public String getFirstSongFromPlaylist(String x) {
-        String zeile;
+    public Track getFirstSongFromPlaylist(Playlist x) {
 
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(x));
-
-
-            if ((zeile = reader.readLine()) != null){
-                return zeile;
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return "nichts gefunden";
+        return x.getTracks().getFirst();
     }
 }
