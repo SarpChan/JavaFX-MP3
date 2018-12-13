@@ -1,16 +1,20 @@
 package controlElements;
 
 import Controller.MP3Player;
+import Exceptions.keinSongException;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Slider;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 
 public class VolumeAndTime extends ExtendedHBox {
 
@@ -26,10 +30,7 @@ public class VolumeAndTime extends ExtendedHBox {
 
         this.player = player;
 
-        mute = new Button();
-        mute.getStyleClass().add("mute-button");
-        mute.setStyle("-fx-shape: \"" + getPathFromSVG("mute") + "\";");
-        mute.setAlignment(Pos.BASELINE_LEFT);
+
 
         volume = new Slider();
         volume.setId("volume");
@@ -44,6 +45,18 @@ public class VolumeAndTime extends ExtendedHBox {
         volume.valueProperty().addListener((observable, oldvar, newvar) -> {
             calculatePB(volume, pb2);
             player.volume((newvar.floatValue() / 100));
+        });
+
+        mute = new Button();
+        mute.getStyleClass().add("mute-button");
+        mute.setStyle("-fx-shape: \"" + getPathFromSVG("mute") + "\";");
+        mute.setAlignment(Pos.BASELINE_LEFT);
+        //mute.setOnAction(muteButtonOnAction(volume));
+        mute.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            if(volume.getValue()!= volume.getMin())
+                volume.setValue(volume.getMin());
+            else
+                volume.setValue(volume.getMax()/2);
         });
 
         pb2 = new ProgressBar(0.0);
@@ -96,5 +109,6 @@ public class VolumeAndTime extends ExtendedHBox {
 
 
     }
+
 
 }
