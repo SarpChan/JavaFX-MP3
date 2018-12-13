@@ -2,29 +2,25 @@ package scenes.singleSong;
 
 import Applikation.PlayerGUI;
 import Controller.MP3Player;
-import Controller.PlaylistManager;
-import Exceptions.keinSongException;
+import com.sun.scenario.effect.Blend;
 import controlElements.ControlButtons;
 import controlElements.VolumeAndTime;
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Slider;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
-import javafx.scene.control.ProgressBar;
-import javafx.scene.shape.Line;
-
+import javafx.scene.effect.BlendMode;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -34,11 +30,20 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class MainView {
+public class AllArtistsView {
 
     boolean paused = true;
     public Scene buildScene(PlayerGUI gui, MP3Player player) {
 
+        StackPane artistPane = new StackPane();
+        ImageView img = new ImageView();
+        img.setImage(player.getAlbumImage());
+        img.setFitWidth(200);
+        img.setFitHeight(200);
+        img.getStyleClass().add("artistimg");
+        img.setOpacity(0.5);
+        Text interpret2 = new Text(player.getSongArtist());
+        artistPane.getChildren().addAll(img, interpret2);
 
 
         BorderPane root = new BorderPane();
@@ -139,7 +144,7 @@ public class MainView {
         song.getChildren().addAll(progressPane, bot);
         ((VBox) song).setAlignment(Pos.BOTTOM_LEFT);
         StackPane test = new StackPane();
-        test.getChildren().addAll(progressBackground, song);
+        test.getChildren().addAll(artistPane, progressBackground, song);
         test.setAlignment(Pos.BOTTOM_LEFT);
         root.setBottom(test);
 

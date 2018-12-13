@@ -1,0 +1,17 @@
+.list-cell:even, .list-cell:odd {
+        -fx-text-fill:#fff;
+        -fx-font-weight:normal;
+        -fx-background-color:rgba(0, 0, 0, 0);
+        -fx-padding:0 0 0 0;
+}
+
+.list-cell:even:hover, .list-cell:odd:hover {
+        -fx-text-fill:#74CCDB;
+}
+
+.headline{
+        -fx-fill:rgba(255, 255, 255, 0.5);
+   }
+.headline:hover{
+        -fx-fill:rgba(255, 255, 255);
+ }

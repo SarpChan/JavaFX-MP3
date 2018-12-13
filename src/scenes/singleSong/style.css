@@ -117,3 +117,9 @@
 .play-button:hover {
     -icon-paint: -fx-primarycolor;
 }
+
+.artistimg{
+    -fx-background-color: rgb(0,0,0,0.5);
+    -fx-alpha:50;
+    -fx-opacity: 50;
+}
