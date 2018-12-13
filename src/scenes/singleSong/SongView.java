@@ -84,7 +84,6 @@ public class SongView {
         img.setFitHeight(110);
 
         DateFormat zeitanzeige = new SimpleDateFormat("mm:ss");
-
         long endTime = player.getSongLength();
         Text title = new Text(player.getTrack());
         Text interpret = new Text(player.getSongArtist());
