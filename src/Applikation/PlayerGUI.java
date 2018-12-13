@@ -1,6 +1,7 @@
 package Applikation;
 
 import Controller.MP3Player;
+import Controller.Track;
 import javafx.application.Application;
 
 
@@ -21,8 +22,6 @@ public class PlayerGUI extends Application {
     public void init(){
         player = new MP3Player();
 
-
-
     }
 
 
@@ -41,7 +40,7 @@ public class PlayerGUI extends Application {
         BorderPane root = new BorderPane();
 
         primaryStage.setTitle("Coolste Gruppe");
-        primaryStage.setScene(szenen.get("04"));
+        primaryStage.setScene(szenen.get("03"));
 
         primaryStage.show();
 

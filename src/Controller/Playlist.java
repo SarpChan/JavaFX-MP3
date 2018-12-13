@@ -78,4 +78,7 @@ public class Playlist {
     public LinkedList<Track> getTracks() {
         return tracks;
     }
+    public String toString(){
+        return name;
+    }
 }

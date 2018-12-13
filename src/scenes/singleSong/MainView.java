@@ -103,9 +103,9 @@ public class MainView {
         songInfo.setPadding(new Insets(0, 0, 0, 45));
 
         //ControlButtons
-        ControlButtons controlButtons = new ControlButtons();
+        ControlButtons controlButtons = new ControlButtons(player);
         //Volume&Time
-        VolumeAndTime volumeAndTime = new VolumeAndTime();
+        VolumeAndTime volumeAndTime = new VolumeAndTime(player);
 
 
         //HINTERGRUND

@@ -1,5 +1,6 @@
 package controlElements;
 
+import Controller.MP3Player;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -19,8 +20,11 @@ public class VolumeAndTime extends ExtendedHBox {
     Line line2;
     StackPane volumePane;
     Text time;
+    MP3Player player;
 
-    public VolumeAndTime(){
+    public VolumeAndTime(MP3Player player){
+
+        this.player = player;
 
         mute = new Button();
         mute.getStyleClass().add("mute-button");
@@ -30,6 +34,8 @@ public class VolumeAndTime extends ExtendedHBox {
         volume = new Slider();
         volume.setId("volume");
         volume.setMin(0);
+        volume.setMax(100);
+        volume.setValue(50);
         volume.setOrientation(Orientation.HORIZONTAL);
         volume.setPadding(new Insets(0, 0, 0, 10));
         volume.boundsInLocalProperty().addListener((observable, oldvar, newvar) -> {
@@ -37,6 +43,7 @@ public class VolumeAndTime extends ExtendedHBox {
         });
         volume.valueProperty().addListener((observable, oldvar, newvar) -> {
             calculatePB(volume, pb2);
+            player.volume((newvar.floatValue() / 100));
         });
 
         pb2 = new ProgressBar(0.0);
