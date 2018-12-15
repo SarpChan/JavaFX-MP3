@@ -101,16 +101,15 @@ public class MainView {
         Text title = new Text(("Track" + " ").toUpperCase());
         title.getStyleClass().add("primarytext");
 
-
         Text interpret = new Text("Arctic Monkeys");
         interpret.getStyleClass().add("secondarytext");
 
-        Pane songInfo = new HBox();
+        HBox songInfo = new HBox(10);
         songInfo.setMaxWidth(20);
         songInfo.setPrefWidth(20);
         songInfo.setMinWidth(20);
         songInfo.getChildren().addAll(title, interpret);
-        ((HBox) songInfo).setAlignment(Pos.CENTER_LEFT);
+        songInfo.setAlignment(Pos.CENTER_LEFT);
         songInfo.setPadding(new Insets(0, 100, 0, 45));
 
 
@@ -220,7 +219,7 @@ public class MainView {
 
                         title.setText(player.getTrack());
                         interpret.setText(player.getSongArtist());
-                        time.setText("00/" + zeitanzeige.format(player.getSongLength()));
+                        time.setText(zeitanzeige.format(player.getSongLength()));
                     } else {
                         player.pause();
                         play.setStyle("-fx-shape: \"" + getPathFromSVG("play") + "\";");
