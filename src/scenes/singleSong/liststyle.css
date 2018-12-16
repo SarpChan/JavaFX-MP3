@@ -2,11 +2,14 @@
         -fx-text-fill:#fff;
         -fx-font-weight:normal;
         -fx-background-color:rgba(0, 0, 0, 0);
-        -fx-padding:0 0 0 0;
-
+        -fx-padding:10 0 10 0;
 }
 
 .list-cell:even:hover, .list-cell:odd:hover {
+        -fx-text-fill:#74CCDB;
+}
+
+.list-cell:even:selected, .list-cell:odd:selected {
         -fx-text-fill:#74CCDB;
 }
 
@@ -16,3 +19,17 @@
 .headline:hover{
         -fx-fill:rgba(255, 255, 255);
  }
+
+
+.scroll-pane > .viewport {
+   -fx-background-color: transparent;
+}
+
+.scroll-pane {
+   -fx-background-color: transparent;
+}
+
+#actList .list-cell:odd {
+    -fx-border-width: 0.1 0 0.1 0;
+    -fx-border-color: white;
+}

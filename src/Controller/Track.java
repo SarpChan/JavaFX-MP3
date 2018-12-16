@@ -83,4 +83,10 @@ public class Track {
     public Image getImage() {
         return image;
     }
+
+    public String toString(){
+        //return (getTitle() + " " + getArtist() + " " + getAlbum() + " " + getSonglength());
+        return getTitle();
+    }
+
 }
