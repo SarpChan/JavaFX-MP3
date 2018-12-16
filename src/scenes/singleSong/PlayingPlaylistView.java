@@ -191,9 +191,9 @@ public class PlayingPlaylistView {
         songInfo.getChildren().addAll(actSongTitle, interpret);
 
         //ControlButtons
-        ControlButtons controlButtons = new ControlButtons();
+        ControlButtons controlButtons = new ControlButtons(player);
         //Volume&Time
-        VolumeAndTime volumeAndTime = new VolumeAndTime();
+        VolumeAndTime volumeAndTime = new VolumeAndTime(player);
 
         //REGIONS
         Pane distanceLeft = new HBox();

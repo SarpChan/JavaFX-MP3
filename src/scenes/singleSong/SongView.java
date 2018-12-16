@@ -168,15 +168,7 @@ public class SongView {
         previous.setStyle("-fx-shape: \"" + getPathFromSVG("previous") + "\";");
         previous.setPickOnBounds(true);
         previous.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            try{
-                player.previous();
-                title.setText(player.getTrack());
-                interpret.setText(player.getSongArtist());
-                img.setImage(player.getAlbumImage());
-                songLength.setText(zeitanzeige.format(player.getSongLength()));
-            } catch( keinSongException e){
 
-            }
         });
 
         Button next = new Button();
