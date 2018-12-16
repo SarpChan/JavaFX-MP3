@@ -33,17 +33,19 @@ public class Track {
             if(file!= null) {
                 if (file.hasId3v2Tag()) {
 
-                    this.title = file.getId3v2Tag().getTitle();
-                    this.album = file.getId3v2Tag().getAlbum();
-                    this.artist = file.getId3v2Tag().getAlbumArtist();
+                    this.title = (file.getId3v2Tag().getTitle() == null) ? "N.A" : file.getId3v2Tag().getTitle();
+
+                    this.album = (file.getId3v2Tag().getAlbum() == null)? "N.A" : file.getId3v2Tag().getAlbum();
+                    this.artist = (file.getId3v2Tag().getArtist()== null)? "N.A" : file.getId3v2Tag().getArtist();
                     if (file.getId3v2Tag().getAlbumImage() != null) {
                         this.image = SwingFXUtils.toFXImage(ImageIO.read(new ByteArrayInputStream(file.getId3v2Tag().getAlbumImage())), null);
                     }
                     this.songlength = file.getLengthInMilliseconds();
                 } else if (file.hasId3v1Tag()) {
-                    this.title = file.getId3v1Tag().getTitle();
-                    this.album = file.getId3v1Tag().getAlbum();
-                    this.artist = file.getId3v1Tag().getArtist();
+                    this.title = (file.getId3v1Tag().getTitle() == null) ? "N.A" : file.getId3v1Tag().getTitle();
+
+                    this.album = (file.getId3v1Tag().getAlbum() == null)? "N.A" : file.getId3v2Tag().getAlbum();
+                    this.artist = (file.getId3v1Tag().getArtist()== null)? "N.A" : file.getId3v1Tag().getArtist();
                     this.songlength = file.getLengthInMilliseconds();
                 }
             }
@@ -86,7 +88,7 @@ public class Track {
 
     public String toString(){
         //return (getTitle() + " " + getArtist() + " " + getAlbum() + " " + getSonglength());
-        return getTitle();
+        return title;
     }
 
 }

@@ -103,6 +103,15 @@
  .icon-button:hover {
      -icon-paint: -fx-primarycolor;
  }
+ .icon-button-active{
+ -icon-paint: -fx-primarycolor;
+      -fx-background-color: -icon-paint;
+      -size: 10, 14;
+      -fx-min-height: -size;
+      -fx-min-width: -size;
+      -fx-max-height: -size;
+      -fx-max-width: -size;
+ }
 
 .play-button {
     -icon-paint: white;
@@ -127,3 +136,4 @@
      -fx-font-size: 35px;
 
 }
+

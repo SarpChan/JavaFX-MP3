@@ -2,33 +2,36 @@ package Controller;
 
 
 import Exceptions.keinSongException;
-import com.mpatric.mp3agic.InvalidDataException;
-import com.mpatric.mp3agic.Mp3File;
-import com.mpatric.mp3agic.UnsupportedTagException;
 import de.hsrm.mi.eibo.simpleplayer.SimpleAudioPlayer;
 import de.hsrm.mi.eibo.simpleplayer.SimpleMinim;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.util.Random;
 
 
 public class MP3Player {
 	private SimpleMinim minim;
 	private SimpleAudioPlayer audioPlayer;
 
+	private boolean autoNext = true, shuffle=false;
+
 	private Playlist aktPlaylist;
 	private Track aktSong;
-    private Thread playThread;
+    private MyThread playThread;
 
 
 
-	// Mp3agic
-	Mp3File mp3File;
+    public void changeShuffle(){shuffle = !shuffle;}
 
+    public boolean isShuffle() {
+        return shuffle;
+    }
+
+    private void autoNextOff(){autoNext = false;}
+    private void autoNextOn(){autoNext = true;}
 
     public void setAktPlaylist (Playlist playlist){
         this.aktPlaylist = playlist;
@@ -62,19 +65,7 @@ public class MP3Player {
         return aktSong!=null? aktSong.getTitle():"N.A.";
     }
 
-    public void setMp3File(Track filename){
-        try {
-            this.mp3File = new Mp3File(filename.getPath());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (UnsupportedTagException e) {
-            e.printStackTrace();
-        } catch (InvalidDataException e) {
-            e.printStackTrace();
-        }
 
-
-    }
 
     public Image getAlbumImage(){
 
@@ -95,11 +86,7 @@ public class MP3Player {
 		minim = new SimpleMinim();
 	}
 
-	public MP3Player(String s){
-	    minim = new SimpleMinim();
-	    audioPlayer = minim.loadMP3File(s);
 
-    }
 
     public boolean isInitialized(){
         if(audioPlayer == null){
@@ -109,17 +96,18 @@ public class MP3Player {
         }
     }
 
-    public boolean isPlaying() {
+    public boolean isPlayerActive() {
         return audioPlayer.isPlaying();
     }
 
     public void play(Track track) throws keinSongException {
 
-
+        playThread.interrupt();
         audioPlayer = minim.loadMP3File(track.getPath());
 
-        setMp3File(track);
+
         aktSong = track;
+
         play();
 
 	}
@@ -129,8 +117,9 @@ public class MP3Player {
         if(audioPlayer == null) {
 
             try {
-                play(track);
                 aktPlaylist = playlist;
+                play(track);
+
 
 
             } catch (Exception e) {
@@ -138,10 +127,10 @@ public class MP3Player {
 
             }
         } else {
-            minim.stop();
             try {
-                play(track);
                 aktPlaylist = playlist;
+                play(track);
+
 
 
             } catch (Exception e) {
@@ -157,31 +146,23 @@ public class MP3Player {
 
         if (audioPlayer == null) {
 
-                aktSong = getFirstSongFromPlaylist(PlaylistManager.getPlaylistArrayList().get(0));
-                play(aktSong);
-                aktPlaylist = PlaylistManager.getPlaylistArrayList().get(0);
+            aktSong = getFirstSongFromPlaylist(PlaylistManager.getPlaylistArrayList().get(0));
+            audioPlayer = minim.loadMP3File(aktSong.getPath());
+
+            autoNextOn();
+            playThread = new MyThread();
+
+            playThread.start();
+            aktPlaylist = PlaylistManager.getPlaylistArrayList().get(0);
 
 
 
+        }else {
+            autoNextOn();
+            playThread = new MyThread();
+
+            playThread.start();
         }
-        playThread = new Thread() {
-
-            public void run() {
-                audioPlayer.play();
-                interrupt();
-
-            }
-
-            @Override
-            public void interrupt() {
-                super.interrupt();
-                return;
-            }
-
-
-        };
-        playThread.start();
-
 
 
 
@@ -189,19 +170,37 @@ public class MP3Player {
 
 	public void next() throws keinSongException{
 
-        for (Track track: aktPlaylist.getTracks()
-             ) {
-            if(aktSong.equals(track)){
-                int temp = aktPlaylist.getTracks().indexOf(track);
-                if (aktPlaylist.getTracks().get(temp+1)!= null){
-                    aktSong = aktPlaylist.getTracks().get(temp+1);
+        if (shuffle){
+            aktSong = aktPlaylist.getTracks().get(getRandomNumberInRange(0, aktPlaylist.getTracks().size()));
+            autoNextOff();
+            playThread.interrupt();
+            audioPlayer = minim.loadMP3File(aktSong.getPath());
+            if(audioPlayer.isPlaying()) {
 
-                    minim.stop();
-                    play(aktSong);
-                    break;
-                }
+                play();
             }
 
+        } else {
+
+            for (Track track : aktPlaylist.getTracks()
+                    ) {
+                if (aktSong.equals(track)) {
+                    int temp = aktPlaylist.getTracks().indexOf(track);
+                    if (aktPlaylist.getTracks().get(temp + 1) != null) {
+                        aktSong = aktPlaylist.getTracks().get(temp + 1);
+                        autoNextOff();
+                        playThread.interrupt();
+                        audioPlayer = minim.loadMP3File(aktSong.getPath());
+                        if(audioPlayer.isPlaying()) {
+
+                            play();
+                        }
+
+                        break;
+                    }
+                }
+
+            }
         }
 
 	}
@@ -224,8 +223,13 @@ public class MP3Player {
 
                 if(oldTrack != null){
                     aktSong = oldTrack;
-                    stop();
-                    play(aktSong);
+                    autoNextOff();
+                    playThread.interrupt();
+                    audioPlayer = minim.loadMP3File(aktSong.getPath());
+                    if(audioPlayer.isPlaying()) {
+
+                        play();
+                    }
                     return true;
                 }
                 return false;
@@ -246,6 +250,7 @@ public class MP3Player {
 		if (audioPlayer == null) {
 			throw new keinSongException("Leider wurde kein Song ausgewählt");
 		}
+		autoNextOff();
 		audioPlayer.pause();
 
 	}
@@ -287,4 +292,46 @@ public class MP3Player {
 
         return x.getTracks().getFirst();
     }
+
+    private class MyThread extends Thread{
+
+
+
+        public MyThread(){
+            super();
+        }
+
+
+            public void run() {
+
+                audioPlayer.play();
+
+                if(autoNext) {
+                    try {
+                        next();
+                    } catch (keinSongException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            public void interrupt(){
+                super.interrupt();
+                    minim.stop();
+
+                return;
+            }
+
+
+    }
+    private int getRandomNumberInRange(int min, int max) {
+
+        if (min >= max) {
+            throw new IllegalArgumentException("max must be greater than min");
+        }
+
+        Random r = new Random();
+        return r.nextInt((max - min)) + min;
+    }
+
 }

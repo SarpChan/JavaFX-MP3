@@ -14,9 +14,7 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -35,8 +33,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
@@ -86,6 +82,7 @@ public class SongView {
         DateFormat zeitanzeige = new SimpleDateFormat("mm:ss");
         long endTime = player.getSongLength();
         Text title = new Text(player.getTrack());
+
         Text interpret = new Text(player.getSongArtist());
         Text songLength = new Text();
         songLength.setText(zeitanzeige.format(player.getSongLength()));
@@ -93,24 +90,14 @@ public class SongView {
         Text timeLabel = new Text();
         final Timeline timeline = new Timeline(
                 new KeyFrame(
-                        Duration.millis( 500 ),
+                        Duration.millis( 1000 ),
                         event -> {
 
 
-                            if ( player.getAktZeit() == 0 ) {
+                            if (player.getAktZeit() == 0 ) {
 
                                 timeLabel.setText( zeitanzeige.format( 0 ) );
-                            } else if (player.getAktZeit() == endTime){
-                                try {
-                                    player.next();
-                                    title.setText(player.getTrack());
-                                    interpret.setText(player.getSongArtist());
-                                    img.setImage(player.getAlbumImage());
-                                    songLength.setText(zeitanzeige.format(player.getSongLength()));
-                                } catch (keinSongException e) {
-                                    e.printStackTrace();
-                                }
-                            } else {
+                            }  else {
                                 timeLabel.setText( zeitanzeige.format( player.getAktZeit() ) );
                             }
                         }
@@ -127,7 +114,7 @@ public class SongView {
         play.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             try {
                 if (player.isInitialized()) {
-                    if (!player.isPlaying()) {
+                    if (!player.isPlayerActive()) {
                         player.play();
                         play.setStyle("-fx-shape: \"" + getPathFromSVG("pause") + "\";");
 
@@ -211,7 +198,16 @@ public class SongView {
         repeater.setStyle("-fx-shape: \"" + getPathFromSVG("repeat") + "\";");
         repeater.setPickOnBounds(true);
         repeater.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            gui.switchScene(gui, "01");
+            player.changeShuffle();
+            if(player.isShuffle()){
+                repeater.getStyleClass().remove("icon-button");
+                repeater.getStyleClass().add("icon-button-active");
+            }else{
+                repeater.getStyleClass().remove("icon-button-active");
+                repeater.getStyleClass().add("icon-button");
+
+            }
+           // gui.switchScene(gui, "01");
 
         });
 
@@ -245,13 +241,16 @@ public class SongView {
 
 
         ObservableList<Playlist> list = FXCollections.observableArrayList();
-        list.addAll(PlaylistManager.getAllPlaylists());
+        list.setAll(PlaylistManager.getAllPlaylists());
 
-        for (Playlist playlist: list
-             ) {
-            playlisten.getItems().add(playlist);
-        }
 
+        playlisten.setItems(list);
+        playlisten.setEditable(true);
+        playlisten.getStylesheets().add(getClass().
+                getResource("liststyle.css").toExternalForm());
+        playlisten.setCellFactory(e-> {
+            return new PlaylistCell();
+        });
         playlisten.setBackground(new Background(new BackgroundFill(new Color(0.2, 0.2, 0.2, 1.0), CornerRadii.EMPTY, Insets.EMPTY)));
         playlisten.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             try {

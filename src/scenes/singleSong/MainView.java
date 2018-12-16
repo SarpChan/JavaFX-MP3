@@ -2,14 +2,10 @@ package scenes.singleSong;
 
 import Applikation.PlayerGUI;
 import Controller.MP3Player;
-import Controller.PlaylistManager;
 import Exceptions.keinSongException;
-import controlElements.ControlButtons;
-import controlElements.VolumeAndTime;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -41,7 +37,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.EventListener;
 
 public class MainView {
 
@@ -213,7 +208,7 @@ public class MainView {
 
             try {
                 if (player.isInitialized()) {
-                    if (!player.isPlaying()) {
+                    if (!player.isPlayerActive()) {
                         player.play();
                         play.setStyle("-fx-shape: \"" + getPathFromSVG("pause") + "\";");
 

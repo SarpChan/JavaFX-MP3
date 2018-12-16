@@ -64,8 +64,8 @@ public class PlayingPlaylistView {
         TableColumn albumCol = new TableColumn("Album");
         TableColumn lengthCol = new TableColumn("Länge");
 
-        songTitleCol.setCellValueFactory(
-                new PropertyValueFactory<Track, String>("Title"));
+       // songTitleCol.setCellValueFactory(
+         //       new PropertyValueFactory<Track, String>("Title"));
 
         table.getColumns().addAll(songTitleCol, interpretCol, albumCol, lengthCol);
 

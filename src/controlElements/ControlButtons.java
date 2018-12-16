@@ -8,16 +8,6 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.layout.HBox;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
 
 public class ControlButtons extends ExtendedHBox {
 
@@ -57,7 +47,7 @@ public class ControlButtons extends ExtendedHBox {
             public void handle(ActionEvent arg0) {
                 try {
                     if (player.isInitialized()) {
-                        if (!player.isPlaying()) {
+                        if (!player.isPlayerActive()) {
                             player.play();
                             play.setStyle("-fx-shape: \"" + getPathFromSVG("pause") + "\";");
 

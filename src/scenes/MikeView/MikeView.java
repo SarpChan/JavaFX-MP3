@@ -31,7 +31,7 @@ import java.io.IOException;
 
 public class MikeView {
 
-    Controller.MP3Player player = new Controller.MP3Player("KOKAIN.mp3");
+    Controller.MP3Player player = new Controller.MP3Player();
     PlayerGUI gui;
 
     public Scene buildScene(PlayerGUI gui, MP3Player player){
