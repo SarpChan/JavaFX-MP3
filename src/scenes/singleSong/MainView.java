@@ -173,16 +173,7 @@ public class MainView {
                             if ( player.getAktZeit() == 0 ) {
 
                                 time.setText( zeitanzeige.format( 0 ) );
-                            } else if (player.getAktZeit() == endTime){
-                                try {
-                                    player.next();
-                                    title.setText(player.getTrack());
-                                    interpret.setText(player.getSongArtist());
-                                    songLength.setText(zeitanzeige.format(player.getSongLength()));
-                                } catch (keinSongException e) {
-                                    e.printStackTrace();
-                                }
-                            } else {
+                            }  else {
                                 time.setText( zeitanzeige.format( player.getAktZeit() ) );
                             }
                         }

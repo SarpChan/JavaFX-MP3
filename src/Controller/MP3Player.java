@@ -174,11 +174,9 @@ public class MP3Player {
             aktSong = aktPlaylist.getTracks().get(getRandomNumberInRange(0, aktPlaylist.getTracks().size()));
             autoNextOff();
             playThread.interrupt();
-            audioPlayer = minim.loadMP3File(aktSong.getPath());
-            if(audioPlayer.isPlaying()) {
 
-                play();
-            }
+            play(aktSong);
+            
 
         } else {
 
@@ -190,12 +188,8 @@ public class MP3Player {
                         aktSong = aktPlaylist.getTracks().get(temp + 1);
                         autoNextOff();
                         playThread.interrupt();
-                        audioPlayer = minim.loadMP3File(aktSong.getPath());
-                        if(audioPlayer.isPlaying()) {
 
-                            play();
-                        }
-
+                        play(aktSong);
                         break;
                     }
                 }
@@ -225,11 +219,7 @@ public class MP3Player {
                     aktSong = oldTrack;
                     autoNextOff();
                     playThread.interrupt();
-                    audioPlayer = minim.loadMP3File(aktSong.getPath());
-                    if(audioPlayer.isPlaying()) {
-
-                        play();
-                    }
+                    play(aktSong);
                     return true;
                 }
                 return false;
@@ -246,7 +236,7 @@ public class MP3Player {
 
 	
 	public void pause() throws keinSongException {
-		
+
 		if (audioPlayer == null) {
 			throw new keinSongException("Leider wurde kein Song ausgewählt");
 		}

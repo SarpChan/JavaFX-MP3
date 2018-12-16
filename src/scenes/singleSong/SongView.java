@@ -156,6 +156,15 @@ public class SongView {
         previous.setPickOnBounds(true);
         previous.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
 
+            try {
+                player.previous();
+                title.setText(player.getTrack());
+                interpret.setText(player.getSongArtist());
+                img.setImage(player.getAlbumImage());
+                songLength.setText(zeitanzeige.format(player.getSongLength()));
+            } catch (keinSongException e) {
+                e.printStackTrace();
+            }
         });
 
         Button next = new Button();
