@@ -170,13 +170,14 @@ public class MP3Player {
 
 	public void next() throws keinSongException{
 
+
         if (shuffle){
             aktSong = aktPlaylist.getTracks().get(getRandomNumberInRange(0, aktPlaylist.getTracks().size()));
             autoNextOff();
             playThread.interrupt();
 
             play(aktSong);
-            
+
 
         } else {
 
@@ -202,14 +203,16 @@ public class MP3Player {
 	public void skip(int mseconds){
         if(isInitialized()) {
 
-            audioPlayer.skip(mseconds);
-            audioPlayer.play();
+
+            playThread.skip(mseconds);
+
         }
     }
 
 	public boolean previous() throws keinSongException{
 
         Track oldTrack = null;
+
 
         for (Track track: aktPlaylist.getTracks()
                 ) {
@@ -310,6 +313,10 @@ public class MP3Player {
                     minim.stop();
 
                 return;
+            }
+
+            public void skip(int millis){
+            audioPlayer.skip(millis);
             }
 
 

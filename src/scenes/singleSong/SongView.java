@@ -255,11 +255,11 @@ public class SongView {
 
         playlisten.setItems(list);
         playlisten.setEditable(true);
-        playlisten.getStylesheets().add(getClass().
+       /* playlisten.getStylesheets().add(getClass().
                 getResource("liststyle.css").toExternalForm());
         playlisten.setCellFactory(e-> {
-            return new PlaylistCell();
-        });
+           return new PlaylistCell();
+        });*/
         playlisten.setBackground(new Background(new BackgroundFill(new Color(0.2, 0.2, 0.2, 1.0), CornerRadii.EMPTY, Insets.EMPTY)));
         playlisten.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             try {
