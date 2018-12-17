@@ -29,7 +29,42 @@
    -fx-background-color: transparent;
 }
 
-#actList .list-cell:odd {
-    -fx-border-width: 0.1 0 0.1 0;
+
+.table-view .column-header-background, .table-view .filler, .table-view .column-header{
+    -fx-background-color: transparent;
+
+}
+
+.table-view .column-header-background .label{
+    -fx-background-color: transparent;
+     -fx-text-fill:rgba(255, 255, 255, 0.5);
+      -fx-alignment: CENTER-LEFT;
+       -fx-font-weight:normal;
+}
+
+.table-view:row-selection{
+    -fx-border-width: 0 0 0 0;
+    -fx-background-color:rgba(0, 0, 0, 0);
+
+}
+
+.table-column{
+       -fx-border-width: 0 0 0 0;
+       -fx-padding: 12 12 12 12;
+
+}
+
+.table-row-cell .text{
+-fx-fill: #fff;
+}
+
+
+.table-row-cell{
+    -fx-border-width: 0 0 0.1 0;
     -fx-border-color: white;
+    -fx-background-color:rgba(0, 0, 0, 0);
+}
+
+.table-row-cell:selected .text, .table-row-cell:hover .text{
+ -fx-fill: #74CCDB;
 }
