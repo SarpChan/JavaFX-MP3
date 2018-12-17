@@ -2,14 +2,12 @@ package scenes.singleSong;
 
 import Applikation.PlayerGUI;
 import Controller.MP3Player;
-import Controller.PlaylistManager;
 import Exceptions.keinSongException;
-import controlElements.ControlButtons;
-import controlElements.VolumeAndTime;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.event.EventHandler;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -17,11 +15,13 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -35,17 +35,21 @@ import javafx.scene.shape.Line;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.EventListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainView {
-
+    private boolean listenToScrollbar = false;
     boolean paused = true;
+    boolean listenToProgress = true;
     public Scene buildScene(PlayerGUI gui, MP3Player player) {
 
 
@@ -56,7 +60,9 @@ public class MainView {
 
         //PANES
         Pane song = new VBox();
-        Pane bot = new HBox(8);
+        HBox bot = new HBox();
+
+
         bot.setPadding(new Insets(25, 0, 25, 0));
         ((VBox) song).setAlignment(Pos.CENTER);
         bot.setId("bot");
@@ -67,6 +73,25 @@ public class MainView {
         progress.setMin(0);
         progress.setMax(100);
         progress.setId("progress");
+        /*progress.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->{
+            System.out.println(progress.getValue()/100 * player.getSongLength() - (double) player.getAktZeit());
+            player.skip((int)(progress.getValue()/100 * player.getSongLength() - (double) player.getAktZeit()));
+        });*/
+
+
+
+        progress.addEventHandler(MouseEvent.MOUSE_CLICKED,event -> {
+            changeListenToProgress();
+            listenToScrollbar = true;
+            progress.valueProperty().addListener((observable, oldValue, newValue) -> {
+                if (listenToScrollbar) {
+                    player.skip((int) ((newValue.doubleValue() / 100 * player.getSongLength()) - oldValue.doubleValue() / 100 * player.getSongLength()));
+                    listenToScrollbar = false;
+                }
+
+            });
+            changeListenToProgress();
+        });
 
         //PROGRESSBAR
         ProgressBar pb1 = new ProgressBar(0.0);
@@ -100,19 +125,25 @@ public class MainView {
         //PANE LEFT
         Text title = new Text(("Track" + " ").toUpperCase());
         title.getStyleClass().add("primarytext");
-
         Text interpret = new Text("Arctic Monkeys");
         interpret.getStyleClass().add("secondarytext");
 
+
         HBox songInfo = new HBox(10);
-        songInfo.setMaxWidth(20);
-        songInfo.setPrefWidth(20);
-        songInfo.setMinWidth(20);
-        songInfo.getChildren().addAll(title, interpret);
+
+        songInfo.setMaxWidth(bot.getWidth() / 4);
+        songInfo.setMinWidth(bot.getWidth() / 4);
+        songInfo.setPrefWidth(bot.getWidth() / 4);
+        //songInfo.setMaxWidth(bot.getWidth() / 3);
+       /* songInfo.setPrefWidth(bot.getWidth() / 3);
+        songInfo.setMinWidth(bot.getWidth() / 3);
+        */
+        songInfo.getStyleClass().add("songInfo");
+        songInfo.getChildren().addAll(interpret, title);
         songInfo.setAlignment(Pos.CENTER_LEFT);
         songInfo.setPadding(new Insets(0, 100, 0, 45));
-
-
+        songInfo.setBackground(new Background(new BackgroundFill(new Color(0,0,0,1), CornerRadii.EMPTY, Insets.EMPTY)));
+        //HBox.setHgrow(songInfo, Priority.ALWAYS);
         //VolumeAndTime
 
         HBox volumeAndTime = new HBox();
@@ -167,40 +198,48 @@ public class MainView {
 
         Text songLength = new Text();
         songLength.setText(zeitanzeige.format(player.getSongLength()));
-        long endTime = player.getSongLength();
+
 
         final Timeline timeline = new Timeline(
                 new KeyFrame(
-                        Duration.millis( 500 ),
+                        Duration.millis( 50 ),
                         event -> {
 
+                            if (listenToProgress) {
+                                if (player.getAktZeit() == 0) {
 
-                            if ( player.getAktZeit() == 0 ) {
-
-                                time.setText( zeitanzeige.format( 0 ) );
-                            } else if (player.getAktZeit() == endTime){
-                                try {
-                                    player.next();
-                                    title.setText(player.getTrack());
-                                    interpret.setText(player.getSongArtist());
-                                    songLength.setText(zeitanzeige.format(player.getSongLength()));
-                                } catch (keinSongException e) {
-                                    e.printStackTrace();
+                                    time.setText(zeitanzeige.format(0) + "/" + zeitanzeige.format(player.getSongLength()));
+                                } else {
+                                    time.setText(zeitanzeige.format(player.getAktZeit()) + "/" + zeitanzeige.format(player.getSongLength()));
+                                    progress.setValue(((double) player.getAktZeit() / (double) player.getSongLength()) * 100);
                                 }
-                            } else {
-                                time.setText( zeitanzeige.format( player.getAktZeit() ) );
                             }
                         }
                 )
         );
         timeline.setCycleCount( Animation.INDEFINITE );
         timeline.play();
-
-
-
         volumeAndTime.getChildren().addAll(mute, volumePane, time);
-        volumeAndTime.setAlignment(Pos.CENTER);
+        volumeAndTime.setAlignment(Pos.CENTER_RIGHT);
         volumeAndTime.setPadding(new Insets(0, 45, 0, 0));
+        volumeAndTime.setMaxWidth(bot.getWidth() / 4);
+        volumeAndTime.setMinWidth(bot.getWidth() / 4);
+        volumeAndTime.setPrefWidth(bot.getWidth() / 4);
+        volumeAndTime.setBackground(new Background(new BackgroundFill(new Color(0, 0, 0, 1), CornerRadii.EMPTY, Insets.EMPTY)));
+
+
+        bot.widthProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                volumeAndTime.setMaxWidth(bot.getWidth() / 4);
+                volumeAndTime.setMinWidth(bot.getWidth() / 4);
+                volumeAndTime.setPrefWidth(bot.getWidth() / 4);
+                songInfo.setMaxWidth(bot.getWidth() / 4);
+                songInfo.setMinWidth(bot.getWidth() / 4);
+                songInfo.setPrefWidth(bot.getWidth() / 4);
+            }
+        });
+
 
         //ControlButtons
 
@@ -213,13 +252,12 @@ public class MainView {
 
             try {
                 if (player.isInitialized()) {
-                    if (!player.isPlaying()) {
+                    if (!player.isPlayerActive()) {
                         player.play();
                         play.setStyle("-fx-shape: \"" + getPathFromSVG("pause") + "\";");
 
                         title.setText(player.getTrack());
                         interpret.setText(player.getSongArtist());
-                        time.setText(zeitanzeige.format(player.getSongLength()));
                     } else {
                         player.pause();
                         play.setStyle("-fx-shape: \"" + getPathFromSVG("play") + "\";");
@@ -229,7 +267,6 @@ public class MainView {
                     play.setStyle("-fx-shape: \"" + getPathFromSVG("pause") + "\";");
                     title.setText(player.getTrack());
                     interpret.setText(player.getSongArtist());
-                    time.setText(zeitanzeige.format(player.getSongLength()));
                 }
 
             } catch (keinSongException e) {
@@ -243,7 +280,12 @@ public class MainView {
         previous.setStyle("-fx-shape: \"" + getPathFromSVG("previous") + "\";");
         previous.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             try{
-                player.previous();
+
+
+                    player.previous();
+                    play.setStyle("-fx-shape: \"" + getPathFromSVG("pause") + "\";");
+
+
                 title.setText(player.getTrack());
                 interpret.setText(player.getSongArtist());
                 time.setText(zeitanzeige.format(player.getSongLength()));
@@ -257,7 +299,13 @@ public class MainView {
         next.setStyle("-fx-shape: \"" + getPathFromSVG("next") + "\";");
         next.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             try {
-                player.next();
+
+
+                    player.next();
+                    play.setStyle("-fx-shape: \"" + getPathFromSVG("pause") + "\";");
+
+
+
                 title.setText(player.getTrack());
                 interpret.setText(player.getSongArtist());
                 time.setText(zeitanzeige.format(player.getSongLength()));
@@ -297,6 +345,8 @@ public class MainView {
 
 
         bot.getChildren().addAll(songInfo, region2, controlButtons, region, volumeAndTime);
+        bot.setMinHeight(105);
+
         song.getChildren().addAll(progressPane, bot);
         ((VBox) song).setAlignment(Pos.BOTTOM_LEFT);
         StackPane test = new StackPane();
@@ -311,7 +361,9 @@ public class MainView {
         return x;
     }
 
-
+    private void changeListenToProgress() {
+        listenToProgress = !listenToProgress;
+    }
 
 
     private String getFirstSongFromPlaylist(String x) {

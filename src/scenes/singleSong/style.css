@@ -76,6 +76,11 @@
 
 }
 
+.songInfo{
+    -overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+}
 
 .mute-button{
     -icon-paint: white;
@@ -93,7 +98,7 @@
 .icon-button {
      -icon-paint: white;
      -fx-background-color: -icon-paint;
-     -size: 10, 14;
+     -size: 14, 18;
      -fx-min-height: -size;
      -fx-min-width: -size;
      -fx-max-height: -size;
@@ -102,12 +107,13 @@
 
  .icon-button:hover {
      -icon-paint: -fx-primarycolor;
+     -size: 16, 20;
  }
 
 .play-button {
     -icon-paint: white;
     -fx-background-color: -icon-paint;
-    -size: 40;
+    -size: 45;
     -fx-min-height: -size;
     -fx-min-width: -size;
     -fx-max-height: -size;
@@ -116,6 +122,7 @@
 
 .play-button:hover {
     -icon-paint: -fx-primarycolor;
+    -size: 47;
 }
 
 .basictxt{
