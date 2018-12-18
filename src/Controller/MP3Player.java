@@ -16,7 +16,7 @@ public class MP3Player {
 	private SimpleMinim minim;
 	private SimpleAudioPlayer audioPlayer;
 
-	private boolean autoNext = true, shuffle=false;
+	private boolean autoNext = true, shuffle=false, repeat = false, repeatSong;
 
 	private Playlist aktPlaylist;
 	private Track aktSong;
@@ -28,6 +28,16 @@ public class MP3Player {
 
     public boolean isShuffle() {
         return shuffle;
+    }
+    public void changeRepeat(){repeat = !repeat;}
+    public void changeRepeatSong(){repeatSong = !repeatSong;}
+
+    public boolean isRepeat() {
+        return repeat;
+    }
+
+    public boolean isRepeatSong() {
+        return repeatSong;
     }
 
     private void autoNextOff(){autoNext = false;}
@@ -203,7 +213,11 @@ public class MP3Player {
 	public void skip(int mseconds){
         if(isInitialized()) {
 
+            autoNextOff();
             playThread.skip(mseconds);
+
+
+
 
         }
     }
@@ -317,6 +331,7 @@ public class MP3Player {
             public void skip(int millis){
 
             audioPlayer.skip(millis);
+            autoNextOn();
             }
 
 

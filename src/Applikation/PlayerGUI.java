@@ -40,7 +40,7 @@ public class PlayerGUI extends Application {
         BorderPane root = new BorderPane();
 
         primaryStage.setTitle("Coolste Gruppe");
-        primaryStage.setScene(szenen.get("04"));
+        primaryStage.setScene(szenen.get("03"));
 
         primaryStage.show();
 
@@ -58,7 +58,7 @@ public class PlayerGUI extends Application {
     public void switchScene(PlayerGUI gui, String code){
 
         switch (code){
-            case "01":
+            case "04":
                 main.setScene(new scenes.singleSong.MainView().buildScene(this, player));
                 break;
         }

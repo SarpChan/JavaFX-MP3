@@ -128,17 +128,9 @@ public class MainView {
 
 
                 if (player.isPlayerActive()) {
-                    try {
-                        player.pause();
-                    } catch (keinSongException e) {
-                        e.printStackTrace();
-                    }
+
                     player.skip((int) (((newValue.doubleValue() / 100 * player.getSongLength()) - oldValue.doubleValue() / 100 * player.getSongLength()) - countMillis));
-                    try {
-                        player.play();
-                    } catch (keinSongException e) {
-                        e.printStackTrace();
-                    }
+
                 } else {
                     player.skip((int) ((newValue.doubleValue() / 100 * player.getSongLength()) - oldValue.doubleValue() / 100 * player.getSongLength()));
 
