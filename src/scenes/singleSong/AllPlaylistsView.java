@@ -44,8 +44,7 @@ public class AllPlaylistsView extends VBox {
 
         allPlaylists.setBackground(new Background(new BackgroundFill( new Color(0,0,0,0), CornerRadii.EMPTY, Insets.EMPTY)));
         allPlaylists.prefHeightProperty().bind(Bindings.size(list).multiply(LIST_CELL_HEIGHT));
-        allPlaylists.setMaxWidth(200);
-        allPlaylists.setMaxHeight(400);
+
         this.getChildren().addAll(bibliothekenTxt, allPlaylists, playlistsTxt);
         this.setPadding(new Insets(60, 0, 60, 30));
 

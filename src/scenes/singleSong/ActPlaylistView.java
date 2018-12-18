@@ -1,6 +1,5 @@
 package scenes.singleSong;
 
-import Applikation.PlayerGUI;
 import Controller.MP3Player;
 import Controller.Playlist;
 import Controller.PlaylistManager;
@@ -11,6 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -36,14 +36,15 @@ import javafx.scene.layout.VBox;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 
-public class ActPlaylistView extends Pane {
+public class ActPlaylistView extends VBox {
     boolean paused = true;
-    VBox actPlaylist, playlistDataTitle;
-    HBox playlistDataTitleImg, playlistData;
+    VBox dataAndTitle;
+    HBox dataAndTitleAndImg, data;
 
     ObservableList<Playlist> allPlaylists;
     ObservableList<Track> trackList;
 
+    ScrollPane Wrapper = new ScrollPane();
     TableView table;
     TableColumn songTitleCol, interpretCol, albumCol, lengthCol;
 
@@ -51,19 +52,16 @@ public class ActPlaylistView extends Pane {
     ImageView actImg;
 
     public ActPlaylistView(MP3Player player) {
-        actPlaylist = new VBox();
-        playlistDataTitleImg = new HBox();
-        playlistDataTitle = new VBox();
-        playlistData = new HBox();
+        dataAndTitleAndImg = new HBox();
+        dataAndTitle = new VBox();
+        data = new HBox();
 
-        playlistDataTitle.setAlignment(Pos.TOP_LEFT);
-        playlistData.setAlignment(Pos.TOP_LEFT);
-        playlistDataTitleImg.setAlignment(Pos.TOP_LEFT);
-        actPlaylist.setAlignment(Pos.TOP_LEFT);
+        dataAndTitle.setAlignment(Pos.TOP_LEFT);
+        data.setAlignment(Pos.TOP_LEFT);
+        dataAndTitleAndImg.setAlignment(Pos.TOP_LEFT);
 
-        playlistDataTitle.setPadding(new Insets(0, 60, 00, 60));
-        actPlaylist.setPadding(new Insets(60, 60, 60, 60));
-        playlistData.setPadding(new Insets(0, 00, 8, 00));
+        dataAndTitle.setPadding(new Insets(0, 60, 00, 60));
+        data.setPadding(new Insets(0, 00, 8, 00));
 
         trackList = FXCollections.observableArrayList();
         allPlaylists = FXCollections.observableArrayList();
@@ -72,13 +70,15 @@ public class ActPlaylistView extends Pane {
         for (Playlist playlist:  allPlaylists)
         {
             trackList.addAll(playlist.getTracks());
-        }
+            actPlaylistTitle = new Text(playlist.getName());
+            actPlaylistLength = new Text(String.valueOf(playlist.getPlaytime()));
+            actTrackAmmount = new Text(String.valueOf(playlist.getNumberTracks()) + (" Tracks - "));
 
+        }
 
         //TABELLE
         table = new TableView();
         table.setEditable(true);
-        table.setMaxWidth(1000);
         table.setPadding(new Insets(30, 0, 0, 0));
 
         songTitleCol = new TableColumn(("Titel").toUpperCase());
@@ -87,17 +87,15 @@ public class ActPlaylistView extends Pane {
         lengthCol = new TableColumn(("Länge").toUpperCase());
 
         songTitleCol.setCellValueFactory(new PropertyValueFactory<Track, String>("TITLE"));
-        songTitleCol.setMinWidth(50);
-        songTitleCol.setPrefWidth(350);
         interpretCol.setCellValueFactory(new PropertyValueFactory<Track, String>("ARTIST"));
-        interpretCol.setMinWidth(50);
-        interpretCol.setPrefWidth(120);
         albumCol.setCellValueFactory(new PropertyValueFactory<Track, String>("ALBUM"));
-        albumCol.setMinWidth(50);
-        albumCol.setPrefWidth(120);
         lengthCol.setCellValueFactory(new PropertyValueFactory<Track, String>("LENGTH"));
-        lengthCol.setMinWidth(30);
-        lengthCol.setPrefWidth(50);
+
+        songTitleCol.prefWidthProperty().bind(table.widthProperty().multiply(0.4));
+        interpretCol.prefWidthProperty().bind(table.widthProperty().multiply(0.2));
+        albumCol.prefWidthProperty().bind(table.widthProperty().multiply(0.2));
+
+
 
         table.setItems(trackList);
         table.getColumns().addAll(songTitleCol, interpretCol, albumCol, lengthCol);
@@ -105,29 +103,24 @@ public class ActPlaylistView extends Pane {
 
         //PLAYLIST DATA
         status = new Text(("Playlist / ").toUpperCase());
-        actPlaylistTitle = new Text(("Playlist Titel").toUpperCase());
-        actPlaylistLength = new Text(("1h 15m"));
-        actTrackAmmount = new Text(("15 Tracks - "));
-
         status.getStyleClass().add("basictxt");
         actTrackAmmount.getStyleClass().add("basictxt");
         actPlaylistLength.getStyleClass().add("basictxt");
         actPlaylistTitle.getStyleClass().add("playlistHeadline");
 
-        playlistData.getChildren().addAll(status, actTrackAmmount, actPlaylistLength);
-        playlistDataTitle.getChildren().addAll(playlistData, actPlaylistTitle);
+        data.getChildren().addAll(status, actTrackAmmount, actPlaylistLength);
+        dataAndTitle.getChildren().addAll(data, actPlaylistTitle);
 
         //ALL PLAYLIST INFO
         actImg = new ImageView();
         actImg.setImage(player.getAlbumImage());
         actImg.setFitWidth(150);
         actImg.setFitHeight(150);
-        playlistDataTitleImg.getChildren().addAll(actImg, playlistDataTitle);
+        dataAndTitleAndImg.getChildren().addAll(actImg, dataAndTitle);
 
-        //PLAYING PLAYLIST
-        actPlaylist.getChildren().addAll(playlistDataTitleImg, table);
-
-        this.getChildren().addAll(actPlaylist);
+        this.setAlignment(Pos.CENTER_RIGHT);
+        this.setPadding(new Insets(60, 30, 60, 30));
+        this.getChildren().addAll(dataAndTitleAndImg, table);
         this.getStylesheets().add(getClass().
                 getResource("style.css").toExternalForm());
         this.getStylesheets().add(getClass().
