@@ -19,11 +19,15 @@
         -fx-background-insets: 1 0 -1 0, 0, 1;
         -fx-background-radius: 2.5, 2.5, 1.5;
         -fx-padding: 0.208333em;
+        -fx-pref-height:20;
 }
 
 #progress .thumb{
      -fx-background-color:none;
+     -fx-pref-width:2;
+     -fx-pref-height:10
 }
+
 
 #progress:hover .thumb{
      -fx-background-color:#74CCDB;

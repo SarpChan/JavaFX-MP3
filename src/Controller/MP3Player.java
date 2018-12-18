@@ -203,7 +203,6 @@ public class MP3Player {
 	public void skip(int mseconds){
         if(isInitialized()) {
 
-
             playThread.skip(mseconds);
 
         }
@@ -316,6 +315,7 @@ public class MP3Player {
             }
 
             public void skip(int millis){
+
             audioPlayer.skip(millis);
             }
 

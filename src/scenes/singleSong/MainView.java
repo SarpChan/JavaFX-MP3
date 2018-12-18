@@ -32,6 +32,7 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.shape.Line;
 
 
+import javax.swing.text.Style;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -48,10 +49,10 @@ import java.util.List;
 
 public class MainView {
     private boolean listenToScrollbar = false;
-    boolean paused = true;
-    boolean listenToProgress = true;
+    private boolean paused = true;
+    private boolean listenToProgress = true;
+    private long countMillis = 0, firstMillis, enteredPosition;
     public Scene buildScene(PlayerGUI gui, MP3Player player) {
-
 
 
         BorderPane root = new BorderPane();
@@ -73,32 +74,90 @@ public class MainView {
         progress.setMin(0);
         progress.setMax(100);
         progress.setId("progress");
+
+        DateFormat zeitanzeige = new SimpleDateFormat("mm:ss");
+        Text time = new Text();
+        time.getStyleClass().add("secondarytext");
+
+        Text songLength = new Text();
+        songLength.setText(zeitanzeige.format(player.getSongLength()));
+
+        KeyFrame watchTimeLine = new KeyFrame(
+                Duration.millis(50),
+                event -> {
+
+
+                    if (player.getAktZeit() == 0) {
+
+                        time.setText(zeitanzeige.format(0) + "/" + zeitanzeige.format(player.getSongLength()));
+                    } else {
+                        time.setText(zeitanzeige.format(player.getAktZeit()) + "/" + zeitanzeige.format(player.getSongLength()));
+                        if (listenToProgress) {
+                            progress.setValue(((double) player.getAktZeit() / (double) player.getSongLength()) * 100);
+                        }
+                    }
+
+                }
+        );
+
+
+
+        final Timeline timeline = new Timeline(watchTimeLine);
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+
         /*progress.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->{
             System.out.println(progress.getValue()/100 * player.getSongLength() - (double) player.getAktZeit());
             player.skip((int)(progress.getValue()/100 * player.getSongLength() - (double) player.getAktZeit()));
         });*/
 
 
-
-        progress.addEventHandler(MouseEvent.MOUSE_CLICKED,event -> {
-            changeListenToProgress();
+        progress.addEventHandler(MouseEvent.MOUSE_ENTERED_TARGET, event -> {
+            changeListenToProgressFalse();
+            countMillis = 0;
+            firstMillis = System.currentTimeMillis();
             listenToScrollbar = true;
-            progress.valueProperty().addListener((observable, oldValue, newValue) -> {
-                if (listenToScrollbar) {
-                    player.skip((int) ((newValue.doubleValue() / 100 * player.getSongLength()) - oldValue.doubleValue() / 100 * player.getSongLength()));
-                    listenToScrollbar = false;
-                }
+            enteredPosition = player.getAktZeit();
+            timeline.pause();
+        });
 
-            });
-            changeListenToProgress();
+
+        progress.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (listenToScrollbar) {
+                countMillis = System.currentTimeMillis() - firstMillis;
+
+
+                if (player.isPlayerActive()) {
+                    try {
+                        player.pause();
+                    } catch (keinSongException e) {
+                        e.printStackTrace();
+                    }
+                    player.skip((int) (((newValue.doubleValue() / 100 * player.getSongLength()) - oldValue.doubleValue() / 100 * player.getSongLength()) - countMillis));
+                    try {
+                        player.play();
+                    } catch (keinSongException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    player.skip((int) ((newValue.doubleValue() / 100 * player.getSongLength()) - oldValue.doubleValue() / 100 * player.getSongLength()));
+
+                }
+                listenToScrollbar = false;
+            }
+        });
+
+
+
+        progress.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET, event -> {
+            changeListenToProgressTrue();
+            timeline.play();
         });
 
         //PROGRESSBAR
         ProgressBar pb1 = new ProgressBar(0.0);
         pb1.minWidth(0);
         pb1.setId("pb1");
-
-
 
         Line line = new Line();
         line.setStartX(0);
@@ -108,19 +167,6 @@ public class MainView {
         progress.boundsInLocalProperty().addListener((observable, oldvar, newvar) -> {
             calculatePB(progress, pb1);
         });
-        progress.valueProperty().addListener((observable, oldvar, newvar) -> {
-            calculatePB(progress, pb1);
-        });
-
-        StackPane progressPane = new StackPane();
-        progressPane.getChildren().addAll( line, pb1, progress);
-        progressPane.setAlignment(Pos.CENTER_LEFT);
-        progressPane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-        progressPane.setMinSize(Double.MIN_VALUE, Double.MIN_VALUE);
-
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         //PANE LEFT
         Text title = new Text(("Track" + " ").toUpperCase());
@@ -128,22 +174,37 @@ public class MainView {
         Text interpret = new Text("Arctic Monkeys");
         interpret.getStyleClass().add("secondarytext");
 
+        progress.valueProperty().addListener((observable, oldvar, newvar) -> {
+            if(newvar.intValue() == 0){
+                title.setText(player.getTrack());
+                interpret.setText(player.getSongArtist());
+            }
+            calculatePB(progress, pb1);
+        });
+
+        StackPane progressPane = new StackPane();
+        progressPane.getChildren().addAll(line, pb1, progress);
+        progressPane.setAlignment(Pos.CENTER_LEFT);
+        progressPane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        progressPane.setMinSize(Double.MIN_VALUE, Double.MIN_VALUE);
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
 
         HBox songInfo = new HBox(10);
 
         songInfo.setMaxWidth(bot.getWidth() / 4);
         songInfo.setMinWidth(bot.getWidth() / 4);
         songInfo.setPrefWidth(bot.getWidth() / 4);
-        //songInfo.setMaxWidth(bot.getWidth() / 3);
-       /* songInfo.setPrefWidth(bot.getWidth() / 3);
-        songInfo.setMinWidth(bot.getWidth() / 3);
-        */
+
         songInfo.getStyleClass().add("songInfo");
         songInfo.getChildren().addAll(interpret, title);
         songInfo.setAlignment(Pos.CENTER_LEFT);
         songInfo.setPadding(new Insets(0, 100, 0, 45));
-        songInfo.setBackground(new Background(new BackgroundFill(new Color(0,0,0,1), CornerRadii.EMPTY, Insets.EMPTY)));
-        //HBox.setHgrow(songInfo, Priority.ALWAYS);
+        //songInfo.setBackground(new Background(new BackgroundFill(new Color(0, 0, 0, 1), CornerRadii.EMPTY, Insets.EMPTY)));
         //VolumeAndTime
 
         HBox volumeAndTime = new HBox();
@@ -154,6 +215,7 @@ public class MainView {
 
         Slider volume = new Slider();
         volume.setId("volume");
+        volume.getStyleClass().add("pb2");
         volume.setMin(0);
         volume.setMax(100);
         volume.setValue(50);
@@ -170,13 +232,13 @@ public class MainView {
         Button mute = new Button();
         mute.getStyleClass().add("mute-button");
         mute.setStyle("-fx-shape: \"" + getPathFromSVG("mute") + "\";");
-        mute.setAlignment(Pos.BASELINE_LEFT);
+        //mute.setAlignment(Pos.BASELINE_LEFT);
         //mute.setOnAction(muteButtonOnAction(volume));
         mute.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            if(volume.getValue()!= volume.getMin())
+            if (volume.getValue() != volume.getMin())
                 volume.setValue(volume.getMin());
             else
-                volume.setValue(volume.getMax()/2);
+                volume.setValue(volume.getMax() / 2);
         });
 
         Line line2 = new Line();
@@ -185,58 +247,28 @@ public class MainView {
         line2.getStyleClass().add("progressLine");
 
         StackPane volumePane = new StackPane();
-        volumePane.getChildren().addAll(volume,pb2,line2);
+        volumePane.getChildren().addAll(volume, pb2, line2);
         volumePane.setAlignment(Pos.CENTER_LEFT);
 
 
-
-
-
-        DateFormat zeitanzeige = new SimpleDateFormat("mm:ss");
-        Text time = new Text();
-        time.getStyleClass().add("secondarytext");
-
-        Text songLength = new Text();
-        songLength.setText(zeitanzeige.format(player.getSongLength()));
-
-
-        final Timeline timeline = new Timeline(
-                new KeyFrame(
-                        Duration.millis( 50 ),
-                        event -> {
-
-                            if (listenToProgress) {
-                                if (player.getAktZeit() == 0) {
-
-                                    time.setText(zeitanzeige.format(0) + "/" + zeitanzeige.format(player.getSongLength()));
-                                } else {
-                                    time.setText(zeitanzeige.format(player.getAktZeit()) + "/" + zeitanzeige.format(player.getSongLength()));
-                                    progress.setValue(((double) player.getAktZeit() / (double) player.getSongLength()) * 100);
-                                }
-                            }
-                        }
-                )
-        );
-        timeline.setCycleCount( Animation.INDEFINITE );
-        timeline.play();
         volumeAndTime.getChildren().addAll(mute, volumePane, time);
         volumeAndTime.setAlignment(Pos.CENTER_RIGHT);
         volumeAndTime.setPadding(new Insets(0, 45, 0, 0));
         volumeAndTime.setMaxWidth(bot.getWidth() / 4);
         volumeAndTime.setMinWidth(bot.getWidth() / 4);
         volumeAndTime.setPrefWidth(bot.getWidth() / 4);
-        volumeAndTime.setBackground(new Background(new BackgroundFill(new Color(0, 0, 0, 1), CornerRadii.EMPTY, Insets.EMPTY)));
+        //volumeAndTime.setBackground(new Background(new BackgroundFill(new Color(0, 0, 0, 1), CornerRadii.EMPTY, Insets.EMPTY)));
 
 
         bot.widthProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                volumeAndTime.setMaxWidth(bot.getWidth() / 4);
-                volumeAndTime.setMinWidth(bot.getWidth() / 4);
-                volumeAndTime.setPrefWidth(bot.getWidth() / 4);
-                songInfo.setMaxWidth(bot.getWidth() / 4);
-                songInfo.setMinWidth(bot.getWidth() / 4);
-                songInfo.setPrefWidth(bot.getWidth() / 4);
+                volumeAndTime.setMaxWidth(bot.getWidth() / 3);
+                volumeAndTime.setMinWidth(bot.getWidth() / 3);
+                volumeAndTime.setPrefWidth(bot.getWidth() / 3);
+                songInfo.setMaxWidth(bot.getWidth() / 3);
+                songInfo.setMinWidth(bot.getWidth() / 3);
+                songInfo.setPrefWidth(bot.getWidth() / 3);
             }
         });
 
@@ -279,17 +311,17 @@ public class MainView {
         previous.getStyleClass().add("icon-button");
         previous.setStyle("-fx-shape: \"" + getPathFromSVG("previous") + "\";");
         previous.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            try{
+            try {
 
 
-                    player.previous();
-                    play.setStyle("-fx-shape: \"" + getPathFromSVG("pause") + "\";");
+                player.previous();
+                play.setStyle("-fx-shape: \"" + getPathFromSVG("pause") + "\";");
 
 
                 title.setText(player.getTrack());
                 interpret.setText(player.getSongArtist());
                 time.setText(zeitanzeige.format(player.getSongLength()));
-            } catch( keinSongException e){
+            } catch (keinSongException e) {
 
             }
         });
@@ -301,15 +333,14 @@ public class MainView {
             try {
 
 
-                    player.next();
-                    play.setStyle("-fx-shape: \"" + getPathFromSVG("pause") + "\";");
-
+                player.next();
+                play.setStyle("-fx-shape: \"" + getPathFromSVG("pause") + "\";");
 
 
                 title.setText(player.getTrack());
                 interpret.setText(player.getSongArtist());
                 time.setText(zeitanzeige.format(player.getSongLength()));
-            }  catch (keinSongException e) {
+            } catch (keinSongException e) {
                 e.printStackTrace();
             }
         });
@@ -322,6 +353,7 @@ public class MainView {
         Rectangle progressBackground = new Rectangle();
         progressBackground.setId("progressBackground");
         progressBackground.setHeight(750);
+        root.heightProperty().addListener((observable, oldValue, newValue) -> progressBackground.setHeight(newValue.doubleValue()));
         progressBackground.xProperty().bind(bot.widthProperty());
 
 
@@ -361,10 +393,13 @@ public class MainView {
         return x;
     }
 
-    private void changeListenToProgress() {
-        listenToProgress = !listenToProgress;
+    private void changeListenToProgressTrue() {
+        listenToProgress = true;
     }
 
+    private void changeListenToProgressFalse() {
+        listenToProgress = false;
+    }
 
     private String getFirstSongFromPlaylist(String x) {
         String zeile;
