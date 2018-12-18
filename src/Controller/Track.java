@@ -5,11 +5,13 @@ import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.UnsupportedTagException;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
+import javafx.beans.property.SimpleStringProperty;
 
 
 import javax.imageio.ImageIO;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.Objects;
 
 public class Track {
 
@@ -17,6 +19,8 @@ public class Track {
     private long songlength=0;
     private Mp3File file;
     private Image image = new Image("defaultCover.png");
+
+    private SimpleStringProperty TITLE, ALBUM, ARTIST, LENGTH;
 
     public Track(String path){
 
@@ -33,23 +37,26 @@ public class Track {
             if(file!= null) {
                 if (file.hasId3v2Tag()) {
 
-                    this.title = (file.getId3v2Tag().getTitle() == null) ? "Unknown" : file.getId3v2Tag().getTitle();
-
-                    this.album = (file.getId3v2Tag().getAlbum() == null)? "Unknown album" : file.getId3v2Tag().getAlbum();
-                    this.artist = (file.getId3v2Tag().getArtist()== null)? "Unknown artist" : file.getId3v2Tag().getArtist();
+                    this.title = file.getId3v2Tag().getTitle();
+                    this.TITLE = new SimpleStringProperty(title);
+                    this.album = file.getId3v2Tag().getAlbum();
+                    this.ALBUM = new SimpleStringProperty(album);
+                    this.artist = file.getId3v2Tag().getAlbumArtist();
+                    this.ARTIST = new SimpleStringProperty(artist);
                     if (file.getId3v2Tag().getAlbumImage() != null) {
                         this.image = SwingFXUtils.toFXImage(ImageIO.read(new ByteArrayInputStream(file.getId3v2Tag().getAlbumImage())), null);
                     }
                     this.songlength = file.getLengthInMilliseconds();
-
-
+                    this.LENGTH = new SimpleStringProperty(Objects.toString(songlength));
                 } else if (file.hasId3v1Tag()) {
-                    this.title = (file.getId3v1Tag().getTitle() == null) ? "Unknown" : file.getId3v1Tag().getTitle();
-
-                    this.album = (file.getId3v1Tag().getAlbum() == null)? "Unknown album" : file.getId3v2Tag().getAlbum();
-                    this.artist = (file.getId3v1Tag().getArtist()== null)? "Unknown artist" : file.getId3v1Tag().getArtist();
+                    this.title = file.getId3v1Tag().getTitle();
+                    this.TITLE = new SimpleStringProperty(title);
+                    this.album = file.getId3v1Tag().getAlbum();
+                    this.ALBUM = new SimpleStringProperty(album);
+                    this.artist = file.getId3v1Tag().getArtist();
+                    this.ARTIST = new SimpleStringProperty(artist);
                     this.songlength = file.getLengthInMilliseconds();
-
+                    this.LENGTH = new SimpleStringProperty(Objects.toString(songlength));
                 }
             }
         } catch (IOException e) {
@@ -89,9 +96,21 @@ public class Track {
         return image;
     }
 
-    public String toString(){
-        //return (getTitle() + " " + getArtist() + " " + getAlbum() + " " + getSonglength());
-        return title;
+
+    public String getTITLE() {
+        return TITLE.get();
+    }
+
+    public String getALBUM() {
+        return ALBUM.get();
+    }
+
+    public String getARTIST() {
+        return ARTIST.get();
+    }
+
+    public String getLENGTH() {
+        return LENGTH.get();
     }
 
 }

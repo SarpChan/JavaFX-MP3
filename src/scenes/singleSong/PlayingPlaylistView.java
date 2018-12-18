@@ -47,6 +47,7 @@ import java.text.SimpleDateFormat;
 
 import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 
 
@@ -55,23 +56,6 @@ public class PlayingPlaylistView {
 
     public Scene buildScene(PlayerGUI gui, MP3Player player) {
         VBox playingPlaylist = new VBox();
-
-
-        TableView table = new TableView();
-        table.setEditable(true);
-        TableColumn songTitleCol = new TableColumn("Titel");
-        TableColumn interpretCol = new TableColumn("Interpret");
-        TableColumn albumCol = new TableColumn("Album");
-        TableColumn lengthCol = new TableColumn("Länge");
-
-       // songTitleCol.setCellValueFactory(
-         //       new PropertyValueFactory<Track, String>("Title"));
-
-        table.getColumns().addAll(songTitleCol, interpretCol, albumCol, lengthCol);
-
-
-
-        ScrollPane holdsList = new ScrollPane();
         HBox allPlaylistInfo = new HBox();
         VBox playlistDataWithTitle = new VBox();
         HBox playlistData = new HBox();
@@ -84,6 +68,37 @@ public class PlayingPlaylistView {
         playlistDataWithTitle.setPadding(new Insets(0, 60, 00, 60));
         playingPlaylist.setPadding(new Insets(60, 60, 60, 60));
         playlistData.setPadding(new Insets(0, 00, 8, 00));
+
+
+        //PLAYLISTEN UND TRACKS
+        ObservableList<Track> trackList = FXCollections.observableArrayList();
+        ListView <Playlist> playlisten = new ListView<>();
+        ObservableList<Playlist> list = FXCollections.observableArrayList();
+        list.addAll(PlaylistManager.getAllPlaylists());
+
+
+
+
+        //TABELLE
+        TableView table = new TableView();
+        table.setEditable(true);
+
+        TableColumn songTitleCol = new TableColumn(("Titel").toUpperCase());
+        TableColumn interpretCol = new TableColumn(("Interpret").toUpperCase());
+        TableColumn albumCol = new TableColumn(("Album").toUpperCase());
+        TableColumn lengthCol = new TableColumn(("Länge").toUpperCase());
+
+        songTitleCol.setCellValueFactory(new PropertyValueFactory<Track, String>("TITLE"));
+        songTitleCol.setPrefWidth(100);
+        interpretCol.setCellValueFactory(new PropertyValueFactory<Track, String>("ARTIST"));
+        interpretCol.setPrefWidth(100);
+        albumCol.setCellValueFactory(new PropertyValueFactory<Track, String>("ALBUM"));
+        albumCol.setPrefWidth(100);
+        lengthCol.setCellValueFactory(new PropertyValueFactory<Track, String>("LENGTH"));
+        lengthCol.setPrefWidth(100);
+
+        table.setItems(trackList);
+        table.getColumns().addAll(songTitleCol, interpretCol, albumCol, lengthCol);
 
         //PLAYLIST DATA
         Text status = new Text(("Playlist / ").toUpperCase());
@@ -115,7 +130,6 @@ public class PlayingPlaylistView {
         playingPlaylist.getChildren().addAll(allPlaylistInfo, table);
 
 
-
         VBox playlistFrame = new VBox();
         playlistFrame.setPadding(new Insets(60, 0, 60, 30));
 
@@ -127,26 +141,11 @@ public class PlayingPlaylistView {
         bibliothekenTxt.getStyleClass().add("headline");
         playlistsTxt.getStyleClass().add("headline");
 
-        ListView <Playlist> playlisten = new ListView<>();
-        ObservableList<Playlist> list = FXCollections.observableArrayList();
-        list.addAll(PlaylistManager.getAllPlaylists());
-
-        ListView<Track> allTracks = new ListView<>();
-        ObservableList<Track> trackList = FXCollections.observableArrayList();
-        holdsList.setId("actList");
 
         for (Playlist playlist: list)
         {
             playlisten.getItems().add(playlist);
             trackList.addAll(playlist.getTracks());
-
-            for (Track track: trackList
-            ) {
-
-                allTracks.getItems().addAll(track);
-
-            }
-            holdsList.setContent(allTracks);
 
         }
 
@@ -156,9 +155,6 @@ public class PlayingPlaylistView {
         playlisten.setBackground(new Background(new BackgroundFill( new Color(0,0,0,0), CornerRadii.EMPTY, Insets.EMPTY)));
         playlisten.prefHeightProperty().bind(Bindings.size(list).multiply(LIST_CELL_HEIGHT));
         playlisten.setMaxWidth(200);
-
-        allTracks.setBackground(new Background(new BackgroundFill( new Color(0,0,0,0), CornerRadii.EMPTY, Insets.EMPTY)));
-
         playlistFrame.getChildren().addAll(bibliothekenTxt, playlisten, playlistsTxt);
 
 
