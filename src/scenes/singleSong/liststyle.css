@@ -21,15 +21,6 @@
  }
 
 
-.scroll-pane > .viewport {
-   -fx-background-color: transparent;
-}
-
-.scroll-pane {
-   -fx-background-color: transparent;
-}
-
-
 .table-view .column-header-background, .table-view .filler, .table-view .column-header{
     -fx-background-color: transparent;
 
@@ -69,3 +60,60 @@
  -fx-fill: #74CCDB;
 }
 
+
+
+.allPlaylists .scroll-bar:horizontal , .allPlaylists  .scroll-bar:vertical, .allPlaylists .scroll-bar:horizontal .track, .allPlaylists .scroll-bar:vertical .track, .allPlaylists .scroll-bar:horizontal .thumb, .allPlaylists .scroll-bar:vertical .thumb, .allPlaylists .scroll-bar .filler {
+    -fx-background-color:transparent;
+    -fx-background-color: rgba(0, 0, 0, 0);
+    	-fx-background-insets: 0, 0, 0;
+    	-fx-background-radius: 0em;
+    	 -fx-background-radius: 0em;
+    	 -fx-border-color:rgba(0, 0, 0, 0);
+    	 -fx-opacity:0;
+    	 -fx-padding:0;
+    	 -fx-shape: " ";
+
+}
+
+.table .scroll-bar:horizontal , .table .scroll-bar:vertical, .table .scroll-bar:horizontal .track, .table .scroll-bar:vertical .track, .table .scroll-bar:horizontal .thumb, .table .scroll-bar:vertical .thumb, .table .scroll-bar .corner {
+    -fx-background-color:transparent;
+    -fx-background-color: rgba(0, 0, 0, 0);
+    	-fx-background-insets: 0, 0, 0;
+    	-fx-background-radius: 0em;
+    	 -fx-background-radius: 0em;
+    	 -fx-border-color:rgba(0, 0, 0, 0);
+    	 -fx-opacity:0;
+    	 -fx-padding:0;
+    	 -fx-shape: " ";
+
+}
+
+
+.wrapper .scroll-bar:horizontal , .wrapper .scroll-bar:vertical, .wrapper .scroll-bar:horizontal .track, .wrapper .scroll-bar:vertical .track, .wrapper .scroll-bar:horizontal .thumb, .wrapper .scroll-bar:vertical .thumb, .wrapper .scroll-bar .corner {
+    -fx-background-color:transparent;
+    -fx-background-color: rgba(0, 0, 0, 0);
+    	-fx-background-insets: 0, 0, 0;
+    	-fx-background-radius: 0em;
+    	 -fx-background-radius: 0em;
+    	 -fx-border-color:rgba(0, 0, 0, 0);
+    	 -fx-opacity:0;
+    	 -fx-padding:0;
+    	 -fx-shape: " ";
+
+}
+
+
+
+.scroll-pane > .viewport {
+   -fx-background-color: transparent;
+}
+
+.scroll-pane {
+   -fx-background-color: transparent;
+}
+
+.scrollbar .scroll-bar:vertical .track{
+ -fx-background-color:transparent;
+    -fx-background-color: rgba(0, 0, 0, 0);
+ -fx-opacity:0;
+}

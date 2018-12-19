@@ -4,6 +4,7 @@ import Controller.MP3Player;
 import Controller.Playlist;
 import Controller.PlaylistManager;
 import Controller.Track;
+import scenes.singleSong.*;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,6 +13,7 @@ import javafx.geometry.Pos;
 
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
@@ -36,32 +38,37 @@ import javafx.scene.layout.VBox;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 
-public class ActPlaylistView extends VBox {
+import javafx.scene.control.Labeled;
+import javafx.scene.control.Label;
+
+
+
+
+public class ActPlaylistView extends ScrollPane {
     boolean paused = true;
-    VBox dataAndTitle;
+    static VBox dataAndTitle, all;
     HBox dataAndTitleAndImg, data;
 
     ObservableList<Playlist> allPlaylists;
     ObservableList<Track> trackList;
 
-    ScrollPane Wrapper = new ScrollPane();
     TableView table;
     TableColumn songTitleCol, interpretCol, albumCol, lengthCol;
 
-    Text status, actPlaylistTitle, actPlaylistLength, actTrackAmmount;
+    static Text status, actPlaylistTitle, actPlaylistLength, actTrackAmmount;
     ImageView actImg;
 
     public ActPlaylistView(MP3Player player) {
         dataAndTitleAndImg = new HBox();
         dataAndTitle = new VBox();
         data = new HBox();
+        all = new VBox();
 
         dataAndTitle.setAlignment(Pos.TOP_LEFT);
         data.setAlignment(Pos.TOP_LEFT);
         dataAndTitleAndImg.setAlignment(Pos.TOP_LEFT);
-
-        dataAndTitle.setPadding(new Insets(0, 60, 00, 60));
         data.setPadding(new Insets(0, 00, 8, 00));
+        dataAndTitle.setPadding(new Insets(0,30,0,30));
 
         trackList = FXCollections.observableArrayList();
         allPlaylists = FXCollections.observableArrayList();
@@ -80,6 +87,7 @@ public class ActPlaylistView extends VBox {
         table = new TableView();
         table.setEditable(true);
         table.setPadding(new Insets(30, 0, 0, 0));
+        table.getStyleClass().add("table");
 
         songTitleCol = new TableColumn(("Titel").toUpperCase());
         interpretCol = new TableColumn(("Interpret").toUpperCase());
@@ -91,11 +99,10 @@ public class ActPlaylistView extends VBox {
         albumCol.setCellValueFactory(new PropertyValueFactory<Track, String>("ALBUM"));
         lengthCol.setCellValueFactory(new PropertyValueFactory<Track, String>("LENGTH"));
 
-        songTitleCol.prefWidthProperty().bind(table.widthProperty().multiply(0.4));
-        interpretCol.prefWidthProperty().bind(table.widthProperty().multiply(0.2));
-        albumCol.prefWidthProperty().bind(table.widthProperty().multiply(0.2));
-
-
+        //songTitleCol.prefWidthProperty().bind(table.widthProperty().multiply(0.5));
+        //interpretCol.prefWidthProperty().bind(table.widthProperty().multiply(0.2));
+        //albumCol.prefWidthProperty().bind(table.widthProperty().multiply(0.2));
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         table.setItems(trackList);
         table.getColumns().addAll(songTitleCol, interpretCol, albumCol, lengthCol);
@@ -118,13 +125,18 @@ public class ActPlaylistView extends VBox {
         actImg.setFitHeight(150);
         dataAndTitleAndImg.getChildren().addAll(actImg, dataAndTitle);
 
-        this.setAlignment(Pos.CENTER_RIGHT);
-        this.setPadding(new Insets(60, 30, 60, 30));
-        this.getChildren().addAll(dataAndTitleAndImg, table);
+
+        all.getChildren().addAll(dataAndTitleAndImg, table);
+        this.setPadding(new Insets(30, 00, 30, 00));
+        this.setContent(all);
+        this.setHbarPolicy(ScrollBarPolicy.NEVER);
+        this.getStyleClass().add("scrollbar");
         this.getStylesheets().add(getClass().
                 getResource("style.css").toExternalForm());
         this.getStylesheets().add(getClass().
                 getResource("liststyle.css").toExternalForm());
+
+
 
     }
 
@@ -169,6 +181,9 @@ public class ActPlaylistView extends VBox {
         paused = !paused;
     }
 
+    public static void calcDataWidth(double x){
+        actPlaylistTitle.setWrappingWidth((x-80)*0.45);
 
+    }
 
 }
