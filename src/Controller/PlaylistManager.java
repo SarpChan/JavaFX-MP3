@@ -18,7 +18,7 @@ public class PlaylistManager {
 
 	private static ArrayList<Playlist> playlistArrayList = new ArrayList<>();
 	
-	public ArrayList<String> getPlaylist(String nameOfPlaylist){
+	public ArrayList<String> getPlaylists(String nameOfPlaylist){
 		
 		
 		ArrayList<String> playlist = new ArrayList<String>();
@@ -44,6 +44,10 @@ public class PlaylistManager {
 		
 		return playlist;
 		
+	}
+	public static Playlist getPlaylist(String nameOfPlaylist){
+		int temp = playlistArrayList.indexOf(nameOfPlaylist);
+		return playlistArrayList.get(0);
 	}
 	
 	public static void savePlaylist(ArrayList<String> playlist, String name) throws IOException {

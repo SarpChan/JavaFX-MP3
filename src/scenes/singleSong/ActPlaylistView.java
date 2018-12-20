@@ -5,21 +5,20 @@ import Controller.MP3Player;
 import Controller.Playlist;
 import Controller.PlaylistManager;
 import Controller.Track;
-import scenes.singleSong.*;
+import javafx.scene.control.*;
+import javafx.scene.paint.Color;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 
 
+import javafx.util.Callback;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -34,15 +33,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 
-import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
-import javafx.scene.control.cell.PropertyValueFactory;
-
-
-import javafx.scene.control.Labeled;
-import javafx.scene.control.Label;
-
-
 
 
 public class ActPlaylistView extends ScrollPane {
@@ -87,28 +78,24 @@ public class ActPlaylistView extends ScrollPane {
 
 
         //TABELLE
-        table = new TableView();
-        table.setEditable(true);
-        table.setPadding(new Insets(30, 0, 0, 0));
-        table.getStyleClass().add("table");
 
-        songTitleCol = new TableColumn(("Titel").toUpperCase());
-        interpretCol = new TableColumn(("Interpret").toUpperCase());
-        albumCol = new TableColumn(("Album").toUpperCase());
-        lengthCol = new TableColumn(("Länge").toUpperCase());
+        ListView <Track> trackListView = new ListView<>();
 
-        songTitleCol.setCellValueFactory(new PropertyValueFactory<Track, String>("TITLE"));
-        interpretCol.setCellValueFactory(new PropertyValueFactory<Track, String>("ARTIST"));
-        albumCol.setCellValueFactory(new PropertyValueFactory<Track, String>("ALBUM"));
-        lengthCol.setCellValueFactory(new PropertyValueFactory<Track, String>("LENGTH"));
+    trackListView.getStyleClass().add("table");
 
-        //songTitleCol.prefWidthProperty().bind(table.widthProperty().multiply(0.5));
-        //interpretCol.prefWidthProperty().bind(table.widthProperty().multiply(0.2));
-        //albumCol.prefWidthProperty().bind(table.widthProperty().multiply(0.2));
-        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        table.setItems(trackList);
-        table.getColumns().addAll(songTitleCol, interpretCol, albumCol, lengthCol);
+
+
+        trackListView.setCellFactory(param -> {
+            // TODO Auto-generated method stub
+            return new TrackCell();
+        });
+        ObservableList<Track> list = FXCollections.observableArrayList();
+        list.addAll(PlaylistManager.getPlaylist("default").getTracks());
+        trackListView.setItems(list);
+        trackListView.setBackground(new Background(new BackgroundFill(new Color(0.2, 0.2, 0.2, 1.0), CornerRadii.EMPTY, Insets.EMPTY)));
+
+
 
 
         //PLAYLIST DATA
@@ -129,15 +116,17 @@ public class ActPlaylistView extends ScrollPane {
         dataAndTitleAndImg.getChildren().addAll(actImg, dataAndTitle);
 
 
-        all.getChildren().addAll(dataAndTitleAndImg, table);
+        all.getChildren().addAll(dataAndTitleAndImg, trackListView);
         this.setPadding(new Insets(0, 00, 0, 00));
         this.setContent(all);
         this.setHbarPolicy(ScrollBarPolicy.NEVER);
+
         this.getStyleClass().add("scrollbar");
         this.getStylesheets().add(getClass().
                 getResource("style.css").toExternalForm());
         this.getStylesheets().add(getClass().
                 getResource("liststyle.css").toExternalForm());
+
 
 
 

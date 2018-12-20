@@ -23,6 +23,9 @@ public class MP3Player {
     private MyThread playThread;
 
 
+    public Playlist getAktPlaylist() {
+        return aktPlaylist;
+    }
 
     public void changeShuffle(){shuffle = !shuffle;}
 
@@ -202,6 +205,12 @@ public class MP3Player {
 
                         play(aktSong);
                         break;
+                    } else if (isRepeat() && aktPlaylist.getTracks().get(temp + 1) == null){
+                        aktSong = aktPlaylist.getTracks().getFirst();
+                        autoNextOff();
+                        playThread.interrupt();
+
+                        play(aktSong);
                     }
                 }
 
@@ -332,6 +341,7 @@ public class MP3Player {
 
             audioPlayer.skip(millis);
             autoNextOn();
+
             }
 
 

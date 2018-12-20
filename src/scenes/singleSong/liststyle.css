@@ -4,7 +4,18 @@
         -fx-background-color:rgba(0, 0, 0, 0);
         -fx-padding:10 0 10 0;
 }
+.list-cell{
+        -fx-background-color:rgba(0,0,0,0);
 
+        -fx-bottom-border-color: white;
+        }
+.label{
+        -fx-text-fill:#fff;
+         -fx-font-weight:normal;
+}
+.line{
+        -fx-stoke:rgba(0, 0, 0, 0);
+}
 .list-cell:even:hover, .list-cell:odd:hover {
         -fx-text-fill:#74CCDB;
 }
