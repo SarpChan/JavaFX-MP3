@@ -10,13 +10,14 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import scenes.singleSong.ActPlaylistView;
 import scenes.singleSong.ObservView;
+import scenes.singleSong.SchoeneView;
 
 import java.util.HashMap;
 
 
 public class PlayerGUI extends Application {
     MP3Player player;
-    Stage main;
+    static Stage main;
     HashMap<String,Scene > szenen;
 
     @Override
@@ -38,12 +39,13 @@ public class PlayerGUI extends Application {
        // szenen.put("02", new scenes.MikeView.MikeView().buildScene(this,player));
        // szenen.put("03", new scenes.singleSong.MainView().buildScene(this, player));
        szenen.put("04", new ObservView().buildScene(this, player));
+       szenen.put("05", new SchoeneView().buildScene(this, player));
 
 
         BorderPane root = new BorderPane();
 
         primaryStage.setTitle("Coolste Gruppe");
-        primaryStage.setScene(szenen.get("04"));
+        primaryStage.setScene(szenen.get("05"));
 
         primaryStage.show();
 
@@ -65,6 +67,10 @@ public class PlayerGUI extends Application {
                 //main.setScene(new scenes.singleSong.MainView().buildScene(this, player));
                 break;
         }
+    }
+
+    public static double getStageWidth(){
+        return main.getWidth();
     }
 }
 

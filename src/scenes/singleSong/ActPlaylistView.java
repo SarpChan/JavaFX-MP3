@@ -1,5 +1,6 @@
 package scenes.singleSong;
 
+import Applikation.PlayerGUI;
 import Controller.MP3Player;
 import Controller.Playlist;
 import Controller.PlaylistManager;
@@ -47,7 +48,7 @@ import javafx.scene.control.Label;
 public class ActPlaylistView extends ScrollPane {
     boolean paused = true;
     static VBox dataAndTitle, all;
-    HBox dataAndTitleAndImg, data;
+    static HBox dataAndTitleAndImg, data;
 
     ObservableList<Playlist> allPlaylists;
     ObservableList<Track> trackList;
@@ -69,6 +70,7 @@ public class ActPlaylistView extends ScrollPane {
         dataAndTitleAndImg.setAlignment(Pos.TOP_LEFT);
         data.setPadding(new Insets(0, 00, 8, 00));
         dataAndTitle.setPadding(new Insets(0,30,0,30));
+        data.setPrefWidth(400);
 
         trackList = FXCollections.observableArrayList();
         allPlaylists = FXCollections.observableArrayList();
@@ -82,6 +84,7 @@ public class ActPlaylistView extends ScrollPane {
             actTrackAmmount = new Text(String.valueOf(playlist.getNumberTracks()) + (" Tracks - "));
 
         }
+
 
         //TABELLE
         table = new TableView();
@@ -183,6 +186,7 @@ public class ActPlaylistView extends ScrollPane {
 
     public static void calcDataWidth(double x){
         actPlaylistTitle.setWrappingWidth((x-80)*0.45);
+        data.setPrefWidth((x-80)*0.45);
 
     }
 

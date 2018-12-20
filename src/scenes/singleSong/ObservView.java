@@ -34,10 +34,18 @@ public class ObservView {
         control.getColumnConstraints().addAll(leftColumn,rightColumn);
 
         RowConstraints top = new RowConstraints();
-        top.setPercentHeight(85);
+        //top.setPercentHeight(85);
         control.getRowConstraints().addAll(top);
+        control.setAlignment(Pos.TOP_CENTER);
+        control.setPadding(new Insets(30,0,0,30));
+        bottom.setAlignment(Pos.BOTTOM_CENTER);
+        VBox region = new VBox();
+        VBox.setVgrow(region, Priority.ALWAYS);
+        region.setPrefHeight(0);
 
-        root.getChildren().addAll(control, bottom);
+
+        root.getChildren().addAll(control, region, bottom);
+
 
         observView = new Scene(root, 1024, 750);
         observView.widthProperty().addListener(e -> {

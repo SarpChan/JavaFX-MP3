@@ -218,7 +218,6 @@ public class MainView extends VBox{
         songInfo.getStyleClass().add("song-info");
         songInfo.setStyle("-overflow:hidden;");
 
-
         //VolumeAndTime
 
         volumeAndTime = new HBox();
