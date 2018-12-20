@@ -26,6 +26,13 @@ public class ObservView {
 
         control.add(left, 0,0);
         control.add(center,1,0);
+        Scene albumCover = new SchoeneView().buildScene(player);
+
+
+
+        String selectScene;
+
+
 
         ColumnConstraints leftColumn = new ColumnConstraints();
         leftColumn.setPercentWidth(25);
@@ -44,7 +51,9 @@ public class ObservView {
         region.setPrefHeight(0);
 
 
-        root.getChildren().addAll(control, region, bottom);
+
+
+        root.getChildren().addAll(albumCover.getRoot(), region, bottom);
 
 
         observView = new Scene(root, 1024, 750);

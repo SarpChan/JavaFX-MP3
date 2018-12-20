@@ -39,13 +39,13 @@ public class PlayerGUI extends Application {
        // szenen.put("02", new scenes.MikeView.MikeView().buildScene(this,player));
        // szenen.put("03", new scenes.singleSong.MainView().buildScene(this, player));
        szenen.put("04", new ObservView().buildScene(this, player));
-       szenen.put("05", new SchoeneView().buildScene(this, player));
+       szenen.put("05", new SchoeneView().buildScene(player));
 
 
         BorderPane root = new BorderPane();
 
         primaryStage.setTitle("Coolste Gruppe");
-        primaryStage.setScene(szenen.get("05"));
+        primaryStage.setScene(szenen.get("04"));
 
         primaryStage.show();
 
