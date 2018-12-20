@@ -4,7 +4,7 @@
 }
 
 
-.primarytext{
+.primary-text{
     -fx-fill:#74CCDB;
     -fx-font-weight:bold;
 }
@@ -34,8 +34,8 @@
 
 }
 
-
 #volume .track{
+
         -fx-background-color:null;
         -fx-background-insets: 1 0 -1 0, 0, 1;
         -fx-background-radius: 2.5, 2.5, 1.5;
@@ -43,13 +43,10 @@
 }
 
 #volume .thumb{
-     -fx-background-color:none;
+    -fx-background-color:white;
+    -fx-pref-height:8;
 }
 
-#volume:hover .thumb{
-     -fx-background-color:#74CCDB;
-
-}
 
 #pb1 .bar{
     -fx-background-color: #74CCDB;
@@ -80,7 +77,7 @@
 
 }
 
-.songInfo{
+.song-info{
     -overflow:hidden;
     white-space:nowrap;
     text-overflow:ellipsis;

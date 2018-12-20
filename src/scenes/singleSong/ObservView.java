@@ -11,33 +11,33 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
 public class ObservView {
-    private static GridPane root;
+    private static VBox root;
+    private static GridPane control;
     private Scene observView;
 
     public Scene buildScene(PlayerGUI gui, MP3Player player) {
-        root = new GridPane();
+        root = new VBox();
+        control = new GridPane();
         root.setBackground(new Background(new BackgroundFill(new Color(0.2, 0.2, 0.2, 1.0), CornerRadii.EMPTY, Insets.EMPTY)));
 
         AllPlaylistsView left = new AllPlaylistsView();
         ActPlaylistView center = new ActPlaylistView(player);
-        Progress bottom = new Progress();
+        MainView bottom = new MainView(player);
 
-        root.add(left, 0,0);
-        root.add(center,1,0);
-        root.add(bottom,0,1);
+        control.add(left, 0,0);
+        control.add(center,1,0);
 
         ColumnConstraints leftColumn = new ColumnConstraints();
         leftColumn.setPercentWidth(25);
         ColumnConstraints rightColumn = new ColumnConstraints();
         rightColumn.setPercentWidth(75);
-        root.getColumnConstraints().addAll(leftColumn,rightColumn);
-
+        control.getColumnConstraints().addAll(leftColumn,rightColumn);
 
         RowConstraints top = new RowConstraints();
         top.setPercentHeight(85);
-        root.getRowConstraints().addAll(top);
+        control.getRowConstraints().addAll(top);
 
-
+        root.getChildren().addAll(control, bottom);
 
         observView = new Scene(root, 1024, 750);
         observView.widthProperty().addListener(e -> {
@@ -47,7 +47,6 @@ public class ObservView {
                 getResource("style.css").toExternalForm());
         observView.getStylesheets().add(getClass().
                 getResource("liststyle.css").toExternalForm());
-
 
         return observView;
     }

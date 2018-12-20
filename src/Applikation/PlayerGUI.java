@@ -30,11 +30,13 @@ public class PlayerGUI extends Application {
     public void start(Stage primaryStage) {
 
         main = primaryStage;
+        main.setMinWidth(550);
+        main.setMinHeight(150);
 
         szenen = new HashMap<>();
         szenen.put("01", new scenes.singleSong.SongView().buildScene(this, player));
        // szenen.put("02", new scenes.MikeView.MikeView().buildScene(this,player));
-        szenen.put("03", new scenes.singleSong.MainView().buildScene(this, player));
+       // szenen.put("03", new scenes.singleSong.MainView().buildScene(this, player));
        szenen.put("04", new ObservView().buildScene(this, player));
 
 
@@ -60,7 +62,7 @@ public class PlayerGUI extends Application {
 
         switch (code){
             case "04":
-                main.setScene(new scenes.singleSong.MainView().buildScene(this, player));
+                //main.setScene(new scenes.singleSong.MainView().buildScene(this, player));
                 break;
         }
     }

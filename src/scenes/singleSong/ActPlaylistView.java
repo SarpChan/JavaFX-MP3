@@ -127,7 +127,7 @@ public class ActPlaylistView extends ScrollPane {
 
 
         all.getChildren().addAll(dataAndTitleAndImg, table);
-        this.setPadding(new Insets(30, 00, 30, 00));
+        this.setPadding(new Insets(0, 00, 0, 00));
         this.setContent(all);
         this.setHbarPolicy(ScrollBarPolicy.NEVER);
         this.getStyleClass().add("scrollbar");

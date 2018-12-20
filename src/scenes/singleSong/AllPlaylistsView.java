@@ -52,7 +52,7 @@ public class AllPlaylistsView extends ScrollPane {
         this.setContent(all);
         this.getStyleClass().add("allPlaylistsView");
         this.setHbarPolicy(ScrollBarPolicy.NEVER);
-        this.setPadding(new Insets(30, 0, 30, 0));
+        this.setPadding(new Insets(0, 0, 0, 0));
 
     }
 }
