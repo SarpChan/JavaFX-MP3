@@ -1,4 +1,4 @@
-package scenes.singleSong;
+package scenes.singleSong.allPlaylistView;
 
 import Controller.Playlist;
 import Controller.PlaylistManager;
@@ -21,6 +21,7 @@ import javafx.scene.layout.VBox;
 
 
 import javafx.scene.input.MouseEvent;
+import scenes.singleSong.actPlaylistView.ActPlaylistView;
 
 public class AllPlaylistsView extends ScrollPane {
    ListView <Playlist> allPlaylists;

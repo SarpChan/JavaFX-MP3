@@ -1,39 +1,31 @@
-package scenes.singleSong;
+package scenes.singleSong.actPlaylistView;
 
 
 import Controller.Track;
-import javafx.beans.binding.Binding;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.Property;
-import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.HPos;
-import javafx.geometry.HorizontalDirection;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
-import javafx.beans.binding.Bindings;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 public class TrackCell extends javafx.scene.control.ListCell<Controller.Track> {
 
-    private Pane trackPane;
     private Label title;
     private Label album;
     private Label artist;
     private Label songlength;
-    private static Pane root;
-    private Line seperator;
+    //private static Pane root;
     private DateFormat zeitanzeige = new SimpleDateFormat("mm:ss");
-    private static GridPane infoPane;
+    private static GridPane root;
 
 
     public TrackCell() {
 
-        infoPane = new GridPane();
+        root = new GridPane();
         title = new Label();
         artist = new Label();
         album = new Label();
@@ -53,29 +45,16 @@ public class TrackCell extends javafx.scene.control.ListCell<Controller.Track> {
         ColumnConstraints songlengthColumn = new ColumnConstraints();
         songlengthColumn.setPercentWidth(10);
         songlengthColumn.setHalignment(HPos.RIGHT);
-        infoPane.getColumnConstraints().addAll(titleColumn, artistColumn, albumColumn, songlengthColumn);
-        infoPane.prefWidthProperty().bind(this.widthProperty());
-
-            infoPane.add(title, 0, 0);
-            infoPane.add(artist, 1, 0);
-            infoPane.add(album, 2, 0);
-            infoPane.add(songlength, 3, 0);
-
-        //infoPane.getChildren().addAll(title, artist,seperator);
-        infoPane.getStylesheets().add(getClass().getResource("liststyle.css").toExternalForm());
-        infoPane.setVgap(5);
-
+        root.getColumnConstraints().addAll(titleColumn, artistColumn, albumColumn, songlengthColumn);
+        root.prefWidthProperty().bind(this.widthProperty());
+            root.add(title, 0, 0);
+            root.add(artist, 1, 0);
+            root.add(album, 2, 0);
+            root.add(songlength, 3, 0);
+        root.setVgap(5);
 
         this.prefWidthProperty().bind(ActPlaylistView.getPlaylistWidth().subtract(2));
         this.setMaxWidth(this.getPrefWidth());
-
-
-        root = new Pane();
-        root.getChildren().addAll(infoPane);
-        root.getStyleClass().add("list-cell");
-        root.getStylesheets().add(getClass().
-                getResource("liststyle.css").toExternalForm());
-
 
     }
 
@@ -83,9 +62,6 @@ public class TrackCell extends javafx.scene.control.ListCell<Controller.Track> {
 
     protected void updateItem(Track p, boolean empty) {
         super.updateItem(p, empty);
-
-
-
         if(!empty) {
             title.setText(p.getTitle());
             artist.setText(p.getArtist());
@@ -97,8 +73,5 @@ public class TrackCell extends javafx.scene.control.ListCell<Controller.Track> {
             this.setGraphic(null);
         }
     }
-
-
-
 
 }

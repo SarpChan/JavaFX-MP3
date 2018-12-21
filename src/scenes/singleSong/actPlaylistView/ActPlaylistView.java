@@ -1,16 +1,14 @@
-package scenes.singleSong;
+package scenes.singleSong.actPlaylistView;
 
-import Applikation.PlayerGUI;
 import Controller.MP3Player;
 import Controller.Playlist;
 import Controller.PlaylistManager;
 import Controller.Track;
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.Property;
 import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import Exceptions.keinSongException;
-import controlElements.ControlButtons;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 
@@ -24,7 +22,6 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 
 import javafx.scene.input.MouseEvent;
-import javafx.util.Callback;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -41,8 +38,26 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
+import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.stage.Stage;
+import javafx.util.Callback;
+
 
 import javafx.scene.layout.VBox;
+import scenes.singleSong.observView.ObservView;
 
 
 public class ActPlaylistView extends ScrollPane {
@@ -92,11 +107,8 @@ public class ActPlaylistView extends ScrollPane {
 
             trackList.addAll(aktPlaylist.getTracks());
             actPlaylistTitle = new Text(aktPlaylist.getName());
-            actPlaylistLength = new Text(String.valueOf(zeitanzeige.format(aktPlaylist.getPlaytime())));
+            actPlaylistLength = new Text(String.valueOf(zeitanzeige.format(aktPlaylist.getPlaytime())) + " Minuten");
             actTrackAmmount = new Text(String.valueOf(aktPlaylist.getNumberTracks()) + (" Tracks - "));
-
-
-
 
         //TABELLE
         tableHeader.add(titel, 0,0);
@@ -116,13 +128,9 @@ public class ActPlaylistView extends ScrollPane {
         tableHeader.getColumnConstraints().addAll(titleColumn, artistColumn, albumColumn, songlengthColumn);
 
         trackListView = new ListView<>();
-        trackListView.getStyleClass().add("table");
-
         trackListView.setCellFactory(param -> {
-
             return new TrackCell();
         });
-
 
         // Hier muss von der PlaylistListe die darzustellende Playlist geholt werden
         list.addAll(aktPlaylist.getTracks());
@@ -132,16 +140,13 @@ public class ActPlaylistView extends ScrollPane {
         trackListView.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             try {
                 player.play(trackListView.getSelectionModel().getSelectedItem(), aktPlaylist);
-
             } catch (keinSongException e) {
                 e.printStackTrace();
             }
-
-
         });
 
-        trackListView.maxWidthProperty().bind(all.widthProperty());
 
+        trackListView.maxWidthProperty().bind(all.widthProperty());
 
         //PLAYLIST DATA
         status = new Text(("Playlist / ").toUpperCase());
@@ -158,6 +163,14 @@ public class ActPlaylistView extends ScrollPane {
         actImg.setImage(player.getAlbumImage());
         actImg.setFitWidth(150);
         actImg.setFitHeight(150);
+
+        actImg.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                ObservView.switchView();
+            }
+        });
+
         dataAndTitleAndImg.getChildren().addAll(actImg, dataAndTitle);
         all.getChildren().addAll(dataAndTitleAndImg, tableHeader, trackListView);
 
@@ -165,10 +178,7 @@ public class ActPlaylistView extends ScrollPane {
         this.setContent(all);
         this.setHbarPolicy(ScrollBarPolicy.NEVER);
         this.getStyleClass().add("scrollbar");
-        this.getStylesheets().add(getClass().
-                getResource("style.css").toExternalForm());
-        this.getStylesheets().add(getClass().
-                getResource("liststyle.css").toExternalForm());
+
     }
 
     private String getFirstSongFromPlaylist(String x) {
