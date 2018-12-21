@@ -26,7 +26,7 @@ public class ObservView {
 
         control.add(left, 0,0);
         control.add(center,1,0);
-        Scene albumCover = new SchoeneView().buildScene(player);
+
 
 
 
@@ -52,8 +52,10 @@ public class ObservView {
 
 
 
+        root.getChildren().addAll(control, region, bottom);
+        // Scene albumCover = new SchoeneView().buildScene(player);
+        //root.getChildren().addAll(albumCover.getRoot(), region, bottom);
 
-        root.getChildren().addAll(albumCover.getRoot(), region, bottom);
 
 
         observView = new Scene(root, 1024, 750);
