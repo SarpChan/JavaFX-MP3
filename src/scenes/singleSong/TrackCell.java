@@ -91,6 +91,7 @@ public class TrackCell extends javafx.scene.control.ListCell<Controller.Track> {
             artist.setText(p.getArtist());
             album.setText(p.getAlbum());
             songlength.setText(zeitanzeige.format(p.getSonglength()));
+
             this.setGraphic(root);
         } else {
             this.setGraphic(null);

@@ -38,6 +38,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 
 import javafx.scene.layout.VBox;
@@ -59,6 +61,8 @@ public class ActPlaylistView extends ScrollPane {
 
     static Text status, actPlaylistTitle, actPlaylistLength, actTrackAmmount;
     ImageView actImg;
+    private static Playlist aktPlaylist = PlaylistManager.getPlaylist("default");
+    private static ObservableList<Track> list = FXCollections.observableArrayList();
 
     public ActPlaylistView(MP3Player player) {
         dataAndTitleAndImg = new HBox();
@@ -84,15 +88,14 @@ public class ActPlaylistView extends ScrollPane {
         trackList = FXCollections.observableArrayList();
         allPlaylists = FXCollections.observableArrayList();
         allPlaylists.addAll(PlaylistManager.getAllPlaylists());
+        DateFormat zeitanzeige = new SimpleDateFormat("mm:ss");
 
-        for (Playlist playlist:  allPlaylists)
-        {
-            trackList.addAll(playlist.getTracks());
-            actPlaylistTitle = new Text(playlist.getName());
-            actPlaylistLength = new Text(String.valueOf(playlist.getPlaytime()));
-            actTrackAmmount = new Text(String.valueOf(playlist.getNumberTracks()) + (" Tracks - "));
+            trackList.addAll(aktPlaylist.getTracks());
+            actPlaylistTitle = new Text(aktPlaylist.getName());
+            actPlaylistLength = new Text(String.valueOf(zeitanzeige.format(aktPlaylist.getPlaytime())));
+            actTrackAmmount = new Text(String.valueOf(aktPlaylist.getNumberTracks()) + (" Tracks - "));
 
-        }
+
 
 
         //TABELLE
@@ -116,19 +119,19 @@ public class ActPlaylistView extends ScrollPane {
         trackListView.getStyleClass().add("table");
 
         trackListView.setCellFactory(param -> {
-            // TODO Auto-generated method stub
+
             return new TrackCell();
         });
-        ObservableList<Track> list = FXCollections.observableArrayList();
+
 
         // Hier muss von der PlaylistListe die darzustellende Playlist geholt werden
-        list.addAll(PlaylistManager.getPlaylist("default").getTracks());
+        list.addAll(aktPlaylist.getTracks());
         trackListView.prefHeightProperty().bind(Bindings.size(list).multiply(LIST_CELL_HEIGHT));
         trackListView.setItems(list);
         trackListView.setBackground(new Background(new BackgroundFill(new Color(0.2, 0.2, 0.2, 1.0), CornerRadii.EMPTY, Insets.EMPTY)));
         trackListView.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             try {
-                player.play(trackListView.getSelectionModel().getSelectedItem(), PlaylistManager.getPlaylist("default"));
+                player.play(trackListView.getSelectionModel().getSelectedItem(), aktPlaylist);
 
             } catch (keinSongException e) {
                 e.printStackTrace();
@@ -220,6 +223,14 @@ public class ActPlaylistView extends ScrollPane {
         return all.widthProperty();
     }
 
+    public static void setAktPlaylist(Playlist playlist ){
+        trackListView.getStyleClass().add("table");
+
+        list.clear();
+        aktPlaylist = playlist;
+        list.addAll(aktPlaylist.getTracks());
+        trackListView.setItems(list);
+    }
 
 
 }

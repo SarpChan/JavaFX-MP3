@@ -19,6 +19,9 @@ import javafx.scene.text.TextAlignment;
 
 import javafx.scene.layout.VBox;
 
+
+import javafx.scene.input.MouseEvent;
+
 public class AllPlaylistsView extends ScrollPane {
    ListView <Playlist> allPlaylists;
    ObservableList<Playlist> list;
@@ -48,7 +51,13 @@ public class AllPlaylistsView extends ScrollPane {
         allPlaylists.setBackground(new Background(new BackgroundFill( new Color(0,0,0,0), CornerRadii.EMPTY, Insets.EMPTY)));
         allPlaylists.prefHeightProperty().bind(Bindings.size(list).multiply(LIST_CELL_HEIGHT));
 
+        allPlaylists.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            ActPlaylistView.setAktPlaylist(allPlaylists.getSelectionModel().getSelectedItem());
+        });
+
         all.getChildren().addAll(bibliothekenTxt, allPlaylists, playlistsTxt);
+
+
         this.setContent(all);
         this.getStyleClass().add("allPlaylistsView");
         this.setHbarPolicy(ScrollBarPolicy.NEVER);
