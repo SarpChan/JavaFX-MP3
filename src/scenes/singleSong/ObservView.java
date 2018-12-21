@@ -26,37 +26,27 @@ public class ObservView {
 
         control.add(left, 0,0);
         control.add(center,1,0);
+        control.setAlignment(Pos.TOP_CENTER);
+        control.setPadding(new Insets(30,0,0,0));
+        bottom.setAlignment(Pos.BOTTOM_CENTER);
 
-
-
-
-        String selectScene;
-
-
+        //String selectScene;
 
         ColumnConstraints leftColumn = new ColumnConstraints();
         leftColumn.setPercentWidth(25);
         ColumnConstraints rightColumn = new ColumnConstraints();
         rightColumn.setPercentWidth(75);
         control.getColumnConstraints().addAll(leftColumn,rightColumn);
-
         RowConstraints top = new RowConstraints();
-        //top.setPercentHeight(85);
         control.getRowConstraints().addAll(top);
-        control.setAlignment(Pos.TOP_CENTER);
-        control.setPadding(new Insets(30,0,0,30));
-        bottom.setAlignment(Pos.BOTTOM_CENTER);
+
         VBox region = new VBox();
         VBox.setVgrow(region, Priority.ALWAYS);
         region.setPrefHeight(0);
 
-
-
         root.getChildren().addAll(control, region, bottom);
         // Scene albumCover = new SchoeneView().buildScene(player);
         //root.getChildren().addAll(albumCover.getRoot(), region, bottom);
-
-
 
         observView = new Scene(root, 1024, 750);
         observView.widthProperty().addListener(e -> {

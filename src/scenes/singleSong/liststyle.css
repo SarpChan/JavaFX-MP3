@@ -3,26 +3,45 @@
         -fx-font-weight:normal;
         -fx-background-color:rgba(0, 0, 0, 0);
         -fx-padding:10 0 10 0;
+        -fx-border-width: 0 0 0.15 0;
+        -fx-border-color: #fff;
 }
 .list-cell{
         -fx-background-color:rgba(0,0,0,0);
-
         -fx-bottom-border-color: white;
         }
-.label{
-        -fx-text-fill:#fff;
-         -fx-font-weight:normal;
+.list-cell:even:hover, .list-cell:odd:hover {
+                -fx-text-fill:#74CCDB;
+        }
+.list-cell:even:selected, .list-cell:odd:selected {
+                -fx-text-fill:#74CCDB;
+ }
+
+list-cell .first .label{
+ -fx-text-fill:#fff;
 }
+
+.label{
+      -fx-text-fill:#fff;
+}
+
+ .list-cell:hover .label{
+  -fx-text-fill:#74CCDB;
+
+ }
+
+ .table{
+  -fx-background-color: transparent;
+    -fx-text-fill:#fff;
+ }
+
+
+
+
 .line{
         -fx-stoke:rgba(0, 0, 0, 0);
 }
-.list-cell:even:hover, .list-cell:odd:hover {
-        -fx-text-fill:#74CCDB;
-}
 
-.list-cell:even:selected, .list-cell:odd:selected {
-        -fx-text-fill:#74CCDB;
-}
 
 .headline{
         -fx-fill:rgba(255, 255, 255, 0.5);

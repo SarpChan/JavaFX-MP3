@@ -2,14 +2,19 @@ package scenes.singleSong;
 
 
 import Controller.Track;
+import javafx.beans.binding.Binding;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.Property;
+import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.geometry.HPos;
+import javafx.geometry.HorizontalDirection;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-
+import javafx.beans.binding.Bindings;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
@@ -19,35 +24,59 @@ public class TrackCell extends javafx.scene.control.ListCell<Controller.Track> {
     private Label title;
     private Label album;
     private Label artist;
-    private Label songlaenge;
-    private Pane root;
+    private Label songlength;
+    private static Pane root;
     private Line seperator;
     private DateFormat zeitanzeige = new SimpleDateFormat("mm:ss");
+    private static GridPane infoPane;
 
 
     public TrackCell() {
 
-        VBox infoPane = new VBox();
+        infoPane = new GridPane();
         title = new Label();
         artist = new Label();
-        seperator = new Line();
-        seperator.prefWidth(this.getMaxWidth());
-        seperator.setStartX(0);
-        seperator.setStartY(0);
-        seperator.setEndX(this.getMaxWidth());
-        seperator.setEndY(0);
-        seperator.setStroke(Color.RED);
+        album = new Label();
+        songlength = new Label();
+
         title.getStyleClass().add("label");
         artist.getStyleClass().add("label");
-        infoPane.getChildren().addAll(title, artist,seperator);
+        album.getStyleClass().add("label");
+        songlength.getStyleClass().add("label");
+
+        ColumnConstraints titleColumn = new ColumnConstraints();
+        titleColumn.setPercentWidth(50);
+        ColumnConstraints artistColumn = new ColumnConstraints();
+        artistColumn.setPercentWidth(20);
+        ColumnConstraints albumColumn = new ColumnConstraints();
+        albumColumn.setPercentWidth(20);
+        ColumnConstraints songlengthColumn = new ColumnConstraints();
+        songlengthColumn.setPercentWidth(10);
+        songlengthColumn.setHalignment(HPos.RIGHT);
+        infoPane.getColumnConstraints().addAll(titleColumn, artistColumn, albumColumn, songlengthColumn);
+        infoPane.prefWidthProperty().bind(this.widthProperty());
+
+            infoPane.add(title, 0, 0);
+            infoPane.add(artist, 1, 0);
+            infoPane.add(album, 2, 0);
+            infoPane.add(songlength, 3, 0);
+
+        //infoPane.getChildren().addAll(title, artist,seperator);
         infoPane.getStylesheets().add(getClass().getResource("liststyle.css").toExternalForm());
+        infoPane.setVgap(5);
 
-        root = new HBox();
 
+        this.prefWidthProperty().bind(ActPlaylistView.getPlaylistWidth().subtract(2));
+        this.setMaxWidth(this.getPrefWidth());
+
+
+        root = new Pane();
         root.getChildren().addAll(infoPane);
         root.getStyleClass().add("list-cell");
         root.getStylesheets().add(getClass().
                 getResource("liststyle.css").toExternalForm());
+
+
     }
 
 
@@ -56,15 +85,19 @@ public class TrackCell extends javafx.scene.control.ListCell<Controller.Track> {
         super.updateItem(p, empty);
 
 
-        if(!empty) {
 
+        if(!empty) {
             title.setText(p.getTitle());
             artist.setText(p.getArtist());
-
-
+            album.setText(p.getAlbum());
+            songlength.setText(zeitanzeige.format(p.getSonglength()));
             this.setGraphic(root);
         } else {
             this.setGraphic(null);
         }
     }
+
+
+
+
 }
