@@ -16,7 +16,7 @@ public class MP3Player {
 	private SimpleMinim minim;
 	private SimpleAudioPlayer audioPlayer;
 
-	private boolean autoNext = true, shuffle=false, repeat = false, repeatSong;
+	private boolean autoNext = true, shuffle=false, repeat = false;
 
 	private Playlist aktPlaylist;
 	private Track aktSong;
@@ -33,15 +33,13 @@ public class MP3Player {
         return shuffle;
     }
     public void changeRepeat(){repeat = !repeat;}
-    public void changeRepeatSong(){repeatSong = !repeatSong;}
+
 
     public boolean isRepeat() {
         return repeat;
     }
 
-    public boolean isRepeatSong() {
-        return repeatSong;
-    }
+
 
     private void autoNextOff(){autoNext = false;}
     private void autoNextOn(){autoNext = true;}
@@ -115,7 +113,10 @@ public class MP3Player {
 
     public void play(Track track) throws keinSongException {
 
-        playThread.interrupt();
+        if(playThread!=null) {
+
+            playThread.interrupt();
+        }
         audioPlayer = minim.loadMP3File(track.getPath());
 
 
@@ -126,32 +127,23 @@ public class MP3Player {
 	}
     public void play(Track track, Playlist playlist) throws keinSongException {
 
+        autoNextOff();
+        if(playThread!=null) {
 
-        if(audioPlayer == null) {
-
-            try {
-                aktPlaylist = playlist;
-                play(track);
-
-
-
-            } catch (Exception e) {
-                throw new keinSongException();
-
-            }
-        } else {
-            try {
-                aktPlaylist = playlist;
-                play(track);
-
-
-
-            } catch (Exception e) {
-                throw new keinSongException();
-
-            }
-
+            playThread.interrupt();
         }
+            try {
+                aktPlaylist = playlist;
+                play(track);
+
+
+
+            } catch (Exception e) {
+                throw new keinSongException();
+
+            }
+
+
 
     }
 
@@ -162,7 +154,6 @@ public class MP3Player {
             aktSong = getFirstSongFromPlaylist(PlaylistManager.getPlaylistArrayList().get(0));
             audioPlayer = minim.loadMP3File(aktSong.getPath());
 
-            autoNextOn();
             playThread = new MyThread();
 
             playThread.start();
@@ -171,7 +162,7 @@ public class MP3Player {
 
 
         }else {
-            autoNextOn();
+
             playThread = new MyThread();
 
             playThread.start();
@@ -318,7 +309,7 @@ public class MP3Player {
 
 
             public void run() {
-
+                autoNextOn();
                 audioPlayer.play();
 
                 if(autoNext) {

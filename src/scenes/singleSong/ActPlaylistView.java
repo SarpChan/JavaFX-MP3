@@ -5,6 +5,7 @@ import Controller.MP3Player;
 import Controller.Playlist;
 import Controller.PlaylistManager;
 import Controller.Track;
+import Exceptions.keinSongException;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 
@@ -17,7 +18,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 
-
+import javafx.scene.input.MouseEvent;
 import javafx.util.Callback;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -27,6 +28,7 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -91,10 +93,20 @@ public class ActPlaylistView extends ScrollPane {
             return new TrackCell();
         });
         ObservableList<Track> list = FXCollections.observableArrayList();
+
+        // Hier muss von der PlaylistListe die darzustellende Playlist geholt werden
         list.addAll(PlaylistManager.getPlaylist("default").getTracks());
         trackListView.setItems(list);
         trackListView.setBackground(new Background(new BackgroundFill(new Color(0.2, 0.2, 0.2, 1.0), CornerRadii.EMPTY, Insets.EMPTY)));
+        trackListView.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            try {
+                player.play(trackListView.getSelectionModel().getSelectedItem(), PlaylistManager.getPlaylist("default"));
+            } catch (keinSongException e) {
+                e.printStackTrace();
+            }
 
+
+        });
 
 
 
