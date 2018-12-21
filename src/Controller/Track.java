@@ -3,26 +3,23 @@ package Controller;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.UnsupportedTagException;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
-import javafx.beans.property.SimpleStringProperty;
 
 
-import javax.imageio.ImageIO;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Objects;
+
 
 public class Track {
 
     private String path, title="N.A.", album="N.A.", artist="N.A.";
     private long songlength=0;
     private Mp3File file;
-    private Image image = new Image("defaultCover.png");
-    private SimpleStringProperty TITLE, ALBUM, ARTIST, LENGTH;
+
     private DateFormat zeitanzeige = new SimpleDateFormat("mm:ss");
+    private byte [] image;
 
 
     public Track(String path){
@@ -47,7 +44,8 @@ public class Track {
                     this.artist = file.getId3v2Tag().getAlbumArtist();
 
                     if (file.getId3v2Tag().getAlbumImage() != null) {
-                        this.image = SwingFXUtils.toFXImage(ImageIO.read(new ByteArrayInputStream(file.getId3v2Tag().getAlbumImage())), null);
+
+                        image = file.getId3v2Tag().getAlbumImage();
                     }
                     this.songlength = file.getLengthInMilliseconds();
 
@@ -97,7 +95,13 @@ public class Track {
     }
 
     public Image getImage() {
-        return image;
+        if (image != null){
+            return new Image(new ByteArrayInputStream(image));
+        }
+        else {
+            return new Image("defaultCover.png");
+        }
+
     }
 
     public String toString(){
