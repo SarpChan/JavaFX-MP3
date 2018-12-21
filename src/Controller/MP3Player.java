@@ -21,6 +21,7 @@ public class MP3Player {
 	private Playlist aktPlaylist;
 	private Track aktSong;
     private MyThread playThread;
+    private int jumpTo;
 
 
     public Playlist getAktPlaylist() {
@@ -128,10 +129,7 @@ public class MP3Player {
     public void play(Track track, Playlist playlist) throws keinSongException {
 
         autoNextOff();
-        if(playThread!=null) {
 
-            playThread.interrupt();
-        }
             try {
                 aktPlaylist = playlist;
                 play(track);
@@ -211,10 +209,16 @@ public class MP3Player {
 	}
 
 	public void skip(int mseconds){
+        autoNextOff();
         if(isInitialized()) {
+            jumpTo = mseconds + audioPlayer.position();
 
-            autoNextOff();
-            playThread.skip(mseconds);
+
+            playThread.interrupt();
+
+            audioPlayer= minim.loadMP3File(aktSong.getPath());
+            playThread = new MyThread();
+            playThread.start();
 
 
 
@@ -309,16 +313,18 @@ public class MP3Player {
 
 
             public void run() {
-                autoNextOn();
-                audioPlayer.play();
+
+                audioPlayer.play(jumpTo);
 
                 if(autoNext) {
                     try {
+                        jumpTo = 0;
                         next();
                     } catch (keinSongException e) {
                         e.printStackTrace();
                     }
                 }
+                autoNextOn();
             }
 
             public void interrupt(){
@@ -331,8 +337,14 @@ public class MP3Player {
             public void skip(int millis){
 
             audioPlayer.skip(millis);
-            autoNextOn();
 
+                if(autoNext) {
+                    try {
+                        next();
+                    } catch (keinSongException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
 
 
