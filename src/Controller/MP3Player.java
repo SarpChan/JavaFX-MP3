@@ -174,6 +174,7 @@ public class MP3Player {
 
 
         if (shuffle){
+            jumpTo = 0;
             aktSong = aktPlaylist.getTracks().get(getRandomNumberInRange(0, aktPlaylist.getTracks().size()));
             autoNextOff();
             playThread.interrupt();
@@ -188,6 +189,7 @@ public class MP3Player {
                 if (aktSong.equals(track)) {
                     int temp = aktPlaylist.getTracks().indexOf(track);
                     if (aktPlaylist.getTracks().get(temp + 1) != null) {
+                        jumpTo = 0;
                         aktSong = aktPlaylist.getTracks().get(temp + 1);
                         autoNextOff();
                         playThread.interrupt();
@@ -195,6 +197,7 @@ public class MP3Player {
                         play(aktSong);
                         break;
                     } else if (isRepeat() && aktPlaylist.getTracks().get(temp + 1) == null){
+                        jumpTo = 0;
                         aktSong = aktPlaylist.getTracks().getFirst();
                         autoNextOff();
                         playThread.interrupt();
@@ -229,6 +232,7 @@ public class MP3Player {
 	public boolean previous() throws keinSongException{
 
         Track oldTrack = null;
+        jumpTo = 0;
 
 
         for (Track track: aktPlaylist.getTracks()
@@ -261,6 +265,7 @@ public class MP3Player {
 			throw new keinSongException("Leider wurde kein Song ausgewählt");
 		}
 		autoNextOff();
+		jumpTo = audioPlayer.position();
 		audioPlayer.pause();
 
 	}
