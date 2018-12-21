@@ -95,13 +95,7 @@ public class MainView extends VBox{
                     if (player.getAktZeit() == 0) {
 
                         time.setText(zeitanzeige.format(0) + "/" + zeitanzeige.format(player.getSongLength()));
-                    }else if(player.getAktZeit() >= player.getSongLength() - 50) {
-                        try {
-                            player.next();
-                            player.play();
-                        } catch (keinSongException e) {
-                            e.printStackTrace();
-                        }
+
                     }else
                      {
                         time.setText(zeitanzeige.format(player.getAktZeit()) + "/" + zeitanzeige.format(player.getSongLength()));
@@ -119,7 +113,7 @@ public class MainView extends VBox{
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
 
-        progress.addEventHandler(MouseEvent.MOUSE_ENTERED_TARGET, event -> {
+        progress.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             changeListenToProgressFalse();
             countMillis = 0;
             firstMillis = System.currentTimeMillis();

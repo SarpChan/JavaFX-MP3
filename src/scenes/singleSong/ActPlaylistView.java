@@ -10,6 +10,7 @@ import javafx.beans.property.Property;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.geometry.HPos;
 import Exceptions.keinSongException;
+import controlElements.ControlButtons;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 
@@ -128,6 +129,7 @@ public class ActPlaylistView extends ScrollPane {
         trackListView.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             try {
                 player.play(trackListView.getSelectionModel().getSelectedItem(), PlaylistManager.getPlaylist("default"));
+
             } catch (keinSongException e) {
                 e.printStackTrace();
             }
