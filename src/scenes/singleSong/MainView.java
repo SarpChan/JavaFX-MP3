@@ -6,8 +6,12 @@ import Exceptions.keinSongException;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.InvalidationListener;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -62,9 +66,10 @@ public class MainView extends VBox{
 
     Button play, previous, next, mute;
     Pane region, region2;
+    double progressValue;
 
+    public MainView(MP3Player player) {
 
-    public MainView(MP3Player player){
 
 
         songControl = new HBox();
@@ -99,9 +104,10 @@ public class MainView extends VBox{
                     }else
                      {
                         time.setText(zeitanzeige.format(player.getAktZeit()) + "/" + zeitanzeige.format(player.getSongLength()));
-                        if (listenToProgress) {
+
+                        if(! progress.isValueChanging())
                             progress.setValue(((double) player.getAktZeit() / (double) player.getSongLength()) * 100);
-                        }
+
                     }
 
                 }
@@ -113,36 +119,11 @@ public class MainView extends VBox{
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
 
-        progress.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            changeListenToProgressFalse();
-            countMillis = 0;
-            firstMillis = System.currentTimeMillis();
-            listenToScrollbar = true;
-            timeline.pause();
-        });
 
+        progress.addEventHandler(MouseEvent.MOUSE_PRESSED, event->{
 
-        progress.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if (listenToScrollbar) {
-                countMillis = System.currentTimeMillis() - firstMillis;
+            progressValue = progress.getValue();
 
-                if (player.isPlayerActive()) {
-
-                    player.skip((int) (((newValue.doubleValue() / 100 * player.getSongLength()) - oldValue.doubleValue() / 100 * player.getSongLength()) - countMillis));
-
-                } else {
-                    player.skip((int) ((newValue.doubleValue() / 100 * player.getSongLength()) - oldValue.doubleValue() / 100 * player.getSongLength()));
-
-                }
-                listenToScrollbar = false;
-            }
-        });
-
-
-
-        progress.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET, event -> {
-            changeListenToProgressTrue();
-            timeline.play();
         });
 
         //PROGRESSBAR
@@ -160,9 +141,6 @@ public class MainView extends VBox{
         });
 
         //PANE LEFT
-        /*Text title = new Text(("Track" + " ").toUpperCase());
-        title.getStyleClass().addAll("primary-text", "title");
-        */
         interpret = new Text("Arctic Monkeys");
         interpret.getStyleClass().addAll("secondarytext");
 
@@ -172,18 +150,45 @@ public class MainView extends VBox{
         titleInfo.setStyle("-fx-text-fill:#74CCDB;");
 
 
+        progress.valueChangingProperty().addListener((observable, wasChanging, isChanging)->{
+
+            if(!isChanging) {
+                player.skip((int) ((progress.getValue() / 100 * player.getSongLength()) - progressValue / 100 * player.getSongLength()));
+                if (!player.isPlayerActive()) {
+                    try {
+                        player.pause();
+                    } catch (keinSongException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+        });
+
 
 
         progress.valueProperty().addListener((observable, oldvar, newvar) -> {
-            if(newvar.intValue() == 0){
+            if( ! progress.isValueChanging()) {
+                int currentTime = player.getAktZeit();
+               if(Math.abs(currentTime - (newvar.doubleValue() / 100 * player.getSongLength())) > 50){
+                   player.skip((int) ((newvar.doubleValue() / 100 * player.getSongLength()) - oldvar.doubleValue() / 100 * player.getSongLength()));
+                   if (!player.isPlayerActive()) {
+                       try {
+                           player.pause();
+                       } catch (keinSongException e) {
+                           e.printStackTrace();
+                       }
+                   }
+               }
+            }
+
+            if (newvar.intValue() == 0) {
+
                 titleInfo.setText(player.getTrack());
                 interpret.setText(player.getSongArtist() + " ");
             }
             calculatePB(progress, progressTimeSlider);
         });
-
-
-       // trackInfo.getStyleClass().addAll("primary-text");
 
 
 
@@ -193,12 +198,6 @@ public class MainView extends VBox{
         progressPane.setAlignment(Pos.CENTER_LEFT);
         progressPane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         progressPane.setMinSize(Double.MIN_VALUE, Double.MIN_VALUE);
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
 
         songInfo = new HBox(10);
 
@@ -238,10 +237,7 @@ public class MainView extends VBox{
         line2.setStartX(0);
         HBox.setHgrow(line2, Priority.ALWAYS);
         line2.getStyleClass().add("progressLine");
-
         */
-
-
 
         mute = new Button();
         mute.getStyleClass().add("mute-button");
@@ -284,7 +280,6 @@ public class MainView extends VBox{
         volumeAndTime.setMaxWidth(songControl.getWidth() / 4);
         volumeAndTime.setMinWidth(songControl.getWidth() / 4);
         volumeAndTime.setPrefWidth(songControl.getWidth() / 4);
-        //volumeAndTime.setBackground(new Background(new BackgroundFill(new Color(0, 0, 0, 1), CornerRadii.EMPTY, Insets.EMPTY)));
 
 
         songControl.widthProperty().addListener(new ChangeListener<Number>() {
@@ -307,6 +302,10 @@ public class MainView extends VBox{
         play.getStyleClass().add("play-button");
         play.setStyle("-fx-shape: \"" + getPathFromSVG("play") + "\";");
         play.setPadding(new Insets(0, 100, 0, 100));
+
+        if(player.isPlayerActive())
+            play.setStyle("-fx-shape: \"" + getPathFromSVG("pause") + "\";");
+
         play.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
 
             try {
@@ -365,7 +364,6 @@ public class MainView extends VBox{
 
         controlButtons.getChildren().addAll(previous, play, next);
         controlButtons.setAlignment(Pos.CENTER);
-        //GridPane.setHalignment(controlButtons, HPos.CENTER);
 
         //HINTERGRUND
        /* Rectangle progressBackground = new Rectangle();
@@ -401,26 +399,6 @@ public class MainView extends VBox{
 
         this.getChildren().addAll(progressPane, songControl);
         this.setAlignment(Pos.BOTTOM_LEFT);
-        //this.setStyle("-fx-background-color:white;");
-
-
-        //((VBox) song).setAlignment(Pos.BOTTOM_LEFT);
-
-        /*StackPane test = new StackPane();
-        test.getChildren().addAll(progressBackground, song);
-        test.setAlignment(Pos.BOTTOM_LEFT);
-        HBox playlists = new HBox();
-
-        playlists.getChildren().addAll(new AllPlaylistsView(), new ActPlaylistView(player));
-        */
-
-
-       /* root.setLeft(new AllPlaylistsView());
-        root.setTop(new ActPlaylistView(player));
-        root.setBottom(test);
-
-        root.setBottom(song);
-        */
 
     }
 
@@ -473,12 +451,6 @@ public class MainView extends VBox{
         }
         return d;
     }
-
-    private void changePause(){
-        paused = !paused;
-    }
-
-
 
     private void calculatePB(Slider progress, ProgressBar bar1) {
         double actValue = progress.getValue();

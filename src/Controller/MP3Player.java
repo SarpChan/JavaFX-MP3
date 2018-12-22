@@ -214,7 +214,9 @@ public class MP3Player {
 	public void skip(int mseconds){
         autoNextOff();
         if(isInitialized()) {
-            jumpTo = mseconds + audioPlayer.position();
+            audioPlayer.skip(mseconds);
+
+            /*jumpTo = mseconds + audioPlayer.position();
 
 
             playThread.interrupt();
@@ -223,7 +225,7 @@ public class MP3Player {
             playThread = new MyThread();
             playThread.start();
 
-
+            */
 
 
         }

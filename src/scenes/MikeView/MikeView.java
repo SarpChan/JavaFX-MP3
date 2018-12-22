@@ -3,6 +3,8 @@ package scenes.MikeView;
 import Applikation.PlayerGUI;
 import Controller.MP3Player;
 import Exceptions.keinSongException;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -16,6 +18,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -34,6 +37,8 @@ public class MikeView {
     Controller.MP3Player player = new Controller.MP3Player();
     PlayerGUI gui;
 
+    Slider progress;
+
     public Scene buildScene(PlayerGUI gui, MP3Player player){
         this.player = player;
         this.gui = gui;
@@ -48,7 +53,35 @@ public class MikeView {
         Scene scene = new Scene(root, 300, 500);
         scene.setFill(Color.WHITE);
 
-        root.getChildren().addAll(SongControl());
+        progress = new Slider();
+        progress.setMin(0);
+
+        try {
+            player.play();
+            player.pause();
+        } catch (keinSongException e) {
+            e.printStackTrace();
+        }
+
+        progress.setMax(player.getSongLength());
+
+        KeyFrame watchTimeLine = new KeyFrame(
+                Duration.millis(50),
+                event -> {
+                    progress.setValue(player.getAktZeit());
+                    }
+
+
+        );
+
+        final Timeline timeline = new Timeline(watchTimeLine);
+        timeline.play();
+
+
+
+
+
+        root.getChildren().addAll(progress, SongControl());
 
         return scene;
 
@@ -111,6 +144,8 @@ public class MikeView {
             public void handle(ActionEvent arg0) {
                 try {
                     player.play();
+                    progress.setMax(player.getSongLength());
+
                 } catch (keinSongException e) {
                     e.printStackTrace();
                 }
