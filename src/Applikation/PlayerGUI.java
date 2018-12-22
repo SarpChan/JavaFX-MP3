@@ -1,16 +1,14 @@
 package Applikation;
 
 import Controller.MP3Player;
-import Controller.Track;
 import javafx.application.Application;
 
 
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import scenes.singleSong.ActPlaylistView;
-import scenes.singleSong.ObservView;
-import scenes.singleSong.SchoeneView;
+import scenes.singleSong.observView.ObservView;
+import scenes.singleSong.singleSongView.SingleSongView;
 
 import java.util.HashMap;
 
@@ -39,7 +37,7 @@ public class PlayerGUI extends Application {
         szenen.put("02", new scenes.MikeView.MikeView().buildScene(this,player));
        // szenen.put("03", new scenes.singleSong.MainView().buildScene(this, player));
        szenen.put("04", new ObservView().buildScene(this, player));
-       szenen.put("05", new SchoeneView().buildScene(player));
+       //szenen.put("05", new SingleSongView().buildScene(player));
 
 
         BorderPane root = new BorderPane();

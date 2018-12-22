@@ -212,9 +212,9 @@ public class PlayingPlaylistView {
 
         Scene x = new Scene(root, 1024, 750);
         x.getStylesheets().add(getClass().
-                getResource("style.css").toExternalForm());
+                getResource("progressBarStyle.css").toExternalForm());
         x.getStylesheets().add(getClass().
-                getResource("liststyle.css").toExternalForm());
+                getResource("contentStyle.css").toExternalForm());
         return x;
     }
 
