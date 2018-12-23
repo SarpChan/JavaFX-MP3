@@ -22,7 +22,7 @@ public class SingleSongView extends StackPane{
     static ImageView actImg;
     static int scale = 50;
 
-    public SingleSongView(MP3Player player) {
+    public SingleSongView(ObservView observView, MP3Player player) {
         root = new StackPane();
         Image test = new Image("scenes/singleSong/singleSongView/cover.jpg");
         Color averageColor = getAverageColor(test);

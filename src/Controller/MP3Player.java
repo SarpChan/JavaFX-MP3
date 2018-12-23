@@ -13,13 +13,13 @@ import java.util.Random;
 
 
 public class MP3Player {
-	private SimpleMinim minim;
-	private SimpleAudioPlayer audioPlayer;
+    private SimpleMinim minim;
+    private SimpleAudioPlayer audioPlayer;
 
-	private boolean autoNext = true, shuffle=false, repeat = false;
+    private boolean autoNext = true, shuffle=false, repeat = false;
 
-	private Playlist aktPlaylist;
-	private Track aktSong;
+    private Playlist aktPlaylist;
+    private Track aktSong;
     private MyThread playThread;
     private int jumpTo;
 
@@ -49,15 +49,15 @@ public class MP3Player {
         this.aktPlaylist = playlist;
     }
     public int getAktZeit(){
-            if (audioPlayer == null){
-                return 0;
-            }
+        if (audioPlayer == null){
+            return 0;
+        }
 
         return audioPlayer.position() ;
     }
     public long getSongLength(){
 
-
+        
         return aktSong!= null? aktSong.getSonglength():0;
 
     }
@@ -95,8 +95,8 @@ public class MP3Player {
 
 
     public MP3Player(){
-		minim = new SimpleMinim();
-	}
+        minim = new SimpleMinim();
+    }
 
 
 
@@ -109,7 +109,7 @@ public class MP3Player {
     }
 
     public boolean isPlayerActive() {
-        return audioPlayer.isPlaying();
+        return audioPlayer == null?false:audioPlayer.isPlaying();
     }
 
     public void play(Track track) throws keinSongException {
@@ -125,21 +125,21 @@ public class MP3Player {
 
         play();
 
-	}
+    }
     public void play(Track track, Playlist playlist) throws keinSongException {
 
         autoNextOff();
 
-            try {
-                aktPlaylist = playlist;
-                play(track);
+        try {
+            aktPlaylist = playlist;
+            play(track);
 
 
 
-            } catch (Exception e) {
-                throw new keinSongException();
+        } catch (Exception e) {
+            throw new keinSongException();
 
-            }
+        }
 
 
 
@@ -170,7 +170,7 @@ public class MP3Player {
 
     }
 
-	public void next() throws keinSongException{
+    public void next() throws keinSongException{
 
 
         if (shuffle){
@@ -209,14 +209,13 @@ public class MP3Player {
             }
         }
 
-	}
+    }
 
-	public void skip(int mseconds){
+    public void skip(int mseconds){
         autoNextOff();
         if(isInitialized()) {
-            audioPlayer.skip(mseconds);
-
-            /*jumpTo = mseconds + audioPlayer.position();
+            jumpTo = mseconds + audioPlayer.position();
+            System.out.println(jumpTo);
 
 
             playThread.interrupt();
@@ -225,13 +224,13 @@ public class MP3Player {
             playThread = new MyThread();
             playThread.start();
 
-            */
+
 
 
         }
     }
 
-	public boolean previous() throws keinSongException{
+    public boolean previous() throws keinSongException{
 
         Track oldTrack = null;
         jumpTo = 0;
@@ -258,52 +257,53 @@ public class MP3Player {
 
         return false;
     }
-	
 
-	
-	public void pause() throws keinSongException {
 
-		if (audioPlayer == null) {
-			throw new keinSongException("Leider wurde kein Song ausgewählt");
-		}
-		autoNextOff();
-		jumpTo = audioPlayer.position();
-		audioPlayer.pause();
 
-	}
-	
-	public void stop() throws keinSongException{
-		if (audioPlayer == null) {
-			throw new keinSongException("Leider wurde kein Song ausgewählt");
-		}
-		audioPlayer.pause();
-		audioPlayer.rewind();
+    public void pause() throws keinSongException {
 
-	}
+        if (audioPlayer == null) {
+            throw new keinSongException("Leider wurde kein Song ausgewählt");
+        }
+        autoNextOff();
+        jumpTo = audioPlayer.position();
+        audioPlayer.pause();
 
-	public void volume (float value) {
-		audioPlayer.setGain(LinearToDecibel(value));
-	}
 
-	public void getMeta() {
-		audioPlayer.getMetaData();
-	}
+    }
 
-	public void exit() {
-		minim.dispose();
-	}
+    public void stop() throws keinSongException{
+        if (audioPlayer == null) {
+            throw new keinSongException("Leider wurde kein Song ausgewählt");
+        }
+        audioPlayer.pause();
+        audioPlayer.rewind();
 
-	private float LinearToDecibel(float linear)
-	{
-		float db;
+    }
 
-		if (linear != 0.0f)
-			db = (float) (20.0f * Math.log10(linear));
-		else
-			db = -144.0f;  // effectively minus infinity
+    public void volume (float value) {
+        audioPlayer.setGain(LinearToDecibel(value));
+    }
 
-		return db;
-	}
+    public void getMeta() {
+        audioPlayer.getMetaData();
+    }
+
+    public void exit() {
+        minim.dispose();
+    }
+
+    private float LinearToDecibel(float linear)
+    {
+        float db;
+
+        if (linear != 0.0f)
+            db = (float) (20.0f * Math.log10(linear));
+        else
+            db = -144.0f;  // effectively minus infinity
+
+        return db;
+    }
 
     public Track getFirstSongFromPlaylist(Playlist x) {
 
@@ -319,40 +319,40 @@ public class MP3Player {
         }
 
 
-            public void run() {
+        public void run() {
 
-                audioPlayer.play(jumpTo);
+            audioPlayer.play(jumpTo);
 
-                if(autoNext) {
-                    try {
-                        jumpTo = 0;
-                        next();
-                    } catch (keinSongException e) {
-                        e.printStackTrace();
-                    }
+            if(autoNext) {
+                try {
+                    jumpTo = 0;
+                    next();
+                } catch (keinSongException e) {
+                    e.printStackTrace();
                 }
-                autoNextOn();
             }
+            autoNextOn();
+        }
 
-            public void interrupt(){
-                super.interrupt();
-                    minim.stop();
+        public void interrupt(){
+            super.interrupt();
+            minim.stop();
 
-                return;
-            }
+            return;
+        }
 
-            public void skip(int millis){
+        public void skip(int millis){
 
             audioPlayer.skip(millis);
 
-                if(autoNext) {
-                    try {
-                        next();
-                    } catch (keinSongException e) {
-                        e.printStackTrace();
-                    }
+            if(autoNext) {
+                try {
+                    next();
+                } catch (keinSongException e) {
+                    e.printStackTrace();
                 }
             }
+        }
 
 
     }

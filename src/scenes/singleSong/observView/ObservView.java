@@ -24,6 +24,7 @@ public class ObservView {
     private static VBox region;
     private static AllPlaylistsView left;
     private static ActPlaylistView playlistCenter;
+    private MainViewController singleSong;
 
     public Scene buildScene(PlayerGUI gui, MP3Player player) {
         root = new StackPane();
@@ -32,10 +33,10 @@ public class ObservView {
         observView = new Scene(root, 1024, 750);
         root.setBackground(new Background(new BackgroundFill(new Color(0.2, 0.2, 0.2, 1.0), CornerRadii.EMPTY, Insets.EMPTY)));
 
-        left = new AllPlaylistsView();
-        playlistCenter = new ActPlaylistView(player);
-        songCenter = new SingleSongView(player);
-        MainViewController singleSong = new MainViewController(player, SelectMainView.MOBILE);
+        left = new AllPlaylistsView(this);
+        playlistCenter = new ActPlaylistView(this, player);
+        songCenter = new SingleSongView(this, player);
+        singleSong = new MainViewController(this, player, SelectMainView.DESKTOP);
         bottom = singleSong.getView();
         bottom.setAlignment(Pos.BOTTOM_CENTER);
 
@@ -83,6 +84,10 @@ public class ObservView {
     public static void switchView(){
         all.getChildren().remove(top);
         root.getChildren().add(0,songCenter);
+    }
+
+    public void changePlayButton(){
+        singleSong.changePlayButton();
     }
 
 }
