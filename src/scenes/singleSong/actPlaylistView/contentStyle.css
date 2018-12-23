@@ -1,0 +1,124 @@
+/*AUFLISTUNG DER IN DER PLAYLIST ENTHALTENEN SONGS*/
+
+
+
+.list-cell:even, .list-cell:odd {
+        -fx-text-fill:#fff;
+        -fx-font-weight:normal;
+        -fx-background-color:rgba(0, 0, 0, 0);
+        -fx-padding:10 0 10 0;
+        -fx-border-width: 0 0 0.15 0;
+        -fx-border-color: #fff;
+}
+
+.list-cell:even:hover, .list-cell:odd:hover {
+         -fx-text-fill:#74CCDB;
+ }
+.list-cell:even:selected, .list-cell:odd:selected, .list-cell:odd:focused, .list-cell:even:focused {
+          -fx-text-fill:#74CCDB;
+ }
+
+.label{
+      -fx-text-fill:#fff;
+}
+
+
+.list-cell:hover .label{
+  -fx-text-fill:#74CCDB;
+
+}
+
+.list-cell:selected .label, .list-cell:focused .label{
+  -fx-text-fill:#74CCDB;
+}
+
+.list-cell:selected .label:{
+    -fx-text-fill:#74CCDB;
+}
+
+.list-view .scroll-bar:vertical {
+   -fx-padding: 0px;
+}
+.list-view .scroll-bar:horizontal {
+   -fx-padding: 0px;
+}
+
+
+
+.headline{
+        -fx-fill:rgba(255, 255, 255, 0.5);
+   }
+.headline:hover{
+        -fx-fill:rgba(255, 255, 255);
+ }
+
+
+
+
+.allPlaylists .scroll-bar:horizontal , .allPlaylists  .scroll-bar:vertical, .allPlaylists .scroll-bar:horizontal .track, .allPlaylists .scroll-bar:vertical .track, .allPlaylists .scroll-bar:horizontal .thumb, .allPlaylists .scroll-bar:vertical .thumb, .allPlaylists .scroll-bar .filler {
+    -fx-background-color:transparent;
+    -fx-background-color: rgba(0, 0, 0, 0);
+    	-fx-background-insets: 0, 0, 0;
+    	-fx-background-radius: 0em;
+    	 -fx-background-radius: 0em;
+    	 -fx-border-color:rgba(0, 0, 0, 0);
+    	 -fx-opacity:0;
+    	 -fx-padding:0px;
+    	 -fx-shape: " ";
+
+}
+
+
+
+
+.wrapper .scroll-bar:horizontal , .wrapper .scroll-bar:vertical, .wrapper .scroll-bar:horizontal .track, .wrapper .scroll-bar:vertical .track, .wrapper .scroll-bar:horizontal .thumb, .wrapper .scroll-bar:vertical .thumb, .wrapper .scroll-bar .corner {
+    -fx-background-color:transparent;
+    -fx-background-color: rgba(0, 0, 0, 0);
+    	-fx-background-insets: 0, 0, 0;
+    	-fx-background-radius: 0em;
+    	 -fx-background-radius: 0em;
+    	 -fx-border-color:rgba(0, 0, 0, 0);
+    	 -fx-opacity:0;
+    	 -fx-padding:0px;
+    	 -fx-shape: " ";
+
+}
+
+
+.scroll-pane > .viewport {
+   -fx-background-color: transparent;
+}
+
+.scroll-pane {
+   -fx-background-color: transparent;
+}
+
+.scrollbar .scroll-bar:vertical .track{
+ -fx-background-color:transparent;
+    -fx-background-color: rgba(0, 0, 0, 0);
+ -fx-opacity:0;
+}
+.scrolling .scroll-bar:vertical{
+      -fx-background-color:transparent;
+          -fx-background-color: rgba(0, 0, 0, 0);
+          	-fx-background-insets: 0, 0, 0;
+          	-fx-background-radius: 0em;
+          	 -fx-background-radius: 0em;
+          	 -fx-border-color:rgba(0, 0, 0, 0);
+          	 -fx-opacity:0;
+          	 -fx-padding:0px;
+          	 -fx-shape: " ";
+   }
+
+.scrolling .scroll-bar:horizontal{
+
+       -fx-background-color:transparent;
+           -fx-background-color: rgba(0, 0, 0, 0);
+           	-fx-background-insets: 0, 0, 0;
+           	-fx-background-radius: 0em;
+           	 -fx-background-radius: 0em;
+           	 -fx-border-color:rgba(0, 0, 0, 0);
+           	 -fx-opacity:0;
+           	 -fx-padding:0px;
+           	 -fx-shape: " ";
+        }
