@@ -54,7 +54,8 @@ public class AllPlaylistsView extends ScrollPane {
         allPlaylists.prefHeightProperty().bind(Bindings.size(list).multiply(LIST_CELL_HEIGHT));
 
         allPlaylists.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            ActPlaylistView.setAktPlaylist(allPlaylists.getSelectionModel().getSelectedItem());
+            observView.getPlaylistCenter().setAktPlaylist(allPlaylists.getSelectionModel().getSelectedItem());
+            observView.getPlaylistCenter().updatePlaylistInfo(allPlaylists.getSelectionModel().getSelectedItem());
         });
 
         all.getChildren().addAll(bibliothekenTxt, allPlaylists, playlistsTxt);
