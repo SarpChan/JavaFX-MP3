@@ -20,7 +20,7 @@ public class TrackCell extends javafx.scene.control.ListCell<Controller.Track> {
     private Label songlength;
     //private static Pane root;
     private DateFormat zeitanzeige = new SimpleDateFormat("mm:ss");
-    private static GridPane root;
+    private GridPane root;
 
 
     public TrackCell() {
@@ -62,15 +62,19 @@ public class TrackCell extends javafx.scene.control.ListCell<Controller.Track> {
 
     protected void updateItem(Track p, boolean empty) {
         super.updateItem(p, empty);
-        if(!empty) {
+        if(p == null || empty) {
+
+           setText(null);
+           setGraphic(null);
+
+        } else {
             title.setText(p.getTitle());
             artist.setText(p.getArtist());
             album.setText(p.getAlbum());
             songlength.setText(zeitanzeige.format(p.getSonglength()));
 
-            this.setGraphic(root);
-        } else {
-            this.setGraphic(null);
+            setGraphic(root);
+
         }
     }
 
