@@ -60,10 +60,11 @@ public class ActPlaylistView extends ScrollPane {
     ObservableList<Playlist> allPlaylists;
     ObservableList<Track> trackList;
 
-    static Text status, actPlaylistTitle, actPlaylistLength, actTrackAmmount;
+    Text status, actPlaylistTitle, actPlaylistLength, actTrackAmmount;
     ImageView actImg;
     private static Playlist aktPlaylist = PlaylistManager.getPlaylist("default");
     private static ObservableList<Track> list = FXCollections.observableArrayList();
+    private DateFormat zeitanzeige = new SimpleDateFormat("mm:ss");
 
     public ActPlaylistView(ObservView observView, MP3Player player) {
         dataAndTitleAndImg = new HBox();
@@ -86,12 +87,12 @@ public class ActPlaylistView extends ScrollPane {
         dataAndTitle.setPadding(new Insets(0,30,0,0));
         data.setPrefWidth(400);
 
-        trackList = FXCollections.observableArrayList();
+
         allPlaylists = FXCollections.observableArrayList();
         allPlaylists.addAll(PlaylistManager.getAllPlaylists());
-        DateFormat zeitanzeige = new SimpleDateFormat("mm:ss");
 
-            trackList.addAll(aktPlaylist.getTracks());
+
+
             actPlaylistTitle = new Text(aktPlaylist.getName());
             actPlaylistLength = new Text(String.valueOf(zeitanzeige.format(aktPlaylist.getPlaytime())) + " Minuten");
             actTrackAmmount = new Text(String.valueOf(aktPlaylist.getNumberTracks()) + (" Tracks - "));
@@ -154,7 +155,7 @@ public class ActPlaylistView extends ScrollPane {
         actImg.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                ObservView.switchView();
+                observView.switchView();
             }
         });
 
@@ -209,7 +210,7 @@ public class ActPlaylistView extends ScrollPane {
         paused = !paused;
     }
 
-    public static void calcDataWidth(double x){
+    public void calcDataWidth(double x){
         actPlaylistTitle.setWrappingWidth((x-80)*0.45);
         data.setPrefWidth((x-80)*0.45);
 
@@ -229,5 +230,10 @@ public class ActPlaylistView extends ScrollPane {
         trackListView.setItems(list);
     }
 
+    public void updatePlaylistInfo(Playlist playlist){
+        actPlaylistTitle.setText(playlist.getName());
+        actPlaylistLength = new Text(String.valueOf(zeitanzeige.format(playlist.getPlaytime())) + " Minuten");
+        actTrackAmmount = new Text(String.valueOf(playlist.getNumberTracks()) + (" Tracks - "));
+    }
 
 }

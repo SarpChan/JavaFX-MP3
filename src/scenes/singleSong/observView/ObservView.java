@@ -19,7 +19,7 @@ public class ObservView {
     private static GridPane top;
     private static VBox all;
     private static Scene observView;
-    private static SingleSongView songCenter;
+    private SingleSongView songCenter;
     private static VBox bottom;
     private static VBox region;
     private static AllPlaylistsView left;
@@ -58,7 +58,7 @@ public class ObservView {
         root.getChildren().addAll(all);
 
         observView.widthProperty().addListener(e -> {
-            ActPlaylistView.calcDataWidth(observView.getWidth());
+            playlistCenter.calcDataWidth(observView.getWidth());
             SingleSongView.setImgWidth(observView.getWidth());
 
         });
@@ -81,7 +81,7 @@ public class ObservView {
         return observView.getWidth();
     }
 
-    public static void switchView(){
+    public void switchView(){
         all.getChildren().remove(top);
         root.getChildren().add(0,songCenter);
     }
@@ -90,4 +90,7 @@ public class ObservView {
         singleSong.changePlayButton();
     }
 
+    public static ActPlaylistView getPlaylistCenter() {
+        return playlistCenter;
+    }
 }

@@ -22,6 +22,7 @@ public class MP3Player {
     private Track aktSong;
     private MyThread playThread;
     private int jumpTo;
+    private boolean skipping = false;
 
 
     public Playlist getAktPlaylist() {
@@ -57,7 +58,7 @@ public class MP3Player {
     }
     public long getSongLength(){
 
-        
+
         return aktSong!= null? aktSong.getSonglength():0;
 
     }
@@ -214,7 +215,10 @@ public class MP3Player {
     public void skip(int mseconds){
         autoNextOff();
         if(isInitialized()) {
-            jumpTo = mseconds + audioPlayer.position();
+
+            skipping = true;
+            audioPlayer.skip(mseconds);
+           /* jumpTo = mseconds + audioPlayer.position();
             System.out.println(jumpTo);
 
 
@@ -224,10 +228,12 @@ public class MP3Player {
             playThread = new MyThread();
             playThread.start();
 
-
+*/
 
 
         }
+        skipping = false;
+        autoNextOn();
     }
 
     public boolean previous() throws keinSongException{
@@ -321,8 +327,9 @@ public class MP3Player {
 
         public void run() {
 
-            audioPlayer.play(jumpTo);
-
+            do {
+                audioPlayer.play();
+            }while(skipping);
             if(autoNext) {
                 try {
                     jumpTo = 0;
