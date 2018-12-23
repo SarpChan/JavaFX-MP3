@@ -19,8 +19,8 @@ import scenes.singleSong.observView.ObservView;
 
 public class SingleSongView extends StackPane{
     StackPane root;
-    static ImageView actImg;
-    static int scale = 50;
+    ImageView actImg;
+    int scale = 50;
 
     public SingleSongView(ObservView observView, MP3Player player) {
         root = new StackPane();
@@ -38,15 +38,15 @@ public class SingleSongView extends StackPane{
         //actImg.setBlendMode(BlendMode.ADD);
        // actImg.setFitWidth(root.getWidth()+scale);
         //actImg.setFitHeight(root.getHeight()+scale);
-        actImg.setFitWidth(ObservView.getRootWidth()+scale);
-        actImg.setFitHeight(ObservView.getRootWidth()+scale);
+        actImg.setFitWidth(observView.getRootWidth()+scale);
+        actImg.setFitHeight(observView.getRootWidth()+scale);
 
 
         Rectangle rectangle = new Rectangle();
         LinearGradient linearGrad = new LinearGradient(0,0,0,1,true,CycleMethod.NO_CYCLE,new Stop(0.05f, Color.rgb(0, 0, 0, 0)),new Stop(0.9f, averageColor));
         rectangle.setFill(linearGrad);
-        rectangle.setWidth(ObservView.getRootWidth()+scale);
-        rectangle.setHeight(ObservView.getRootHeight()+scale);
+        rectangle.setWidth(observView.getRootWidth()+scale);
+        rectangle.setHeight(observView.getRootHeight()+scale);
 
         bottom.setAlignment(Pos.BOTTOM_CENTER);
         VBox region = new VBox();
@@ -89,7 +89,7 @@ public class SingleSongView extends StackPane{
 
     }
 
-    public static void setImgWidth(double x){
+    public void setImgWidth(double x){
         actImg.setFitWidth(x+scale);
         actImg.setFitHeight(x+scale);
     }

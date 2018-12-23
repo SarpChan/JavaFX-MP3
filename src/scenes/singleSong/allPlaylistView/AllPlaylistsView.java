@@ -52,6 +52,9 @@ public class AllPlaylistsView extends ScrollPane {
         allPlaylists.getStyleClass().add("scrollbar");
         allPlaylists.setBackground(new Background(new BackgroundFill( new Color(0,0,0,0), CornerRadii.EMPTY, Insets.EMPTY)));
         allPlaylists.prefHeightProperty().bind(Bindings.size(list).multiply(LIST_CELL_HEIGHT));
+        allPlaylists.prefWidth(40);
+        allPlaylists.minWidth(40);
+        allPlaylists.maxWidth(40);
 
         allPlaylists.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             observView.getPlaylistCenter().setAktPlaylist(allPlaylists.getSelectionModel().getSelectedItem());
@@ -64,7 +67,7 @@ public class AllPlaylistsView extends ScrollPane {
         this.setContent(all);
         this.getStyleClass().add("allPlaylistsView");
         this.setHbarPolicy(ScrollBarPolicy.NEVER);
-        this.setPadding(new Insets(0, 0, 0, 0));
+        this.setPadding(new Insets(0, 0, 0, 10));
 
     }
 }

@@ -22,6 +22,7 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 
 import javafx.scene.input.MouseEvent;
+import javafx.util.Callback;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -53,17 +54,17 @@ public class ActPlaylistView extends ScrollPane {
     GridPane tableHeader = new GridPane();
     final int LIST_CELL_HEIGHT = 50;
     final double OPACITY = 0.5;
-    static ListView <Track> trackListView;
+    ListView <Track> trackListView;
 
     Label titel,artist,album,length;
 
     ObservableList<Playlist> allPlaylists;
-    ObservableList<Track> trackList;
+
 
     Text status, actPlaylistTitle, actPlaylistLength, actTrackAmmount;
     ImageView actImg;
-    private static Playlist aktPlaylist = PlaylistManager.getPlaylist("default");
-    private static ObservableList<Track> list = FXCollections.observableArrayList();
+    private Playlist aktPlaylist = PlaylistManager.getPlaylist("default");
+    private ObservableList<Track> list = FXCollections.observableArrayList();
     private DateFormat zeitanzeige = new SimpleDateFormat("mm:ss");
 
     public ActPlaylistView(ObservView observView, MP3Player player) {
@@ -84,7 +85,7 @@ public class ActPlaylistView extends ScrollPane {
         data.setAlignment(Pos.TOP_LEFT);
         dataAndTitleAndImg.setAlignment(Pos.TOP_LEFT);
         data.setPadding(new Insets(0, 00, 8, 00));
-        dataAndTitle.setPadding(new Insets(0,30,0,0));
+        dataAndTitle.setPadding(new Insets(0,30,0,10));
         data.setPrefWidth(400);
 
 
@@ -115,8 +116,14 @@ public class ActPlaylistView extends ScrollPane {
         tableHeader.getColumnConstraints().addAll(titleColumn, artistColumn, albumColumn, songlengthColumn);
 
         trackListView = new ListView<>();
-        trackListView.setCellFactory(param -> {
-            return new TrackCell();
+        trackListView.setCellFactory(new Callback<ListView<Track>, ListCell<Track>>() {
+
+            @Override
+            public ListCell<Track> call(ListView<Track> param) {
+                // TODO Auto-generated method stub
+                return new TrackCell();
+            }
+
         });
 
         // Hier muss von der PlaylistListe die darzustellende Playlist geholt werden
@@ -148,7 +155,7 @@ public class ActPlaylistView extends ScrollPane {
 
         //ALL PLAYLIST INFO
         actImg = new ImageView();
-        actImg.setImage(player.getAlbumImage());
+        actImg.setImage(aktPlaylist.getTracks().getFirst().getImage());
         actImg.setFitWidth(150);
         actImg.setFitHeight(150);
 
@@ -221,13 +228,16 @@ public class ActPlaylistView extends ScrollPane {
         return all.widthProperty();
     }
 
-    public static void setAktPlaylist(Playlist playlist ){
-        trackListView.getStyleClass().add("table");
+    public void setAktPlaylist(Playlist playlist ){
 
-        list.clear();
+
+
+        list.addAll(playlist.getTracks());
+        list.removeAll(aktPlaylist.getTracks());
         aktPlaylist = playlist;
-        list.addAll(aktPlaylist.getTracks());
+
         trackListView.setItems(list);
+
     }
 
     public void updatePlaylistInfo(Playlist playlist){

@@ -15,15 +15,15 @@ import scenes.singleSong.allPlaylistView.AllPlaylistsView;
 import scenes.singleSong.singleSongView.SingleSongView;
 
 public class ObservView {
-    private static StackPane root;
-    private static GridPane top;
-    private static VBox all;
-    private static Scene observView;
+    private StackPane root;
+    private GridPane top;
+    private VBox all;
+    private Scene observView;
     private SingleSongView songCenter;
-    private static VBox bottom;
-    private static VBox region;
-    private static AllPlaylistsView left;
-    private static ActPlaylistView playlistCenter;
+    private VBox bottom;
+    private VBox region;
+    private AllPlaylistsView left;
+    private ActPlaylistView playlistCenter;
     private MainViewController singleSong;
 
     public Scene buildScene(PlayerGUI gui, MP3Player player) {
@@ -59,7 +59,7 @@ public class ObservView {
 
         observView.widthProperty().addListener(e -> {
             playlistCenter.calcDataWidth(observView.getWidth());
-            SingleSongView.setImgWidth(observView.getWidth());
+            songCenter.setImgWidth(observView.getWidth());
 
         });
         observView.getStylesheets().add(getClass().
@@ -70,10 +70,10 @@ public class ObservView {
         return observView;
     }
 
-    public static double getRootWidth(){
+    public double getRootWidth(){
         return observView.getWidth();
     }
-    public static double getRootHeight(){
+    public double getRootHeight(){
         return observView.getHeight();
     }
 
@@ -90,7 +90,7 @@ public class ObservView {
         singleSong.changePlayButton();
     }
 
-    public static ActPlaylistView getPlaylistCenter() {
+    public ActPlaylistView getPlaylistCenter() {
         return playlistCenter;
     }
 }
