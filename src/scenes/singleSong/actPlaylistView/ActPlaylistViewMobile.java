@@ -1,5 +1,6 @@
 package scenes.singleSong.actPlaylistView;
 
+
 import Applikation.PlayerGUI;
 import Controller.MP3Player;
 import Controller.Playlist;
@@ -7,23 +8,19 @@ import Controller.PlaylistManager;
 import Controller.Track;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyDoubleProperty;
-import javafx.event.EventHandler;
-import javafx.geometry.HPos;
-import Exceptions.keinSongException;
-import javafx.scene.control.*;
-import javafx.scene.paint.Color;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-
-import javafx.scene.input.MouseEvent;
-import javafx.util.Callback;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -32,7 +29,6 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -40,22 +36,15 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.layout.VBox;
+public class ActPlaylistViewMobile extends ScrollPane {
 
-
-import scenes.singleSong.observView.ObservView;
-
-
-public class ActPlaylistView extends ScrollPane {
     boolean paused = true;
     static VBox dataAndTitle, all;
     static HBox dataAndTitleAndImg, data, playeinstellung;
     GridPane tableHeader = new GridPane();
     final int LIST_CELL_HEIGHT = 50;
     final double OPACITY = 0.5;
-    ListView <Track> trackListView;
+    ListView<Track> trackListView;
 
     Label titel,artist,album,length;
 
@@ -69,7 +58,7 @@ public class ActPlaylistView extends ScrollPane {
     ObservableList<Track> list = FXCollections.observableArrayList();
     DateFormat zeitanzeige = new SimpleDateFormat("mm:ss");
 
-    public ActPlaylistView(PlayerGUI observView, MP3Player player) {
+    public ActPlaylistViewMobile(PlayerGUI observView, MP3Player player) {
         dataAndTitleAndImg = new HBox();
         dataAndTitle = new VBox();
         data = new HBox();
@@ -77,12 +66,10 @@ public class ActPlaylistView extends ScrollPane {
         all = new VBox();
         titel = new Label(("Titel").toUpperCase());
         artist = new Label(("Künstler").toUpperCase());
-        album = new Label(("Album").toUpperCase());
-        length = new Label(("Länge").toUpperCase());
+
         titel.setOpacity(OPACITY);
         artist.setOpacity(OPACITY);
-        album.setOpacity(OPACITY);
-        length.setOpacity(OPACITY);
+
 
         dataAndTitle.setAlignment(Pos.TOP_LEFT);
         data.setAlignment(Pos.TOP_LEFT);
@@ -95,7 +82,7 @@ public class ActPlaylistView extends ScrollPane {
 
 
         allPlaylists.addAll(PlaylistManager.getAllPlaylists());
-       aktPlaylist = PlaylistManager.getPlaylistArrayList().get(0);
+        aktPlaylist = PlaylistManager.getPlaylistArrayList().get(0);
 
 
 
@@ -117,19 +104,12 @@ public class ActPlaylistView extends ScrollPane {
         //TABELLE
         tableHeader.add(titel, 0,0);
         tableHeader.add(artist,1,0);
-        tableHeader.add(album,2,0);
-        tableHeader.add(length, 3,0);
 
         ColumnConstraints titleColumn = new ColumnConstraints();
-        titleColumn.setPercentWidth(50);
+        titleColumn.setPercentWidth(70);
         ColumnConstraints artistColumn = new ColumnConstraints();
-        artistColumn.setPercentWidth(20);
-        ColumnConstraints albumColumn = new ColumnConstraints();
-        albumColumn.setPercentWidth(20);
-        ColumnConstraints songlengthColumn = new ColumnConstraints();
-        songlengthColumn.setPercentWidth(10);
-        songlengthColumn.setHalignment(HPos.RIGHT);
-        tableHeader.getColumnConstraints().addAll(titleColumn, artistColumn, albumColumn, songlengthColumn);
+        artistColumn.setPercentWidth(30);
+        tableHeader.getColumnConstraints().addAll(titleColumn, artistColumn);
 
         trackListView = new ListView<>();
 
@@ -246,7 +226,5 @@ public class ActPlaylistView extends ScrollPane {
         actTrackAmmount.setText(String.valueOf(playlist.getNumberTracks()) + (" Tracks - "));
         actImg.setImage(playlist.getTracks().getFirst().getImage());
     }
-
-
 
 }

@@ -5,20 +5,18 @@ import Controller.MP3Player;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import scenes.singleSong.MainView;
 import scenes.singleSong.MainViewController;
 import scenes.singleSong.SelectMainView;
 import scenes.singleSong.actPlaylistView.ActPlaylistView;
 import scenes.singleSong.actPlaylistView.ActPlaylistViewController;
+import scenes.singleSong.actPlaylistView.ActPlaylistViewMobile;
 import scenes.singleSong.allPlaylistView.AllPlaylistsView;
 import scenes.singleSong.singleSongView.SingleSongView;
 
+public class ObservMobile {
 
-
-public class ObservView {
     private StackPane root;
     private GridPane top;
     private VBox all;
@@ -27,45 +25,54 @@ public class ObservView {
     private VBox bottom;
     private VBox region;
     private AllPlaylistsView left;
-    private ActPlaylistView playlistCenter;
+    private ActPlaylistViewController playlistCenter;
     private MainViewController singleSong;
-    ActPlaylistViewController playlistControl;
 
     public Scene buildScene(PlayerGUI gui, MP3Player player) {
-        playlistControl = new ActPlaylistViewController(gui, player, SelectMainView.DESKTOP);
         root = new StackPane();
         top = new GridPane();
         all = new VBox();
         observView = new Scene(root, 1024, 750);
         root.setBackground(new Background(new BackgroundFill(new Color(0.2, 0.2, 0.2, 1.0), CornerRadii.EMPTY, Insets.EMPTY)));
 
-        left = new AllPlaylistsView(this);
-
-        songCenter = new SingleSongView(this, player);
-        singleSong = new MainViewController(player, SelectMainView.DESKTOP);
-        playlistCenter = new ActPlaylistViewController(gui, player, SelectMainView.DESKTOP).getView();
+       // songCenter = new SingleSongView(this, player);
+        singleSong = new MainViewController(player, SelectMainView.MOBILE);
+        playlistCenter = new ActPlaylistViewController(gui, player, SelectMainView.MOBILE);
         bottom = singleSong.getView();
         bottom.setAlignment(Pos.BOTTOM_CENTER);
 
-        top.add(left, 0,0);
-        top.add(playlistCenter,1,0);
+        //left = new AllPlaylistsView();
+
+        //top.add(left, 0,0);
+        top.add(playlistCenter.getViewMobile(),1,0);
         top.setAlignment(Pos.TOP_CENTER);
         top.setPadding(new Insets(30,0,0,0));
-        ColumnConstraints leftColumn = new ColumnConstraints();
-        leftColumn.setPercentWidth(25);
+        //ColumnConstraints leftColumn = new ColumnConstraints();
+        //leftColumn.setPercentWidth(25);
         ColumnConstraints rightColumn = new ColumnConstraints();
-        rightColumn.setPercentWidth(75);
-        top.getColumnConstraints().addAll(leftColumn,rightColumn);
+        rightColumn.setPercentWidth(100);
+        top.getColumnConstraints().addAll(rightColumn);
 
         region = new VBox();
         VBox.setVgrow(region, Priority.ALWAYS);
         region.setPrefHeight(0);
 
-        all.getChildren().addAll(top,region,bottom);
+
+        HBox playlist = new HBox();
+        HBox regionForPlaylist1 = new HBox();
+        HBox regionForPlaylist2 = new HBox();
+        HBox.setHgrow(regionForPlaylist1, Priority.ALWAYS);
+        HBox.setHgrow(regionForPlaylist2, Priority.ALWAYS);
+
+        playlist.getChildren().addAll(playlistCenter.getViewMobile());
+        playlist.setAlignment(Pos.CENTER);
+        playlist.setPadding(new Insets(25, 0, 0, 0));
+
+        all.getChildren().addAll(playlist,region,bottom);
         root.getChildren().addAll(all);
 
         observView.widthProperty().addListener(e -> {
-            playlistControl.calcDataWidth(observView.getWidth());
+            playlistCenter.calcDataWidth(observView.getWidth());
             songCenter.setImgWidth(observView.getWidth());
 
         });
@@ -97,7 +104,7 @@ public class ObservView {
         singleSong.changePlayButton();
     }
 
-    public ActPlaylistView getPlaylistCenter() {
+    /*public ActPlaylistView getPlaylistCenter() {
         return playlistCenter;
-    }
+    }*/
 }

@@ -7,6 +7,8 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import scenes.singleSong.SelectMainView;
+import scenes.singleSong.observView.ObservMobile;
 import scenes.singleSong.observView.ObservView;
 
 
@@ -29,23 +31,31 @@ public class PlayerGUI extends Application {
     public void start(Stage primaryStage) {
 
         main = primaryStage;
-        main.setMinWidth(550);
+        //main.setMinWidth(550);
         main.setMinHeight(150);
 
         szenen = new HashMap<>();
 
 
        szenen.put("01", new ObservView().buildScene(this, player));
+       szenen.put("02", new ObservMobile().buildScene(this, player));
 
 
 
 
 
         primaryStage.setTitle("Coolste Gruppe");
-        primaryStage.setScene(szenen.get("04"));
+        primaryStage.setScene(szenen.get("01"));
 
         primaryStage.show();
 
+        main.widthProperty().addListener((observable, oldValue, newValue) -> {
+            if(newValue.doubleValue() <= 550){
+                switchView(SelectMainView.MOBILE);
+            }else{
+                switchView(SelectMainView.DESKTOP);
+            }
+        });
 
     }
 
@@ -57,11 +67,15 @@ public class PlayerGUI extends Application {
 
 
 
-    public void switchScene(PlayerGUI gui, String code){
+    public void switchView(SelectMainView select){
 
-        switch (code){
-            case "04":
+        switch (select){
+            case DESKTOP:
+                main.setScene(szenen.get("01"));
                 //main.setScene(new scenes.singleSong.MainView().buildScene(this, player));
+                break;
+            case MOBILE:
+                main.setScene(szenen.get("02"));
                 break;
         }
     }

@@ -109,9 +109,12 @@ public class MainViewController{
             if (player.getAktZeit() <= 50) {
 
                 songLength.setText(zeitanzeige.format(player.getSongLength()));
-                if(player.isInitialized()) {
-                    player.volume((float) volume.getValue() / 100);
+                if(player.isPlayerActive()){
+                    play.setStyle("-fx-shape: \"" + getPathFromSVG("pause") + "\";");
+                } else{
+                    play.setStyle("-fx-shape: \"" + getPathFromSVG("play") + "\";");
                 }
+                    player.volume((float) volume.getValue() / 100);
 
             } else if(player.getAktZeit() >= player.getSongLength() - 50){
                 try {

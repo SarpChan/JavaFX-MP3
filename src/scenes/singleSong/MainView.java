@@ -9,7 +9,6 @@ import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.shape.Line;
-import javafx.scene.text.TextAlignment;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
