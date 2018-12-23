@@ -48,14 +48,16 @@ public class ObservView {
         bottom.setAlignment(Pos.BOTTOM_CENTER);
 
         top.add(left, 0,0);
-        top.add(playlistCenter,1,0);
+        top.add(playlistCenter,2,0);
         top.setAlignment(Pos.TOP_CENTER);
         top.setPadding(new Insets(30,0,0,0));
         ColumnConstraints leftColumn = new ColumnConstraints();
-        leftColumn.setPercentWidth(25);
+        leftColumn.setPercentWidth(20);
+        ColumnConstraints centerColumn = new ColumnConstraints();
+        centerColumn.setPercentWidth(5);
         ColumnConstraints rightColumn = new ColumnConstraints();
         rightColumn.setPercentWidth(75);
-        top.getColumnConstraints().addAll(leftColumn,rightColumn);
+        top.getColumnConstraints().addAll(leftColumn,centerColumn,rightColumn);
 
         region = new VBox();
         VBox.setVgrow(region, Priority.ALWAYS);
