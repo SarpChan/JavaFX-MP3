@@ -43,7 +43,7 @@ public class MainViewController{
 
     private double volumePosition = 50;
 
-    public MainViewController(ObservView observView, MP3Player player, SelectMainView select){
+    public MainViewController(MP3Player player, SelectMainView select){
         this.select = select;
         this.player = player;
 
