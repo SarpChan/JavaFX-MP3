@@ -74,13 +74,13 @@ public class MainView extends VBox{
         progressTimeLine.endXProperty().bind(this.widthProperty());
 
         //PANE LEFT
-        interpret = new Label();
+        interpret = new Label(player.getSongArtist());
         interpret.setStyle("-fx-font-weight:lighter;");
         interpret.setStyle("-fx-text-fill:#74CCDB;");
         interpret.getStyleClass().addAll("secondarytext");
 
 
-        titleInfo = new Label();
+        titleInfo = new Label(player.getTrack());
         titleInfo.setStyle("-fx-font-weight:bold;");
         titleInfo.setStyle("-fx-text-fill:#74CCDB;");
 

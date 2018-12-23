@@ -113,6 +113,8 @@ public class MainViewController{
             } else if(player.getAktZeit() >= player.getSongLength() - 50){
                 try {
                     player.next();
+                    songLength.setText(zeitanzeige.format(player.getSongLength()));
+                    player.volume((float) volume.getValue() / 100);
                 } catch (keinSongException e) {
                     e.printStackTrace();
                 }

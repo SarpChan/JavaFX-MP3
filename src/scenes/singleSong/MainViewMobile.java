@@ -55,6 +55,8 @@ public class MainViewMobile extends VBox {
         controlButtons.setAlignment(Pos.CENTER);
         controlButtons.setPadding(new Insets(15, 0, 15, 0));
         controlButtons.setPrefHeight(100);
+        controlButtons.setMinHeight(100);
+        controlButtons.setMaxHeight(100);
 
         HBox timeBox = new HBox();
         HBox songLengthBox = new HBox();
