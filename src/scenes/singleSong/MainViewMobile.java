@@ -98,7 +98,7 @@ public class MainViewMobile extends VBox {
         progressPane.setAlignment(Pos.CENTER_LEFT);
         progressPane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         progressPane.setMinSize(Double.MIN_VALUE, Double.MIN_VALUE);
-        progressPane.setPadding(new Insets(0, 0, 15, 0));
+        progressPane.setPadding(new Insets(0, 0, 5, 0));
 
         interpret = new Label(player.getSongArtist());
         interpret.setStyle("-fx-font-weight:lighter;");
@@ -108,7 +108,7 @@ public class MainViewMobile extends VBox {
         titleInfo = new Label(player.getTrack());
         titleInfo.setStyle("-fx-font-weight:bold;");
         titleInfo.setStyle("-fx-text-fill:#74CCDB;");
-        titleInfo.setPadding(new Insets(15, 50, 0, 50));
+        titleInfo.setPadding(new Insets(0, 60, 0, 60));
 
         volume = new Slider();
         volume.setId("volume");
