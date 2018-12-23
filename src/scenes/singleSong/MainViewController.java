@@ -113,8 +113,9 @@ public class MainViewController{
                     play.setStyle("-fx-shape: \"" + getPathFromSVG("pause") + "\";");
                 } else{
                     play.setStyle("-fx-shape: \"" + getPathFromSVG("play") + "\";");
-                }
+                } if(player.isInitialized()) {
                     player.volume((float) volume.getValue() / 100);
+                }
 
             } else if(player.getAktZeit() >= player.getSongLength() - 50){
                 try {
