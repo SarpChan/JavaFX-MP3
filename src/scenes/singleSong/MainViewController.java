@@ -18,6 +18,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import scenes.singleSong.observView.ObservView;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -42,7 +43,7 @@ public class MainViewController{
 
     private double volumePosition = 50;
 
-    public MainViewController(MP3Player player, SelectMainView select){
+    public MainViewController(ObservView observView, MP3Player player, SelectMainView select){
         this.select = select;
         this.player = player;
 
@@ -108,7 +109,9 @@ public class MainViewController{
             if (player.getAktZeit() <= 50) {
 
                 songLength.setText(zeitanzeige.format(player.getSongLength()));
-                player.volume((float) volume.getValue() / 100);
+                if(player.isInitialized()) {
+                    player.volume((float) volume.getValue() / 100);
+                }
 
             } else {
                 time.setText(zeitanzeige.format(player.getAktZeit()));
@@ -332,6 +335,9 @@ public class MainViewController{
             e.printStackTrace();
         }
         return d;
+    }
+    public void changePlayButton(){
+        play.setStyle("-fx-shape: \"" + getPathFromSVG("pause") + "\";");
     }
 
 

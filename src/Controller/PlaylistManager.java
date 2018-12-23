@@ -17,7 +17,22 @@ import java.nio.file.*;
 public class PlaylistManager {
 
 	private static ArrayList<Playlist> playlistArrayList = new ArrayList<>();
-	
+	private static ArrayList<Track> newPlaylist;
+	private static boolean openPlaylist = false;
+
+	public static boolean isOpenPlaylist() {
+		return openPlaylist;
+	}
+
+	public static void addToOpenPlaylist(Track track){
+		newPlaylist.add(track);
+	}
+
+	public static void createNewPlaylist(){
+		newPlaylist = new ArrayList<>();
+		openPlaylist = true;
+	}
+
 	public ArrayList<String> getPlaylists(String nameOfPlaylist){
 		
 		

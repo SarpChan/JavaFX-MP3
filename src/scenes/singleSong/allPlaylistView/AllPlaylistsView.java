@@ -22,6 +22,7 @@ import javafx.scene.layout.VBox;
 
 import javafx.scene.input.MouseEvent;
 import scenes.singleSong.actPlaylistView.ActPlaylistView;
+import scenes.singleSong.observView.ObservView;
 
 public class AllPlaylistsView extends ScrollPane {
    ListView <Playlist> allPlaylists;
@@ -30,7 +31,7 @@ public class AllPlaylistsView extends ScrollPane {
    final int LIST_CELL_HEIGHT = 50;
    VBox all;
 
-    public AllPlaylistsView(){
+    public AllPlaylistsView(ObservView observView){
         allPlaylists = new ListView<>();
         list = FXCollections.observableArrayList();
         list.addAll(PlaylistManager.getAllPlaylists());

@@ -38,25 +38,11 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
-import javafx.stage.Stage;
-import javafx.util.Callback;
 
 
-import javafx.scene.layout.VBox;
 import scenes.singleSong.observView.ObservView;
 
 
@@ -79,7 +65,7 @@ public class ActPlaylistView extends ScrollPane {
     private static Playlist aktPlaylist = PlaylistManager.getPlaylist("default");
     private static ObservableList<Track> list = FXCollections.observableArrayList();
 
-    public ActPlaylistView(MP3Player player) {
+    public ActPlaylistView(ObservView observView, MP3Player player) {
         dataAndTitleAndImg = new HBox();
         dataAndTitle = new VBox();
         data = new HBox();
@@ -140,6 +126,7 @@ public class ActPlaylistView extends ScrollPane {
         trackListView.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             try {
                 player.play(trackListView.getSelectionModel().getSelectedItem(), aktPlaylist);
+                observView.changePlayButton();
             } catch (keinSongException e) {
                 e.printStackTrace();
             }

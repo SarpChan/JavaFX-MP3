@@ -10,7 +10,7 @@ public class ActPlaylistViewController {
 
     ActPlaylistViewController(MP3Player player){
         this.player = player;
-        this.view = new ActPlaylistView(player);
+        //this.view = new ActPlaylistView(this, player);
         //this.controlView = view.controlView;
         initilize();
     }
