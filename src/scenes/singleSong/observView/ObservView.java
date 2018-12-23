@@ -76,6 +76,7 @@ public class ObservView {
         observView.getStylesheets().add(getClass().
                 getResource("contentStyle.css").toExternalForm());
 
+
         return observView;
     }
 

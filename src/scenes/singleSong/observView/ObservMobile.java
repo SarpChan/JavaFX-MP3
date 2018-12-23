@@ -73,7 +73,7 @@ public class ObservMobile {
 
         observView.widthProperty().addListener(e -> {
             playlistCenter.calcDataWidth(observView.getWidth());
-            songCenter.setImgWidth(observView.getWidth());
+            //songCenter.setImgWidth(observView.getWidth());
 
         });
         observView.getStylesheets().add(getClass().

@@ -36,6 +36,13 @@
     -fx-text-fill:#74CCDB;
 }
 
+.list-view .scroll-bar:vertical {
+   -fx-padding: 0px;
+}
+.list-view .scroll-bar:horizontal {
+   -fx-padding: 0px;
+}
+
 
 
 .headline{
@@ -56,7 +63,7 @@
     	 -fx-background-radius: 0em;
     	 -fx-border-color:rgba(0, 0, 0, 0);
     	 -fx-opacity:0;
-    	 -fx-padding:0;
+    	 -fx-padding:0px;
     	 -fx-shape: " ";
 
 }
@@ -72,7 +79,7 @@
     	 -fx-background-radius: 0em;
     	 -fx-border-color:rgba(0, 0, 0, 0);
     	 -fx-opacity:0;
-    	 -fx-padding:0;
+    	 -fx-padding:0px;
     	 -fx-shape: " ";
 
 }
@@ -91,3 +98,27 @@
     -fx-background-color: rgba(0, 0, 0, 0);
  -fx-opacity:0;
 }
+.scrolling .scroll-bar:vertical{
+      -fx-background-color:transparent;
+          -fx-background-color: rgba(0, 0, 0, 0);
+          	-fx-background-insets: 0, 0, 0;
+          	-fx-background-radius: 0em;
+          	 -fx-background-radius: 0em;
+          	 -fx-border-color:rgba(0, 0, 0, 0);
+          	 -fx-opacity:0;
+          	 -fx-padding:0px;
+          	 -fx-shape: " ";
+   }
+
+.scrolling .scroll-bar:horizontal{
+
+       -fx-background-color:transparent;
+           -fx-background-color: rgba(0, 0, 0, 0);
+           	-fx-background-insets: 0, 0, 0;
+           	-fx-background-radius: 0em;
+           	 -fx-background-radius: 0em;
+           	 -fx-border-color:rgba(0, 0, 0, 0);
+           	 -fx-opacity:0;
+           	 -fx-padding:0px;
+           	 -fx-shape: " ";
+        }
