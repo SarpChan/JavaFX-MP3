@@ -110,6 +110,31 @@
      -size: 16, 20;
  }
 
+.notActive-button{
+     -icon-paint: white;
+     -fx-background-color: -icon-paint;
+     -size: 14, 18;
+     -fx-min-height: -size;
+     -fx-min-width: -size;
+     -fx-max-height: -size;
+     -fx-max-width: -size;
+}
+.notActive-button:hover {
+     -icon-paint: -fx-primarycolor;
+     -size: 14, 18;
+ }
+
+.active-button{
+     -icon-paint: -fx-primarycolor;
+     -fx-background-color: -icon-paint;
+     -size: 14, 18;
+     -fx-min-height: -size;
+     -fx-min-width: -size;
+     -fx-max-height: -size;
+     -fx-max-width: -size;
+
+
+}
 .play-button {
     -icon-paint: white;
     -fx-background-color: -icon-paint;

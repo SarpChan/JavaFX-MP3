@@ -232,10 +232,11 @@ public class MainViewController{
 
         previous.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             try {
-                player.previous();
-                play.setStyle("-fx-shape: \"" + getPathFromSVG("pause") + "\";");
-                interpret.setText(player.getSongArtist());
-                time.setText(zeitanzeige.format(player.getSongLength()));
+                if(player.previous()) {
+                    play.setStyle("-fx-shape: \"" + getPathFromSVG("pause") + "\";");
+                    interpret.setText(player.getSongArtist());
+                    time.setText(zeitanzeige.format(player.getSongLength()));
+                }
             } catch (keinSongException e) {
 
             }
@@ -245,10 +246,11 @@ public class MainViewController{
             try {
 
 
-                player.next();
-                play.setStyle("-fx-shape: \"" + getPathFromSVG("pause") + "\";");
-                interpret.setText(player.getSongArtist());
-                time.setText(zeitanzeige.format(player.getSongLength()));
+                if(player.next()) {
+                    play.setStyle("-fx-shape: \"" + getPathFromSVG("pause") + "\";");
+                    interpret.setText(player.getSongArtist());
+                    time.setText(zeitanzeige.format(player.getSongLength()));
+                }
             } catch (keinSongException e) {
                 e.printStackTrace();
             }

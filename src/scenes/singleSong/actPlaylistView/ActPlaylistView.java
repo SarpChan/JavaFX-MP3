@@ -50,7 +50,7 @@ import scenes.singleSong.observView.ObservView;
 public class ActPlaylistView extends ScrollPane {
     boolean paused = true;
     static VBox dataAndTitle, all;
-    static HBox dataAndTitleAndImg, data;
+    static HBox dataAndTitleAndImg, data, playeinstellung;
     GridPane tableHeader = new GridPane();
     final int LIST_CELL_HEIGHT = 50;
     final double OPACITY = 0.5;
@@ -58,12 +58,13 @@ public class ActPlaylistView extends ScrollPane {
 
     Label titel,artist,album,length;
 
-    ObservableList<Playlist> allPlaylists;
+    ObservableList<Playlist> allPlaylists = FXCollections.observableArrayList();;
 
 
     Text status, actPlaylistTitle, actPlaylistLength, actTrackAmmount;
     ImageView actImg;
-    private Playlist aktPlaylist = PlaylistManager.getPlaylist("default");
+    Button shuffle, repeat;
+    private Playlist aktPlaylist;
     private ObservableList<Track> list = FXCollections.observableArrayList();
     private DateFormat zeitanzeige = new SimpleDateFormat("mm:ss");
 
@@ -71,6 +72,7 @@ public class ActPlaylistView extends ScrollPane {
         dataAndTitleAndImg = new HBox();
         dataAndTitle = new VBox();
         data = new HBox();
+        playeinstellung = new HBox(20);
         all = new VBox();
         titel = new Label(("Titel").toUpperCase());
         artist = new Label(("Künstler").toUpperCase());
@@ -87,17 +89,51 @@ public class ActPlaylistView extends ScrollPane {
         data.setPadding(new Insets(0, 00, 8, 00));
         dataAndTitle.setPadding(new Insets(0,30,0,10));
         data.setPrefWidth(400);
+        playeinstellung.setAlignment(Pos.TOP_LEFT);
+        playeinstellung.setPadding(new Insets(70, 0, 0, 0));
 
 
-        allPlaylists = FXCollections.observableArrayList();
         allPlaylists.addAll(PlaylistManager.getAllPlaylists());
+       aktPlaylist = PlaylistManager.getPlaylistArrayList().get(0);
 
 
 
-            actPlaylistTitle = new Text(aktPlaylist.getName());
-            actPlaylistLength = new Text(String.valueOf(zeitanzeige.format(aktPlaylist.getPlaytime())) + " Minuten");
-            actTrackAmmount = new Text(String.valueOf(aktPlaylist.getNumberTracks()) + (" Tracks - "));
+        actPlaylistTitle = new Text(aktPlaylist.getName());
+        actPlaylistLength = new Text(String.valueOf(zeitanzeige.format(aktPlaylist.getPlaytime())) + " Minuten");
+        actTrackAmmount = new Text(String.valueOf(aktPlaylist.getNumberTracks()) + (" Tracks - "));
 
+        shuffle = new Button();
+        shuffle.getStyleClass().add("notActive-button");
+        shuffle.setStyle("-fx-shape: \"" + getPathFromSVG("shuffle") + "\";");
+        shuffle.setPadding(new Insets(20, 100, 0, 100));
+        shuffle.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            player.changeShuffle();
+            if(shuffle.getStyleClass().contains("notActive-button")){
+
+                    shuffle.getStyleClass().removeAll("notActive-button");
+                    shuffle.getStyleClass().add("active-button");
+            } else{
+                shuffle.getStyleClass().removeAll("active-button");
+                shuffle.getStyleClass().add("notActive-button");
+            }
+
+        });
+
+        repeat = new Button();
+        repeat.getStyleClass().add("notActive-button");
+        repeat.setStyle("-fx-shape: \"" + getPathFromSVG("repeat") + "\";");
+        repeat.setPadding(new Insets(20, 100, 0, 100));
+        repeat.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            player.changeRepeat();
+            if(repeat.getStyleClass().contains("notActive-button")){
+
+                repeat.getStyleClass().removeAll("notActive-button");
+                repeat.getStyleClass().add("active-button");
+            } else{
+                repeat.getStyleClass().removeAll("active-button");
+                repeat.getStyleClass().add("notActive-button");
+            }
+        });
         //TABELLE
         tableHeader.add(titel, 0,0);
         tableHeader.add(artist,1,0);
@@ -120,7 +156,7 @@ public class ActPlaylistView extends ScrollPane {
 
             @Override
             public ListCell<Track> call(ListView<Track> param) {
-                // TODO Auto-generated method stub
+
                 return new TrackCell();
             }
 
@@ -150,8 +186,9 @@ public class ActPlaylistView extends ScrollPane {
         actPlaylistLength.getStyleClass().add("basictxt");
         actPlaylistTitle.getStyleClass().add("playlistHeadline");
 
+        playeinstellung.getChildren().addAll(shuffle, repeat);
         data.getChildren().addAll(status, actTrackAmmount, actPlaylistLength);
-        dataAndTitle.getChildren().addAll(data, actPlaylistTitle);
+        dataAndTitle.getChildren().addAll(data, actPlaylistTitle, playeinstellung);
 
         //ALL PLAYLIST INFO
         actImg = new ImageView();

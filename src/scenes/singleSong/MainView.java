@@ -157,7 +157,7 @@ public class MainView extends VBox{
         });
 
 
-        //ControlButtons
+        //Buttons
 
         controlButtons = new HBox(20);
         play = new Button();

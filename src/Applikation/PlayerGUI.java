@@ -5,7 +5,6 @@ import javafx.application.Application;
 
 
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import scenes.singleSong.observView.ObservView;
 
@@ -34,16 +33,15 @@ public class PlayerGUI extends Application {
 
         szenen = new HashMap<>();
 
-       // szenen.put("02", new scenes.MikeView.MikeView().buildScene(this,player));
-       // szenen.put("03", new scenes.singleSong.MainView().buildScene(this, player));
-       szenen.put("04", new ObservView().buildScene(this, player));
-       //szenen.put("05", new SingleSongView().buildScene(player));
+
+       szenen.put("01", new ObservView().buildScene(this, player));
+
 
 
 
 
         primaryStage.setTitle("Coolste Gruppe");
-        primaryStage.setScene(szenen.get("04"));
+        primaryStage.setScene(szenen.get("01"));
 
         primaryStage.show();
 
@@ -61,7 +59,7 @@ public class PlayerGUI extends Application {
     public void switchScene(PlayerGUI gui, String code){
 
         switch (code){
-            case "04":
+            case "01":
                 //main.setScene(new scenes.singleSong.MainView().buildScene(this, player));
                 break;
         }
