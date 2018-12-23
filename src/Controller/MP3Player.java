@@ -24,16 +24,26 @@ public class MP3Player {
     private int jumpTo;
     private boolean skipping = false;
 
+    /** Constructor
+     *
+     */
+    public MP3Player(){
+        minim = new SimpleMinim();
+    }
+
 
     public Playlist getAktPlaylist() {
         return aktPlaylist;
     }
 
+    /**
+     * boolean shuffle wird jeweils falsch/wahr gesetzt
+     */
     public void changeShuffle(){shuffle = !shuffle;}
 
-    public boolean isShuffle() {
-        return shuffle;
-    }
+    /**
+     * boolean repeat wird jeweils falsch/wahr gesetzt
+     */
     public void changeRepeat(){repeat = !repeat;}
 
 
@@ -42,13 +52,19 @@ public class MP3Player {
     }
 
 
-
+    /**
+     * automatisch Nächstes Lied aus
+     */
     private void autoNextOff(){autoNext = false;}
+    /**
+     * automatisch Nächstes Lied an
+     */
     private void autoNextOn(){autoNext = true;}
 
-    public void setAktPlaylist (Playlist playlist){
-        this.aktPlaylist = playlist;
-    }
+    /**
+     * Gibt die Positionen des aktuellen Liedes zurück
+     * @return aktPos in Milliseconds
+     */
     public int getAktZeit(){
         if (audioPlayer == null){
             return 0;
@@ -56,6 +72,11 @@ public class MP3Player {
 
         return audioPlayer.position() ;
     }
+
+    /**
+     *
+     * @return songlength in Milliseconds
+     */
     public long getSongLength(){
 
 
@@ -92,15 +113,11 @@ public class MP3Player {
         return img;
     }
 
-    //Mp3agic Ende
 
-
-    public MP3Player(){
-        minim = new SimpleMinim();
-    }
-
-
-
+    /**
+     * Ist der Player initialisiert?
+     * @return true/false
+     */
     public boolean isInitialized(){
         if(audioPlayer == null){
             return false;
@@ -109,10 +126,21 @@ public class MP3Player {
         }
     }
 
+    /**
+     * Spielt der Player etwas ab?
+     * @return true/false
+     */
     public boolean isPlayerActive() {
         return audioPlayer == null?false:audioPlayer.isPlaying();
     }
 
+    /**
+     *
+     * Lädt einen Track als aktuellen Song
+     *
+     * @param track der zu spielende Track
+     * @throws keinSongException
+     */
     public void play(Track track) throws keinSongException {
 
         if(playThread!=null) {
@@ -127,6 +155,14 @@ public class MP3Player {
         play();
 
     }
+
+    /**
+     * Lädt einen Track und eine Playlist als aktuellen Track/ aktuelle Playlist
+     *
+     * @param track der zu spielende Track
+     * @param playlist die Playlist in dem sich der Track befindet
+     * @throws keinSongException
+     */
     public void play(Track track, Playlist playlist) throws keinSongException {
 
         autoNextOff();
@@ -146,17 +182,26 @@ public class MP3Player {
 
     }
 
+    /**
+     * Startet das Abspielen eines Songs.
+     *
+     * Hat der Player noch kein Lied geladen, dann wird das erste Lied aus der ersten Playlist geladen
+     * und abgespielt
+     *
+     * @throws keinSongException
+     */
     public void play() throws keinSongException {
 
         if (audioPlayer == null) {
 
             aktSong = getFirstSongFromPlaylist(PlaylistManager.getPlaylistArrayList().get(0));
+            aktPlaylist = PlaylistManager.getPlaylistArrayList().get(0);
             audioPlayer = minim.loadMP3File(aktSong.getPath());
 
             playThread = new MyThread();
 
             playThread.start();
-            aktPlaylist = PlaylistManager.getPlaylistArrayList().get(0);
+
 
 
 
@@ -171,17 +216,23 @@ public class MP3Player {
 
     }
 
-    public void next() throws keinSongException{
+    /**
+     * Spielt das nächste Lied ab
+     *
+     * @throws keinSongException
+     * @return true/false war die Operation erfolgreich?
+     */
+    public boolean next() throws keinSongException{
 
-
-        if (shuffle){
+    if (isInitialized()) {
+        if (shuffle) {
             jumpTo = 0;
             aktSong = aktPlaylist.getTracks().get(getRandomNumberInRange(0, aktPlaylist.getTracks().size()));
             autoNextOff();
             playThread.interrupt();
 
             play(aktSong);
-
+            return true;
 
         } else {
 
@@ -189,29 +240,37 @@ public class MP3Player {
                     ) {
                 if (aktSong.equals(track)) {
                     int temp = aktPlaylist.getTracks().indexOf(track);
-                    if (aktPlaylist.getTracks().get(temp + 1) != null) {
+                    if (temp < aktPlaylist.getNumberTracks()-1) {
                         jumpTo = 0;
                         aktSong = aktPlaylist.getTracks().get(temp + 1);
                         autoNextOff();
                         playThread.interrupt();
 
                         play(aktSong);
-                        break;
-                    } else if (isRepeat() && aktPlaylist.getTracks().get(temp + 1) == null){
+                        return true;
+
+                    } else if (repeat && temp == aktPlaylist.getNumberTracks()-1){
                         jumpTo = 0;
                         aktSong = aktPlaylist.getTracks().getFirst();
                         autoNextOff();
                         playThread.interrupt();
 
                         play(aktSong);
+                        return true;
                     }
                 }
 
             }
         }
-
     }
+    return false;
+}
 
+    /**
+     * Springt an eine bestimmte Stelle im Lied
+     *
+     * @param mseconds von der aktuellen Position relative Zeitangabe in Millisekunden zu der gesprungen wird
+     */
     public void skip(int mseconds){
         autoNextOff();
         if(isInitialized()) {
@@ -219,17 +278,6 @@ public class MP3Player {
             skipping = true;
             audioPlayer.mute();
             audioPlayer.skip(mseconds);
-           /* jumpTo = mseconds + audioPlayer.position();
-            System.out.println(jumpTo);
-
-
-            playThread.interrupt();
-
-            audioPlayer= minim.loadMP3File(aktSong.getPath());
-            playThread = new MyThread();
-            playThread.start();
-
-*/
 
 
         }
@@ -238,36 +286,42 @@ public class MP3Player {
         autoNextOn();
     }
 
-    public boolean previous() throws keinSongException{
+    /**
+     * Spielt das vorherige Lied ab
+     *
+     * @return true/false war die Operation erfolgreich?
+     * @throws keinSongException
+     */
+    public boolean previous() throws keinSongException {
 
         Track oldTrack = null;
         jumpTo = 0;
 
+        if (isInitialized()) {
+            for (Track track : aktPlaylist.getTracks()
+                    ) {
+                if (aktSong.equals(track)) {
 
-        for (Track track: aktPlaylist.getTracks()
-                ) {
-            if(aktSong.equals(track)){
-
-                if(oldTrack != null){
-                    aktSong = oldTrack;
-                    autoNextOff();
-                    playThread.interrupt();
-                    play(aktSong);
-                    return true;
+                    if (oldTrack != null) {
+                        aktSong = oldTrack;
+                        autoNextOff();
+                        playThread.interrupt();
+                        play(aktSong);
+                        return true;
+                    }
                 }
-                return false;
-
+                oldTrack = track;
             }
-            oldTrack = track;
-
         }
-
-
         return false;
     }
 
 
-
+    /**
+     * Pausiert das Lied
+     *
+     * @throws keinSongException
+     */
     public void pause() throws keinSongException {
 
         if (audioPlayer == null) {
@@ -280,6 +334,11 @@ public class MP3Player {
 
     }
 
+    /**
+     * Stoppt das Lied
+     *
+     * @throws keinSongException
+     */
     public void stop() throws keinSongException{
         if (audioPlayer == null) {
             throw new keinSongException("Leider wurde kein Song ausgewählt");
@@ -289,6 +348,11 @@ public class MP3Player {
 
     }
 
+    /**
+     * Setzt die Lautstärke auf den Wert value
+     *
+     * @param value
+     */
     public void volume (float value) {
         audioPlayer.setGain(LinearToDecibel(value));
     }
@@ -301,6 +365,12 @@ public class MP3Player {
         minim.dispose();
     }
 
+    /**
+     * Hilfsmethode zur Umrechnung von linear zu dezibel
+     *
+     * @param linear
+     * @return umgerechneter dezibelwert
+     */
     private float LinearToDecibel(float linear)
     {
         float db;
@@ -313,14 +383,22 @@ public class MP3Player {
         return db;
     }
 
-    public Track getFirstSongFromPlaylist(Playlist x) {
+    /**
+     * Gibt den ersten Song einer Playlist zurück
+     *
+     * @param playlist aus der der erste Song geholt werden soll
+     * @return Track
+     */
+    public Track getFirstSongFromPlaylist(Playlist playlist) {
 
-        return x.getTracks().getFirst();
+        return playlist.getTracks().getFirst();
     }
 
+
+
+
+
     private class MyThread extends Thread{
-
-
 
         public MyThread(){
             super();
@@ -350,21 +428,17 @@ public class MP3Player {
             return;
         }
 
-        public void skip(int millis){
-
-            audioPlayer.skip(millis);
-
-            if(autoNext) {
-                try {
-                    next();
-                } catch (keinSongException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
 
 
     }
+
+    /**
+     * Hilfsmethode fürs Shuffeln, wählt zufällige Zahl in einem Bereich aus
+     *
+     * @param min untere Bereichsgrenze
+     * @param max obere Bereichsgrenze
+     * @return wert im Wertebereich
+     */
     private int getRandomNumberInRange(int min, int max) {
 
         if (min >= max) {

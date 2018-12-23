@@ -34,9 +34,10 @@ public class ObservView {
         root.setBackground(new Background(new BackgroundFill(new Color(0.2, 0.2, 0.2, 1.0), CornerRadii.EMPTY, Insets.EMPTY)));
 
         left = new AllPlaylistsView(this);
-        playlistCenter = new ActPlaylistView(this, player);
+
         songCenter = new SingleSongView(this, player);
-        singleSong = new MainViewController(this, player, SelectMainView.DESKTOP);
+        singleSong = new MainViewController(player, SelectMainView.DESKTOP);
+        playlistCenter = new ActPlaylistView(this, player);
         bottom = singleSong.getView();
         bottom.setAlignment(Pos.BOTTOM_CENTER);
 

@@ -20,50 +20,47 @@ public class PlaylistManager {
 	private static ArrayList<Track> newPlaylist;
 	private static boolean openPlaylist = false;
 
+	/**
+	 * Wurde eine Playlist neu erstellt, aber noch nicht gespeichert?
+	 * @return
+	 */
 	public static boolean isOpenPlaylist() {
 		return openPlaylist;
 	}
 
+	/**
+	 * Füge Track zu erstellter Playlist hinzu
+	 * @param track
+	 */
 	public static void addToOpenPlaylist(Track track){
 		newPlaylist.add(track);
 	}
 
+	/**
+	 * Erstelle neue Playlist
+	 */
 	public static void createNewPlaylist(){
 		newPlaylist = new ArrayList<>();
 		openPlaylist = true;
 	}
 
-	public ArrayList<String> getPlaylists(String nameOfPlaylist){
-		
-		
-		ArrayList<String> playlist = new ArrayList<String>();
-		BufferedReader reader = null;
-		try {
-			
-			reader = new BufferedReader(new FileReader(nameOfPlaylist + ".m3u"));
-			String line;
-			while ((line = reader.readLine()) != null) {
-				playlist.add(line);
-			}
-			
-		} catch(IOException e) {
-			System.out.println("laden von " + nameOfPlaylist + ".m3u ist fehlgeschlagen. nicht");
-			e.printStackTrace();
-		}finally {
-		 try {
-			reader.close();
-		 } catch (IOException e) {
-			e.printStackTrace();
-		}
-		}
-		
-		return playlist;
-		
-	}
+
+	/**
+	 * Gibt Playlist mit dem Namen nameOfPlaylist zurück
+	 * @param nameOfPlaylist
+	 * @return
+	 */
 	public static Playlist getPlaylist(String nameOfPlaylist){
 		int temp = playlistArrayList.indexOf(nameOfPlaylist);
-		return playlistArrayList.get(0);
+		return playlistArrayList.get(temp);
 	}
+
+	/**
+	 * Speichert Playlist mit Namen
+	 * @param playlist
+	 * @param name
+	 * @throws IOException
+	 */
 	
 	public static void savePlaylist(ArrayList<String> playlist, String name) throws IOException {
 
@@ -85,6 +82,10 @@ public class PlaylistManager {
 		
 	}
 
+	/** Überprüft Tracks auf Duplikate und gibt sie zurückt
+	 *
+	 * @return ArrayList aller Tracks als String
+	 */
 	
 	public static ArrayList<String> getAllTracks() {
 		
@@ -114,7 +115,13 @@ public class PlaylistManager {
 		
 		return allMp3s;
 	}
-	
+
+	/**
+	 * Hilfsmethode sucht Tracks im Angegebenen Pfad
+	 *
+	 * @param path
+	 * @return Liste von gefundendenen MP3 als Pfadstrings
+	 */
 	private static ArrayList<String> searchForMp3(String path) {
 
 		File  files[];
@@ -140,7 +147,13 @@ public class PlaylistManager {
 
 	}
 
-
+	/** Sammelt alle Playlisten im Musikordner und überprüft sie auf Duplikate
+	 *
+	 * Wenn keine Playlist gefunden wurde, dann sucht die Methode nach allen MP3 im Musikordner und erstellt
+	 * daraus eine Playlist.
+	 *
+	 * @return ArrayList aller Playlisten als Playlistobjekte
+	 */
 	public static ArrayList<Playlist> getAllPlaylists(){
 		ArrayList <String> allM3us = new ArrayList <> ();
 
@@ -166,9 +179,25 @@ public class PlaylistManager {
 		}
 		playlistArrayList = new ArrayList <>(playlists.values());
 
+		if(playlistArrayList.isEmpty()){
+			try {
+				savePlaylist(PlaylistManager.getAllTracks(), "default");
+			} catch (IOException e) {
+				e.printStackTrace();
+
+			}
+			getAllPlaylists();
+		}
+
 		return playlistArrayList;
 	}
 
+	/**
+	 * Hilfsmethode sucht Playlisten im Angegebenen Pfad
+	 *
+	 * @param path
+	 * @return Liste von gefundendenen Playlisten als Pfadstrings
+	 */
     private static ArrayList<String> searchForM3u(String path) {
 
         File  files[];
@@ -194,6 +223,10 @@ public class PlaylistManager {
 
     }
 
+	/**
+	 * Gibt Liste der Playlisten zurück
+	 * @return
+	 */
 	public static ArrayList<Playlist> getPlaylistArrayList() {
 		return playlistArrayList;
 	}
