@@ -217,6 +217,7 @@ public class MP3Player {
         if(isInitialized()) {
 
             skipping = true;
+            audioPlayer.mute();
             audioPlayer.skip(mseconds);
            /* jumpTo = mseconds + audioPlayer.position();
             System.out.println(jumpTo);
@@ -233,6 +234,7 @@ public class MP3Player {
 
         }
         skipping = false;
+        audioPlayer.unmute();
         autoNextOn();
     }
 

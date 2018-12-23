@@ -232,8 +232,9 @@ public class ActPlaylistView extends ScrollPane {
 
     public void updatePlaylistInfo(Playlist playlist){
         actPlaylistTitle.setText(playlist.getName());
-        actPlaylistLength = new Text(String.valueOf(zeitanzeige.format(playlist.getPlaytime())) + " Minuten");
-        actTrackAmmount = new Text(String.valueOf(playlist.getNumberTracks()) + (" Tracks - "));
+        actPlaylistLength.setText(String.valueOf(zeitanzeige.format(playlist.getPlaytime())) + " Minuten");
+        actTrackAmmount.setText(String.valueOf(playlist.getNumberTracks()) + (" Tracks - "));
+        actImg.setImage(playlist.getTracks().getFirst().getImage());
     }
 
 }
