@@ -35,7 +35,7 @@ public class ObservView {
         left = new AllPlaylistsView();
         playlistCenter = new ActPlaylistView(player);
         songCenter = new SingleSongView(player);
-        MainViewController singleSong = new MainViewController(player, SelectMainView.DESKTOP);
+        MainViewController singleSong = new MainViewController(player, SelectMainView.MOBILE);
         bottom = singleSong.getView();
         bottom.setAlignment(Pos.BOTTOM_CENTER);
 

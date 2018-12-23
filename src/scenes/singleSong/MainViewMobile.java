@@ -31,14 +31,11 @@ public class MainViewMobile extends VBox {
     Line progressTimeLine;
     Label interpret, titleInfo;
 
-
     public MainViewMobile (MP3Player player){
         progress = new Slider();
         progress.setMin(0);
         progress.setMax(100);
         progress.setId("progress");
-
-
 
         HBox controlButtons = new HBox(25);
 
@@ -46,13 +43,9 @@ public class MainViewMobile extends VBox {
         play.getStyleClass().add("play-button");
         play.setStyle("-fx-shape: \"" + getPathFromSVG("play") + "\";");
 
-
-
-
         previous = new Button();
         previous.getStyleClass().add("icon-button");
         previous.setStyle("-fx-shape: \"" + getPathFromSVG("previous") + "\";");
-
 
         next = new Button();
         next.getStyleClass().add("icon-button");
@@ -62,7 +55,6 @@ public class MainViewMobile extends VBox {
         controlButtons.setAlignment(Pos.CENTER);
         controlButtons.setPadding(new Insets(15, 0, 15, 0));
         controlButtons.setPrefHeight(100);
-
 
         HBox timeBox = new HBox();
         HBox songLengthBox = new HBox();
@@ -77,7 +69,6 @@ public class MainViewMobile extends VBox {
         songLength.setText(zeitanzeige.format(player.getSongLength()));
         songLength.getStyleClass().add("secondarytext");
 
-
         timeBox.getChildren().add(time);
         timeBox.setPadding(new Insets(0,0,0,15));
         timeBox.setAlignment(Pos.CENTER_LEFT);
@@ -91,7 +82,7 @@ public class MainViewMobile extends VBox {
 
         HBox allTimeBox = new HBox();
         allTimeBox.getChildren().addAll(timeBox, region,  songLengthBox);
-        allTimeBox.setPadding(new Insets(15, 0, 0, 0));
+
 
         progressTimeSlider = new ProgressBar(0.0);
         progressTimeSlider.minWidth(0);
@@ -107,8 +98,7 @@ public class MainViewMobile extends VBox {
         progressPane.setAlignment(Pos.CENTER_LEFT);
         progressPane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         progressPane.setMinSize(Double.MIN_VALUE, Double.MIN_VALUE);
-        progressPane.setPadding(new Insets(15, 0, 0, 0));
-
+        progressPane.setPadding(new Insets(0, 0, 15, 0));
 
         interpret = new Label(player.getSongArtist());
         interpret.setStyle("-fx-font-weight:lighter;");
@@ -120,7 +110,6 @@ public class MainViewMobile extends VBox {
         titleInfo.setStyle("-fx-text-fill:#74CCDB;");
         titleInfo.setPadding(new Insets(15, 50, 0, 50));
 
-
         volume = new Slider();
         volume.setId("volume");
         volume.getStyleClass().add("pb2");
@@ -128,7 +117,6 @@ public class MainViewMobile extends VBox {
         volume.setMax(100);
         volume.setValue(50);
         volume.setOrientation(Orientation.HORIZONTAL);
-
 
         progressBarVolume = new ProgressBar(0.0);
         progressBarVolume.setMinWidth(volume.getMinWidth() + 5);
@@ -160,11 +148,6 @@ public class MainViewMobile extends VBox {
         this.getChildren().addAll(progressPane, allTimeBox, titleInfo, interpret, controlButtons, volumeElement);
         this.setAlignment(Pos.CENTER);
 
-
-
-
-
     }
-
 
 }

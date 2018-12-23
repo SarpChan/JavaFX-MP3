@@ -110,7 +110,13 @@ public class MainViewController{
                 songLength.setText(zeitanzeige.format(player.getSongLength()));
                 player.volume((float) volume.getValue() / 100);
 
-            } else {
+            } else if(player.getAktZeit() >= player.getSongLength() - 50){
+                try {
+                    player.next();
+                } catch (keinSongException e) {
+                    e.printStackTrace();
+                }
+            }else {
                 time.setText(zeitanzeige.format(player.getAktZeit()));
 
                 if(! progress.isValueChanging()) progress.setValue(((double) player.getAktZeit() / (double) player.getSongLength()) * 100);
