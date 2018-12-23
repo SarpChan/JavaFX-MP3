@@ -8,6 +8,8 @@ import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import scenes.singleSong.MainView;
+import scenes.singleSong.MainViewController;
+import scenes.singleSong.SelectMainView;
 import scenes.singleSong.actPlaylistView.ActPlaylistView;
 import scenes.singleSong.allPlaylistView.AllPlaylistsView;
 import scenes.singleSong.singleSongView.SingleSongView;
@@ -18,7 +20,7 @@ public class ObservView {
     private static VBox all;
     private static Scene observView;
     private static SingleSongView songCenter;
-    private static MainView bottom;
+    private static VBox bottom;
     private static VBox region;
     private static AllPlaylistsView left;
     private static ActPlaylistView playlistCenter;
@@ -33,7 +35,8 @@ public class ObservView {
         left = new AllPlaylistsView();
         playlistCenter = new ActPlaylistView(player);
         songCenter = new SingleSongView(player);
-        bottom = new MainView(player);
+        MainViewController singleSong = new MainViewController(player, SelectMainView.DESKTOP);
+        bottom = singleSong.getView();
         bottom.setAlignment(Pos.BOTTOM_CENTER);
 
         top.add(left, 0,0);
