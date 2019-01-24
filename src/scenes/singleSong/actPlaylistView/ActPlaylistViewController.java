@@ -38,6 +38,13 @@ public class ActPlaylistViewController {
         view = new ActPlaylistView(gui, player);
         viewMobile = new ActPlaylistViewMobile(gui, player);
         this.player = player;
+        view.getStyleClass().add("scrolling");
+        view.getStylesheets().add(getClass().
+                getResource("contentStyle.css").toExternalForm());
+        viewMobile.getStyleClass().add("scrolling");
+        view.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        viewMobile.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+
 
         switch(select){
             case DESKTOP:

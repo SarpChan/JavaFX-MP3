@@ -141,7 +141,7 @@ public class ActPlaylistView extends ScrollPane {
         trackListView.setItems(list);
         trackListView.setBackground(new Background(new BackgroundFill(new Color(0.2, 0.2, 0.2, 1.0), CornerRadii.EMPTY, Insets.EMPTY)));
 
-
+        trackListView.getStyleClass().add("list-view");
 
         trackListView.maxWidthProperty().bind(all.widthProperty());
 
