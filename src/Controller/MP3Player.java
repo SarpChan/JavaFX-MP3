@@ -4,6 +4,7 @@ package Controller;
 import Exceptions.keinSongException;
 import de.hsrm.mi.eibo.simpleplayer.SimpleAudioPlayer;
 import de.hsrm.mi.eibo.simpleplayer.SimpleMinim;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.image.Image;
 
 
@@ -23,12 +24,14 @@ public class MP3Player {
     private MyThread playThread;
     private int jumpTo;
     private boolean skipping = false;
+    private SimpleObjectProperty<Track> test;
 
     /** Constructor
      *
      */
     public MP3Player(){
         minim = new SimpleMinim();
+        test = new SimpleObjectProperty<>();
     }
 
 
@@ -190,6 +193,11 @@ public class MP3Player {
      *
      * @throws keinSongException
      */
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public SimpleObjectProperty<Track> testProperty(){
+        return test;
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void play() throws keinSongException {
 
         if (audioPlayer == null) {
@@ -197,20 +205,15 @@ public class MP3Player {
             aktSong = getFirstSongFromPlaylist(PlaylistManager.getPlaylistArrayList().get(0));
             aktPlaylist = PlaylistManager.getPlaylistArrayList().get(0);
             audioPlayer = minim.loadMP3File(aktSong.getPath());
-
-            playThread = new MyThread();
-
-            playThread.start();
-
-
-
-
-        }else {
-
-            playThread = new MyThread();
-
-            playThread.start();
         }
+
+            test.set(aktSong);
+            playThread = new MyThread();
+
+            playThread.start();
+
+
+
 
 
 

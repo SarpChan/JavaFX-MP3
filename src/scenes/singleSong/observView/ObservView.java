@@ -95,6 +95,7 @@ public class ObservView {
         root.getChildren().add(0,songCenter);
     }
 
+
     public void changePlayButton(){
         singleSong.changePlayButton();
     }

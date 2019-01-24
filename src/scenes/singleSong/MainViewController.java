@@ -107,7 +107,6 @@ public class MainViewController{
         KeyFrame watchTimeLine = new KeyFrame(Duration.millis(50), event -> {
 
             if (player.getAktZeit() <= 50) {
-
                 songLength.setText(zeitanzeige.format(player.getSongLength()));
                 if(player.isPlayerActive()){
                     play.setStyle("-fx-shape: \"" + getPathFromSVG("pause") + "\";");
@@ -256,8 +255,6 @@ public class MainViewController{
 
         next.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             try {
-
-
                 if(player.next()) {
                     play.setStyle("-fx-shape: \"" + getPathFromSVG("pause") + "\";");
                     interpret.setText(player.getSongArtist());
@@ -267,7 +264,6 @@ public class MainViewController{
                 e.printStackTrace();
             }
         });
-
     }
 
     private void calculatePB(Slider progress, ProgressBar bar1) {

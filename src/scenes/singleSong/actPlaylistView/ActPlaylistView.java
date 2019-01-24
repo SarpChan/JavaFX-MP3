@@ -93,8 +93,9 @@ public class ActPlaylistView extends ScrollPane {
         playeinstellung.setAlignment(Pos.TOP_LEFT);
         playeinstellung.setPadding(new Insets(70, 0, 0, 0));
 
-
-        allPlaylists.addAll(PlaylistManager.getAllPlaylists());
+        if(PlaylistManager.getPlaylistArrayList().isEmpty()) {
+            allPlaylists.addAll(PlaylistManager.getAllPlaylists());
+        }
        aktPlaylist = PlaylistManager.getPlaylistArrayList().get(0);
 
 

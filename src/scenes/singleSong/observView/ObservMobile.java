@@ -32,7 +32,7 @@ public class ObservMobile {
         root = new StackPane();
         top = new GridPane();
         all = new VBox();
-        observView = new Scene(root, 1024, 750);
+        observView = new Scene(root, 550, 750);
         root.setBackground(new Background(new BackgroundFill(new Color(0.2, 0.2, 0.2, 1.0), CornerRadii.EMPTY, Insets.EMPTY)));
 
        // songCenter = new SingleSongView(this, player);
@@ -107,4 +107,8 @@ public class ObservMobile {
     /*public ActPlaylistView getPlaylistCenter() {
         return playlistCenter;
     }*/
+
+    public StackPane getRoot() {
+        return root;
+    }
 }

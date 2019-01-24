@@ -62,9 +62,6 @@ public class ActPlaylistViewController {
 
         }
 
-
-
-
         initialize();
     }
 

@@ -68,6 +68,9 @@ public class TrackCell extends javafx.scene.control.ListCell<Controller.Track> {
            setGraphic(null);
 
         } else {
+            if(p.getTitle()==null || p.getTitle().equalsIgnoreCase("")){
+
+            }
             title.setText(p.getTitle());
             artist.setText(p.getArtist());
             album.setText(p.getAlbum());

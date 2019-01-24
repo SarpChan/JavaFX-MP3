@@ -36,28 +36,36 @@ public class Track {
 
             if(file!= null) {
                 if (file.hasId3v2Tag()) {
+                    if (file.getId3v2Tag().getTitle() != null){
 
-                    this.title = file.getId3v2Tag().getTitle();
+                        this.title = file.getId3v2Tag().getTitle();
 
-                    this.album = file.getId3v2Tag().getAlbum();
+                        this.album = file.getId3v2Tag().getAlbum();
 
-                    this.artist = file.getId3v2Tag().getAlbumArtist();
+                        this.artist = file.getId3v2Tag().getAlbumArtist();
 
-                    if (file.getId3v2Tag().getAlbumImage() != null) {
+                        if (file.getId3v2Tag().getAlbumImage() != null) {
 
-                        image = file.getId3v2Tag().getAlbumImage();
+                            image = file.getId3v2Tag().getAlbumImage();
+                        }
+                        this.songlength = file.getLengthInMilliseconds();
+
+                    } else if (file.getId3v2Tag().getTitle() == null){
+                        title = path.split("/")[path.split("/").length -1].split("\\.")[0];
+                        this.songlength = file.getLengthInMilliseconds();
                     }
-                    this.songlength = file.getLengthInMilliseconds();
-
 
                 } else if (file.hasId3v1Tag()) {
+                    if (file.getId3v1Tag().getTitle() != null) {
+                        this.album = file.getId3v1Tag().getAlbum();
 
-                    this.album = file.getId3v1Tag().getAlbum();
+                        this.artist = file.getId3v1Tag().getArtist();
 
-                    this.artist = file.getId3v1Tag().getArtist();
-
-                    this.songlength = file.getLengthInMilliseconds();
-
+                        this.songlength = file.getLengthInMilliseconds();
+                    } else {
+                        title = path.split("/")[path.split("/").length -1].split("\\.")[0];
+                        this.songlength = file.getLengthInMilliseconds();
+                    }
 
                 }
             }

@@ -34,7 +34,7 @@ public class AllPlaylistsView extends ScrollPane {
     public AllPlaylistsView(ObservView observView){
         allPlaylists = new ListView<>();
         list = FXCollections.observableArrayList();
-        list.addAll(PlaylistManager.getAllPlaylists());
+        list.addAll(PlaylistManager.getPlaylistArrayList());
         all = new VBox();
 
         for (Playlist playlist: list)

@@ -85,7 +85,6 @@ public class MainViewMobile extends VBox {
         HBox allTimeBox = new HBox();
         allTimeBox.getChildren().addAll(timeBox, region,  songLengthBox);
 
-
         progressTimeSlider = new ProgressBar(0.0);
         progressTimeSlider.minWidth(0);
         progressTimeSlider.setId("pb1");
@@ -135,7 +134,6 @@ public class MainViewMobile extends VBox {
         mute = new Button();
         mute.getStyleClass().add("mute-button");
         mute.setStyle("-fx-shape: \"" + getPathFromSVG("mute") + "\";");
-
 
         StackPane volumePane = new StackPane();
         volumePane.getChildren().addAll( progressBarVolume, volume);

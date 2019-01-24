@@ -39,6 +39,7 @@ public class PlayerGUI extends Application {
 
        szenen.put("01", new ObservView().buildScene(this, player));
        szenen.put("02", new ObservMobile().buildScene(this, player));
+       szenen.put("03", new ObservView().buildScene(this, player));
 
 
 
@@ -71,10 +72,13 @@ public class PlayerGUI extends Application {
 
         switch (select){
             case DESKTOP:
+               // szenen.get("01").setRoot(szenen.get("01").getRoot());
                 main.setScene(szenen.get("01"));
+
                 //main.setScene(new scenes.singleSong.MainView().buildScene(this, player));
                 break;
             case MOBILE:
+                //szenen.get("01").setRoot(szenen.get("02").getRoot());
                 main.setScene(szenen.get("02"));
                 break;
         }

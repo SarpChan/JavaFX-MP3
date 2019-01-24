@@ -81,7 +81,7 @@ public class ActPlaylistViewMobile extends ScrollPane {
         playeinstellung.setPadding(new Insets(70, 0, 0, 0));
 
 
-        allPlaylists.addAll(PlaylistManager.getAllPlaylists());
+        allPlaylists.addAll(PlaylistManager.getPlaylistArrayList());
         aktPlaylist = PlaylistManager.getPlaylistArrayList().get(0);
 
 
