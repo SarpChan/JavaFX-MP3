@@ -29,6 +29,9 @@ public class Playlist {
 
             while(trackAbsolPath != null){
                 tracks.addLast(new Track(trackAbsolPath));
+                if(tracks.getLast().getTitle() != null && tracks.getLast().getArtist() != null) {
+                    SpotSearchFeats.search(tracks.getLast());
+                }
                 playtime += tracks.getLast().getSonglength();
                 numberTracks++;
 

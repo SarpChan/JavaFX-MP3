@@ -3,6 +3,7 @@ package Controller;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.UnsupportedTagException;
+import com.wrapper.spotify.model_objects.specification.AudioFeatures;
 import javafx.scene.image.Image;
 
 
@@ -17,7 +18,8 @@ public class Track {
     private String path, title="N.A.", album="N.A.", artist="N.A.";
     private long songlength=0;
     private Mp3File file;
-
+    private AudioFeatures feats;
+    private String spotId;
     private DateFormat zeitanzeige = new SimpleDateFormat("mm:ss");
     private byte [] image;
 
@@ -110,6 +112,14 @@ public class Track {
             return new Image("defaultCover.png");
         }
 
+    }
+
+    public void setAudioFeatures(AudioFeatures feats){
+        this.feats = feats;
+    }
+
+    public void setSpotId(String spotId) {
+        this.spotId = spotId;
     }
 
     public String toString(){

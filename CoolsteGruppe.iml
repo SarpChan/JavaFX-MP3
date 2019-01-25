@@ -8,8 +8,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="CoolsteGruppe" level="project" />
-    <orderEntry type="library" name="eibo_staticscanner" level="project" />
     <orderEntry type="library" name="JavaFx" level="application" />
+    <orderEntry type="library" name="lib" level="project" />
+    <orderEntry type="library" name="httpcore-4.4.10" level="project" />
   </component>
 </module>
