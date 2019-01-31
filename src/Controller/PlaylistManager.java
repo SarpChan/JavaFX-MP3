@@ -190,8 +190,15 @@ public class PlaylistManager {
 		}
 
 		collectExistingTracks();
-		createPlaylist(new float [] {0.0f,0.4f,0.5f,0.0f,0.0f,0.0f,0.0f,0.4f,60.0f},"suggestTest");
-		createSuggestionPlaylist(SuggestionParams.VALENCE, SuggestionParams.BPM);
+		/*
+		minmax Paare:
+		Acousticness, Danceability, Energy, Instrumentalness, Valence, Tempo
+		 */
+		createPlaylist(new float [] {/*Acoustic*/0.2f,0.0f, /* Danceability*/0.4f,0.0f, /*Energy*/0.5f,0.0f,
+				/*Instrumentalness*/0.0f,0.0f, /*Valence*/0.4f,0.0f, /*Tempo*/60.0f,0.0f,},"energy");
+		createSuggestionPlaylist(SuggestionParams.MINVALENCE, SuggestionParams.MINBPM);
+
+
 
 		return playlistArrayList;
 	}
@@ -251,17 +258,8 @@ public class PlaylistManager {
 	}
 
 	private static void createPlaylist(float[] array, String name){
-		openPlaylists.addLast(new newPlaylist());
-		openPlaylists.getLast().setName(name);
-		openPlaylists.getLast().setAcousticness(array[0]);
-		openPlaylists.getLast().setDanceability(array[1]);
-		openPlaylists.getLast().setEnergy(array[2]);
-		openPlaylists.getLast().setInstrumentalness(array[3]);
-		openPlaylists.getLast().setLiveness(array[4]);
-		openPlaylists.getLast().setLoudness(array[5]);
-		openPlaylists.getLast().setSpeechiness(array[6]);
-		openPlaylists.getLast().setValence(array[7]);
-		openPlaylists.getLast().setTempo(array[8]);
+		openPlaylists.addLast(new newPlaylist(array, name));
+
 	}
 
 	private static void createSuggestionPlaylist(SuggestionParams... param){
@@ -271,73 +269,111 @@ public class PlaylistManager {
 		for (SuggestionParams actParam:
 			 param) {
 			switch (actParam){
-				case VALENCE:
+				case MINVALENCE:
 					for (Map.Entry<String, Track> entry : trackMap.entrySet()){
 
 						if(entry.getValue().getSpotId().equals(null)){
 							continue;
 						}
 
-						if(openPlaylists.getLast().getValence() > entry.getValue().getValence()){
+						if(openPlaylists.getLast().getMinValence() > entry.getValue().getValence()){
 							suggestedTracklist.remove(entry.getKey());
 						}
 					} break;
-				case BPM:
+				case MINBPM:
 					for (Map.Entry<String, Track> entry : trackMap.entrySet()){
 
 						if(entry.getValue().getSpotId().equals(null)){
 							continue;
-						} else if(openPlaylists.getLast().getTempo() > entry.getValue().getBPM()){
+						} else if(openPlaylists.getLast().getMinTempo() > entry.getValue().getBPM()){
 							suggestedTracklist.remove(entry.getKey());
 						}
 					} break;
-				case ACOUSTICNESS:
+				case MINACOUSTICNESS:
 					for (Map.Entry<String, Track> entry : trackMap.entrySet()){
 
 						if(entry.getValue().getSpotId().equals(null)){
 							continue;
-						} else if(openPlaylists.getLast().getAcousticness() > entry.getValue().getAcousticness()){
+						} else if(openPlaylists.getLast().getMinAcousticness() > entry.getValue().getAcousticness()){
 							suggestedTracklist.remove(entry.getKey());
 						}
 					} break;
-				case DANCEABILITY:
+				case MINDANCEABILITY:
 					for (Map.Entry<String, Track> entry : trackMap.entrySet()){
 
 						if(entry.getValue().getSpotId().equals(null)){
 							continue;
-						} else if(openPlaylists.getLast().getDanceability() > entry.getValue().getDanceability()){
+						} else if(openPlaylists.getLast().getMinDanceability() > entry.getValue().getDanceability()){
 							suggestedTracklist.remove(entry.getKey());
 						}
 					} break;
-				case ENERGY:
+				case MINENERGY:
 					for (Map.Entry<String, Track> entry : trackMap.entrySet()){
 						if(entry.getValue().getSpotId().equals(null)){
 							continue;
-						} else if(openPlaylists.getLast().getEnergy() > entry.getValue().getEnergy()){
+						} else if(openPlaylists.getLast().getMinEnergy() > entry.getValue().getEnergy()){
 							suggestedTracklist.remove(entry.getKey());
 						}
 					} break;
-				case INSTRUMENTALNESS:
+				case MININSTRUMENTALNESS:
 					for (Map.Entry<String, Track> entry : trackMap.entrySet()){
 						if(entry.getValue().getSpotId().equals(null)){
 							continue;
-						} else if(openPlaylists.getLast().getInstrumentalness() > entry.getValue().getInstrumentalness()){
+						} else if(openPlaylists.getLast().getMinInstrumentalness() > entry.getValue().getInstrumentalness()){
 							suggestedTracklist.remove(entry.getKey());
 						}
 					} break;
-				case LIVENESS:
+				case MAXVALENCE:
 					for (Map.Entry<String, Track> entry : trackMap.entrySet()){
+
 						if(entry.getValue().getSpotId().equals(null)){
 							continue;
-						} else if(openPlaylists.getLast().getLiveness() > entry.getValue().getLiveness()){
+						}
+
+						if(openPlaylists.getLast().getMaxValence() > entry.getValue().getValence()){
 							suggestedTracklist.remove(entry.getKey());
 						}
 					} break;
-				case LOUDNESS:
+				case MAXBPM:
+					for (Map.Entry<String, Track> entry : trackMap.entrySet()){
+
+						if(entry.getValue().getSpotId().equals(null)){
+							continue;
+						} else if(openPlaylists.getLast().getMaxTempo() > entry.getValue().getBPM()){
+							suggestedTracklist.remove(entry.getKey());
+						}
+					} break;
+				case MAXACOUSTICNESS:
+					for (Map.Entry<String, Track> entry : trackMap.entrySet()){
+
+						if(entry.getValue().getSpotId().equals(null)){
+							continue;
+						} else if(openPlaylists.getLast().getMaxAcousticness() < entry.getValue().getAcousticness()){
+							suggestedTracklist.remove(entry.getKey());
+						}
+					} break;
+				case MAXDANCEABILITY:
+					for (Map.Entry<String, Track> entry : trackMap.entrySet()){
+
+						if(entry.getValue().getSpotId().equals(null)){
+							continue;
+						} else if(openPlaylists.getLast().getMaxDanceability() < entry.getValue().getDanceability()){
+							suggestedTracklist.remove(entry.getKey());
+						}
+					} break;
+				case MAXENERGY:
 					for (Map.Entry<String, Track> entry : trackMap.entrySet()){
 						if(entry.getValue().getSpotId().equals(null)){
 							continue;
-						} else if(openPlaylists.getLast().getLoudness() > entry.getValue().getLoudness()){
+						} else if(openPlaylists.getLast().getMaxEnergy() < entry.getValue().getEnergy()){
+							suggestedTracklist.remove(entry.getKey());
+						}
+					} break;
+				case MAXINSTRUMENTALNESS:
+					for (Map.Entry<String, Track> entry : trackMap.entrySet()){
+						if(entry.getValue().getSpotId().equals(null)){
+							continue;
+						} else if(openPlaylists.getLast().getMaxInstrumentalness() < entry.getValue().getInstrumentalness()){
 							suggestedTracklist.remove(entry.getKey());
 						}
 					} break;
