@@ -8,8 +8,6 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.image.Image;
 
 
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.util.Random;
 
 
@@ -24,14 +22,14 @@ public class MP3Player {
     private MyThread playThread;
     private int jumpTo;
     private boolean skipping = false;
-    private SimpleObjectProperty<Track> test;
+    private SimpleObjectProperty<Track> songProperty;
 
     /** Constructor
      *
      */
     public MP3Player(){
         minim = new SimpleMinim();
-        test = new SimpleObjectProperty<>();
+        songProperty = new SimpleObjectProperty<Track>();
     }
 
 
@@ -194,8 +192,8 @@ public class MP3Player {
      * @throws keinSongException
      */
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public SimpleObjectProperty<Track> testProperty(){
-        return test;
+    public SimpleObjectProperty<Track> songProperty(){
+        return songProperty;
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void play() throws keinSongException {
@@ -207,7 +205,7 @@ public class MP3Player {
             audioPlayer = minim.loadMP3File(aktSong.getPath());
         }
 
-            test.set(aktSong);
+            songProperty.set(aktSong);
             playThread = new MyThread();
 
             playThread.start();

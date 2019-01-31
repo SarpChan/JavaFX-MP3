@@ -8,9 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import scenes.singleSong.MainView;
-import scenes.singleSong.MainViewController;
-import scenes.singleSong.SelectMainView;
+import scenes.singleSong.*;
 import scenes.singleSong.actPlaylistView.ActPlaylistView;
 import scenes.singleSong.actPlaylistView.ActPlaylistViewController;
 import scenes.singleSong.allPlaylistView.AllPlaylistsView;
@@ -48,7 +46,11 @@ public class ObservView {
         bottom.setAlignment(Pos.BOTTOM_CENTER);
 
         top.add(left, 0,0);
-        top.add(playlistCenter,2,0);
+        VBox songInfo = new SongInfoController(player).getView();
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //top.add(playlistCenter,2,0);
+        top.add(songInfo,2,0);
+
         top.setAlignment(Pos.TOP_CENTER);
         top.setPadding(new Insets(30,0,0,0));
         ColumnConstraints leftColumn = new ColumnConstraints();
@@ -63,7 +65,12 @@ public class ObservView {
         VBox.setVgrow(region, Priority.ALWAYS);
         region.setPrefHeight(0);
 
+
+
+
+
         all.getChildren().addAll(top,region,bottom);
+
         root.getChildren().addAll(all);
 
         observView.widthProperty().addListener(e -> {
@@ -71,6 +78,7 @@ public class ObservView {
             songCenter.setImgWidth(observView.getWidth());
 
         });
+
         observView.getStylesheets().add(getClass().
                 getResource("progressBarStyle.css").toExternalForm());
         observView.getStylesheets().add(getClass().
