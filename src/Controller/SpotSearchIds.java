@@ -29,7 +29,7 @@ public class SpotSearchIds extends AbstractSearch {
                 ClientCredentials cred = spotifyApi.clientCredentials().build().execute();
                 spotifyApi.setAccessToken(cred.getAccessToken());
 
-                com.wrapper.spotify.model_objects.specification.Track[] c = spotifyApi.searchTracks("artist:" + track.getArtist() + " track:" + track.getTitle()).build().execute().getItems();
+                com.wrapper.spotify.model_objects.specification.Track[] c = spotifyApi.searchTracks("artist:\"" + track.getArtist() + "\" track:\"" + track.getTitle()+"\"").build().execute().getItems();
 
                 assert c[0].getArtists()[0].getName().equals(track.getArtist());
                 assert c[0].getName().equals(track.getTitle());
