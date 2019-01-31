@@ -19,9 +19,15 @@ public class Track {
     private long songlength=0;
     private Mp3File file;
     private AudioFeatures feats;
+
+    public String getSpotId() {
+        return spotId;
+    }
+
     private String spotId;
     private DateFormat zeitanzeige = new SimpleDateFormat("mm:ss");
     private byte [] image;
+
 
 
     public Track(String path){
@@ -116,6 +122,38 @@ public class Track {
 
     public void setAudioFeatures(AudioFeatures feats){
         this.feats = feats;
+    }
+
+    public float getBPM(){
+        return feats.getTempo();
+    }
+
+    public float getValence(){
+        return feats.getValence();
+    }
+
+    public float getAcousticness(){
+        return feats.getAcousticness();
+    }
+
+    public float getDanceability(){
+        return feats.getDanceability();
+    }
+
+    public float getEnergy(){
+        return feats.getEnergy();
+    }
+
+    public float getInstrumentalness(){
+        return feats.getInstrumentalness();
+    }
+
+    public float getLiveness(){
+        return feats.getLiveness();
+    }
+
+    public float getLoudness(){
+        return feats.getLoudness();
     }
 
     public void setSpotId(String spotId) {

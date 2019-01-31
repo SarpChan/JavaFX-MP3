@@ -5,6 +5,8 @@ import Controller.PlaylistManager;
 
 
 import javafx.beans.binding.Bindings;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -53,11 +55,20 @@ public class AllPlaylistsView extends ScrollPane {
         allPlaylists.setBackground(new Background(new BackgroundFill( new Color(0,0,0,0), CornerRadii.EMPTY, Insets.EMPTY)));
         allPlaylists.prefHeightProperty().bind(Bindings.size(list).multiply(LIST_CELL_HEIGHT));
 
+        PlaylistManager.allPlaylistProperty().addListener((observable, oldValue, newValue) ->{
+            list.clear();
+            list.addAll(PlaylistManager.getPlaylistArrayList());
+            for (Playlist playlist: list)
+            {
+                allPlaylists.getItems().add(playlist);
+            }
+        } );
 
-        allPlaylists.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            observView.getPlaylistCenter().setAktPlaylist(allPlaylists.getSelectionModel().getSelectedItem());
-            observView.getPlaylistCenter().updatePlaylistInfo(allPlaylists.getSelectionModel().getSelectedItem());
+        allPlaylists.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+            observView.getPlaylistCenter().setAktPlaylist(newValue);
+            observView.getPlaylistCenter().updatePlaylistInfo(newValue);
         });
+
 
         all.getChildren().addAll(bibliothekenTxt, allPlaylists, playlistsTxt);
 

@@ -1,0 +1,5 @@
+package Controller;
+
+public enum SuggestionParams {VALENCE,BPM,ACOUSTICNESS,DANCEABILITY,ENERGY,INSTRUMENTALNESS,
+    LIVENESS,LOUDNESS
+}

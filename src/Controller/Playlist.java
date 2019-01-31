@@ -4,7 +4,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 public class Playlist {
 
@@ -20,6 +22,14 @@ public class Playlist {
         this.name = name;
         compilePlaylist(path);
 
+    }
+    public Playlist(String name, HashMap<String,Track> trackList){
+        this.name = name;
+        for(Map.Entry<String, Track> entry : trackList.entrySet()){
+            tracks.add(entry.getValue());
+            playtime += entry.getValue().getSonglength();
+            numberTracks++;
+        }
     }
 
     private void compilePlaylist(String path){
@@ -43,16 +53,17 @@ public class Playlist {
 
     }
 
-    public void deleteTrack(String path){
+    public void deleteTrack(Track track){
 
-        playtime -= tracks.get(tracks.indexOf(path)).getSonglength();
+        playtime -= tracks.get(tracks.indexOf(track)).getSonglength();
         numberTracks--;
-        tracks.remove(tracks.indexOf(path));
+        tracks.remove(track);
+
 
     }
 
-    public void addTrack(String path){
-        tracks.addLast(new Track(path));
+    public void addTrack(Track track){
+        tracks.addLast(track);
         playtime += tracks.getLast().getSonglength();
         numberTracks++;
     }

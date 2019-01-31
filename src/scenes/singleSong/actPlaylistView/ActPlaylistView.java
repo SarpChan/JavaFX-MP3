@@ -226,9 +226,9 @@ public class ActPlaylistView extends ScrollPane {
     public void setAktPlaylist(Playlist playlist ){
 
 
-
-        list.addAll(playlist.getTracks());
         list.removeAll(aktPlaylist.getTracks());
+        list.addAll(playlist.getTracks());
+
         aktPlaylist = playlist;
 
         trackListView.setItems(list);
