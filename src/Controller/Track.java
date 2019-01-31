@@ -40,7 +40,7 @@ public class Track {
                 if (file.hasId3v2Tag()) {
                     if (file.getId3v2Tag().getTitle() != null){
 
-                        this.title = file.getId3v2Tag().getTitle();
+                        this.title = file.getId3v2Tag().getTitle().split("[\\(\\[]")[0];
 
                         this.album = file.getId3v2Tag().getAlbum();
 
