@@ -4,7 +4,9 @@ package Controller;
 import Exceptions.keinSongException;
 import de.hsrm.mi.eibo.simpleplayer.SimpleAudioPlayer;
 import de.hsrm.mi.eibo.simpleplayer.SimpleMinim;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ObservableIntegerValue;
 import javafx.scene.image.Image;
 
 
@@ -24,13 +26,17 @@ public class MP3Player {
     private boolean skipping = false;
     private SimpleObjectProperty<Track> songProperty;
 
+
     /** Constructor
      *
      */
     public MP3Player(){
         minim = new SimpleMinim();
         songProperty = new SimpleObjectProperty<Track>();
+
+
     }
+
 
 
     public Playlist getAktPlaylist() {

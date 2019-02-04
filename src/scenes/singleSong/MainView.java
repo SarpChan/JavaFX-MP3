@@ -178,6 +178,7 @@ public class MainView extends VBox{
 
         controlButtons.getChildren().addAll(previous, play, next);
         controlButtons.setAlignment(Pos.CENTER);
+        controlButtons.setPadding(new Insets(0,0,0,0));
 
         //HINTERGRUND
        /* Rectangle progressBackground = new Rectangle();

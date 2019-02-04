@@ -39,8 +39,7 @@ public class ActPlaylistViewController {
         viewMobile = new ActPlaylistViewMobile(gui, player);
         this.player = player;
         view.getStyleClass().add("scrolling");
-        view.getStylesheets().add(getClass().
-                getResource("contentStyle.css").toExternalForm());
+        view.getStylesheets().add(getClass().getResource("contentStyle.css").toExternalForm());
         viewMobile.getStyleClass().add("scrolling");
         view.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         viewMobile.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);

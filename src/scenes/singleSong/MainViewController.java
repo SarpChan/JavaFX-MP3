@@ -181,12 +181,13 @@ public class MainViewController{
                 }
             }
 
-            if (newvar.intValue() == 0) {
 
-                titleInfo.setText(player.getTrack());
-                interpret.setText(player.getSongArtist() + " ");
-            }
             calculatePB(progress, progressTimeSlider);
+        });
+
+        player.songProperty().addListener(observable -> {
+            titleInfo.setText(player.getTrack());
+            interpret.setText(player.getSongArtist() + " ");
         });
 
         mute.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
