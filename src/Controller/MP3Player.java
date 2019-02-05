@@ -25,6 +25,7 @@ public class MP3Player {
     private int jumpTo;
     private boolean skipping = false;
     private SimpleObjectProperty<Track> songProperty;
+    private SimpleIntegerProperty aktTime;
 
 
     /** Constructor
@@ -33,11 +34,14 @@ public class MP3Player {
     public MP3Player(){
         minim = new SimpleMinim();
         songProperty = new SimpleObjectProperty<Track>();
-
+        aktTime = new SimpleIntegerProperty();
 
     }
 
 
+    public SimpleIntegerProperty aktZeitProperty(){
+        return aktTime;
+    }
 
     public Playlist getAktPlaylist() {
         return aktPlaylist;
