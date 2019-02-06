@@ -4,20 +4,16 @@ import Controller.MP3Player;
 import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.ArcType;
 import javafx.scene.text.Text;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
-import static java.util.Map.Entry.comparingByValue;
 import static java.util.stream.Collectors.toMap;
 import static scenes.singleSong.MainViewController.getPathFromSVG;
 
@@ -29,7 +25,7 @@ public class SongInfoController {
     Canvas firstAccordCanvas, secondAccordCanvas, thirdAccordCanvas, forthAccordCanvas, fifthAccordCanvas, sixthAccordCanvas;
     Text firstAccordValue, secondAccordValue, thirdAccordValue, forthAccordValue, fifthAccordValue, sixthAccordValue;
     HBox firstRings, secondRings, thirdRings;
-    LinkedList<AnmiationStruct> animationStructList;
+    LinkedList<AnimationStruct> animationStructList;
     Thread animateThread;
     HBox buttonBox;
     Color mainColor;
@@ -73,12 +69,12 @@ public class SongInfoController {
         DateFormat zeitanzeige = new SimpleDateFormat("mm:ss");
         animationStructList = new LinkedList<>();
 
-        animationStructList.add(new AnmiationStruct(firstAccordCanvas, 0));
-        animationStructList.add(new AnmiationStruct(secondAccordCanvas, 0));
-        animationStructList.add(new AnmiationStruct(thirdAccordCanvas, 0));
-        animationStructList.add(new AnmiationStruct(forthAccordCanvas, 0));
-        animationStructList.add(new AnmiationStruct(fifthAccordCanvas, 0));
-        animationStructList.add(new AnmiationStruct(sixthAccordCanvas, 0));
+        animationStructList.add(new AnimationStruct(firstAccordCanvas, 0));
+        animationStructList.add(new AnimationStruct(secondAccordCanvas, 0));
+        animationStructList.add(new AnimationStruct(thirdAccordCanvas, 0));
+        animationStructList.add(new AnimationStruct(forthAccordCanvas, 0));
+        animationStructList.add(new AnimationStruct(fifthAccordCanvas, 0));
+        animationStructList.add(new AnimationStruct(sixthAccordCanvas, 0));
 
 
         player.songProperty().addListener((observable, oldValue, newValue) -> {
@@ -126,7 +122,7 @@ public class SongInfoController {
                 sixthAccordValue.setText(values.get(5).toString());
             } else{
 
-                for (AnmiationStruct e: animationStructList){
+                for (AnimationStruct e: animationStructList){
                     e.setMaxValue(0);
                 }
                 firstAccordValue.setText("N.A.");
@@ -199,7 +195,7 @@ public class SongInfoController {
 
                 for(int i = 0; i < 360 / ADDDEGREES && runnable; i++) {
 
-                    for (AnmiationStruct e : animationStructList) {
+                    for (AnimationStruct e : animationStructList) {
 
                         e.addCurValue(ADDDEGREES);
                     }

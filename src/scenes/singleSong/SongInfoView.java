@@ -13,7 +13,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextBoundsType;
 
 import java.text.DateFormat;
@@ -103,7 +102,7 @@ public class SongInfoView extends VBox {
         firstGc.setFill(mainColor);
 
         firstAccordValue = new Text("Value");
-        firstAccordValue.setStyle("-fx-font-size: 20px; -fx-fill:#bbb;");
+        firstAccordValue.setStyle("-fx-font-size: 16px; -fx-fill:#bbb;");
         firstAccordValue.setBoundsType(TextBoundsType.VISUAL);
         StackPane firstAccordStack = new StackPane();
         firstAccordStack.getChildren().addAll(firstAccordCanvas, firstAccordValue);
@@ -121,7 +120,7 @@ public class SongInfoView extends VBox {
         thirdGc.setFill(mainColor);
 
         thirdAccordValue = new Text("Value");
-        thirdAccordValue.setStyle("-fx-font-size: 20px; -fx-fill:#bbb;");
+        thirdAccordValue.setStyle("-fx-font-size: 16px; -fx-fill:#bbb;");
         thirdAccordValue.setBoundsType(TextBoundsType.VISUAL);
         StackPane thirdAccordStack = new StackPane();
         thirdAccordStack.getChildren().addAll(thirdAccordCanvas, thirdAccordValue);
@@ -140,7 +139,7 @@ public class SongInfoView extends VBox {
         secondGc.setFill(mainColor);
 
         secondAccordValue = new Text("Value");
-        secondAccordValue.setStyle("-fx-font-size: 20px; -fx-fill:#bbb;");
+        secondAccordValue.setStyle("-fx-font-size: 16px; -fx-fill:#bbb;");
         secondAccordValue.setBoundsType(TextBoundsType.VISUAL);
         StackPane secondAccordStack = new StackPane();
         secondAccordStack.getChildren().addAll(secondAccordCanvas, secondAccordValue);
@@ -158,7 +157,7 @@ public class SongInfoView extends VBox {
         forthGc.setFill(mainColor);
 
         forthAccordValue = new Text("Value");
-        forthAccordValue.setStyle("-fx-font-size: 20px; -fx-fill:#bbb;");
+        forthAccordValue.setStyle("-fx-font-size: 16px; -fx-fill:#bbb;");
         forthAccordValue.setBoundsType(TextBoundsType.VISUAL);
         StackPane forthAccordStack = new StackPane();
         forthAccordStack.getChildren().addAll(forthAccordCanvas, forthAccordValue);
@@ -176,7 +175,7 @@ public class SongInfoView extends VBox {
         fifthGc.setFill(mainColor);
 
         fifthAccordValue = new Text("Value");
-        fifthAccordValue.setStyle("-fx-font-size: 20px; -fx-fill:#bbb;");
+        fifthAccordValue.setStyle("-fx-font-size: 16px; -fx-fill:#bbb;");
         fifthAccordValue.setBoundsType(TextBoundsType.VISUAL);
         StackPane fifthAccordStack = new StackPane();
         fifthAccordStack.getChildren().addAll(fifthAccordCanvas, fifthAccordValue);
@@ -195,7 +194,7 @@ public class SongInfoView extends VBox {
         sixthGc.setFill(mainColor);
 
         sixthAccordValue = new Text("Value");
-        sixthAccordValue.setStyle("-fx-font-size: 20px; -fx-fill:#bbb;");
+        sixthAccordValue.setStyle("-fx-font-size: 16px; -fx-fill:#bbb;");
         sixthAccordValue.setBoundsType(TextBoundsType.VISUAL);
         StackPane sixthAccordStack = new StackPane();
         sixthAccordStack.getChildren().addAll(sixthAccordCanvas, sixthAccordValue);
