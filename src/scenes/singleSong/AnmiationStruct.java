@@ -18,24 +18,45 @@ public class AnmiationStruct {
     }
 
     public boolean addCurValue(int value){
+        if(maxValue < 0) {
+            if (curValue - value <= maxValue - value) {
+                curValue = maxValue;
+                draw();
 
-        if (curValue - value <= maxValue - value) {
-            curValue = maxValue;
-            draw();
+                return true;
 
-            return true;
+            } else if (curValue > maxValue) {
+                curValue -= value;
+                draw();
+                return true;
+            } else {
+
+                return false;
+            }
+        }
+
+        else{
+            if(curValue + value >= maxValue + value){
+                curValue = maxValue;
+                draw();
+                return true;
+            } else if(curValue < maxValue){
+                curValue += value;
+                draw();
+                return true;
+            } else{
+                return false;
+            }
+
+
+
 
         }
-        else if(curValue > maxValue){
-            curValue -= value;
-            draw();
-            return true;
-        } else{
-
-            return false;
-        }
 
 
+    }
+    public void setCurValue(int value){
+        this.curValue = value;
     }
 
     public float getCurValue() {
@@ -43,8 +64,10 @@ public class AnmiationStruct {
     }
 
     public void setMaxValue(int value){
+        if(value < 0)
+            curValue = 0;
+
         maxValue = value;
-        curValue = 0;
     }
 
     public float getMaxValue(){
@@ -52,10 +75,8 @@ public class AnmiationStruct {
     }
 
     public void draw(){
-        if(curValue >= maxValue) {
             canvas.getGraphicsContext2D().clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
             canvas.getGraphicsContext2D().strokeArc(4, 4, 144, 144, 90, curValue, ArcType.OPEN);
-        }
     }
 
     public Canvas getCanvas(){

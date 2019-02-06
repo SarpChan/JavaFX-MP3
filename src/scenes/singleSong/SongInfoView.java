@@ -30,6 +30,9 @@ public class SongInfoView extends VBox {
     Text firstAccordValue, secondAccordValue, thirdAccordValue, forthAccordValue, fifthAccordValue, sixthAccordValue;
     HBox firstRings, secondRings, thirdRings, buttonBox;
     Color mainColor;
+    HBox titleBox;
+
+
 
 
     public SongInfoView(MP3Player player){
@@ -38,11 +41,12 @@ public class SongInfoView extends VBox {
         back.setMaxWidth(7);
         back.setMaxHeight(7);
         back.setStyle("-fx-shape: \"" + getPathFromSVG("back2") + "\"; -fx-fill:white");
-        backSign = new Text("zurück");
-        backSign.setStyle("-fx-fill:white; -fx-font-size:15px");
+        back.getStyleClass().add("back-button");
+        backSign = new Text("BACK");
+        backSign.setStyle("-fx-fill:white; -fx-font-size:12px");
 
 
-        buttonBox = new HBox(10);
+        buttonBox = new HBox(3);
         buttonBox.setAlignment(Pos.CENTER_LEFT);
 
         buttonBox.getChildren().addAll(back, backSign);
@@ -58,7 +62,7 @@ public class SongInfoView extends VBox {
         cover.setFitWidth(150);
         cover.setImage(player.getAlbumImage());
 
-        HBox titleBox = new HBox();
+        titleBox = new HBox();
 
         title = new Text(player.getTrack());
         title.setStyle("-fx-fill:#fff; -fx-font-size: 35px;");
@@ -81,7 +85,9 @@ public class SongInfoView extends VBox {
         songNames.getChildren().addAll(titleBox, artist, album, length);
 
 
+
         basicSongInfo.getChildren().addAll( cover, songNames);
+        basicSongInfo.setPadding(new Insets(10,0,20,0));
 
 
         Circle firstAccordCicle = new Circle(75);
@@ -194,6 +200,9 @@ public class SongInfoView extends VBox {
         StackPane sixthAccordStack = new StackPane();
         sixthAccordStack.getChildren().addAll(sixthAccordCanvas, sixthAccordValue);
 
+
+
+
         firstRings = new HBox(50);
         firstRings.setPadding(new Insets(25,0,25,0));
         firstRings.getChildren().addAll(firstAccordStack, secondAccordStack, thirdAccordStack);
@@ -204,13 +213,17 @@ public class SongInfoView extends VBox {
 
         thirdRings = new HBox(50);
 
-
-        VBox songValues = new VBox(15);
+        VBox songValues = new VBox(20);
         songValues.getChildren().addAll(firstRings, secondRings, thirdRings);
+
+
+        songValues.setAlignment(Pos.CENTER_RIGHT);
 
         ScrollPane scrollable = new ScrollPane();
         scrollable.setContent(new HBox(new VBox(basicSongInfo, songValues)));
         scrollable.setPadding(new Insets(20, 0, 0, 0));
+        scrollable.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollable.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
         this.getChildren().addAll(buttonBox, scrollable);
 

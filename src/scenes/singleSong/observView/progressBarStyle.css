@@ -144,6 +144,17 @@
     -fx-max-height: -size;
     -fx-max-width: -size;
  }
+.back-button{
+    -icon-paint: white;
+         -fx-background-color: -icon-paint;
+         -size: 20, 60;
+         -fx-min-height: 30;
+         -fx-min-width: -size;
+         -fx-max-height: -size;
+         -fx-max-width: -size;
+}
+
+
 
 .play-button:hover {
     -icon-paint: -fx-primarycolor;
