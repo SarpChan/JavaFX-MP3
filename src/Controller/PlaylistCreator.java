@@ -13,11 +13,11 @@ import static Controller.SuggestionParams.*;
 public class PlaylistCreator {
 
     private static LinkedList<newPlaylist> openPlaylists = new LinkedList<>();
-    private static ArrayList<Playlist> suggestedPlaylists = new ArrayList<>();
 
 
 
-    public static void createSuggestionPlaylist(float [] array, String name){
+
+    public static void createSuggestionPlaylist(float [] array, String ... name){
 
         SuggestionParams [] param = SuggestionParams.values();
 
@@ -155,13 +155,15 @@ public class PlaylistCreator {
 
 
         if(suggestedTracklist.isEmpty()) {
-            System.out.println(name + " konnte nicht erstellt werden - Keine passenden Lieder");
+            System.out.println(name[0] + " konnte nicht erstellt werden - Keine passenden Lieder");
             return;
         }
 
-
-        PlaylistManager.addPlaylist(new Playlist(name, suggestedTracklist));
-
+        if(name.length == 1) {
+            PlaylistManager.addPlaylist(new Playlist(name[0], suggestedTracklist));
+        } else {
+            PlaylistManager.addToSuggestedPlaylist((new Playlist(name[0], suggestedTracklist)));
+        }
 		/*try {
 			savePlaylist(playlistArrayList.get(playlistArrayList.size()-1), openPlaylists.getLast().getName());
 		} catch (IOException e) {

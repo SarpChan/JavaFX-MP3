@@ -57,6 +57,7 @@ public class ActPlaylistView extends ScrollPane {
     final double OPACITY = 0.5;
     ListView <Track> trackListView;
 
+
     Label titel,artist,album,length;
 
     ObservableList<Playlist> allPlaylists = FXCollections.observableArrayList();;

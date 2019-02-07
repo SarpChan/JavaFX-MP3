@@ -52,10 +52,11 @@ public class CreatePlaylistView extends ScrollPane {
     GridPane grid = new GridPane();
     HBox [] param = new HBox[6];
     HBox playlistErstellButtons;
-    RadioButton bpm, acousticness, valence, instrumentalness, danceability, energy;
+    Label bpm, acousticness, valence, instrumentalness, danceability, energy;
     Playlist aktPlaylist;
     DateFormat zeitanzeige = new SimpleDateFormat("mm:ss");
     Button create, cancel;
+    private Playlist lastOpen;
 
     public CreatePlaylistView(ObservView observView, MP3Player player) {
         dataAndTitleAndImg = new HBox();
@@ -73,14 +74,19 @@ public class CreatePlaylistView extends ScrollPane {
         length.setOpacity(OPACITY);
         r1 = new Region();
         r2 = new Region();
-        bpm = new RadioButton("BPM");
-        acousticness = new RadioButton("Acousticness");
-        valence = new RadioButton("Valence");
-        instrumentalness = new RadioButton("Instrumentalness");
-        danceability = new RadioButton("Danceability");
-        energy = new RadioButton("Energy");
-        acousticness = new RadioButton("Acousticness");
+        bpm = new Label("BPM");
+        acousticness = new Label("Acousticness");
+        valence = new Label("Valence");
+        instrumentalness = new Label("Instrumentalness");
+        danceability = new Label("Danceability");
+        energy = new Label("Energy");
+        acousticness = new Label("Acousticness");
         bpm.getStyleClass().add("radio-button");
+        valence.getStyleClass().add("radio-button");
+        energy.getStyleClass().add("radio-button");
+        acousticness.getStyleClass().add("radio-button");
+        instrumentalness.getStyleClass().add("radio-button");
+        danceability.getStyleClass().add("radio-button");
         min = new TextField[6];
         max = new TextField[6];
         playlistErstellButtons = new HBox(20);
@@ -99,11 +105,11 @@ public class CreatePlaylistView extends ScrollPane {
             max[i] = new TextField();
             max[i].getStyleClass().add("minmax");
 
-            max[i].setDisable(true);
+
             min[i] = new TextField();
             min[i].getStyleClass().add("minmax");
 
-            min[i].setDisable(true);
+
             param[i] = new HBox();
             param[i].setStyle("-fx-alignment: center-left;");
 
@@ -112,88 +118,7 @@ public class CreatePlaylistView extends ScrollPane {
         }
 
 
-        bpm.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            if(bpm.isSelected()){
 
-                min[0].setDisable(false);
-                max[0].setDisable(false);
-            } else {
-                min[0].setDisable(true);
-
-                max[0].setDisable(true);
-                min[0].clear();
-                max[0].clear();
-            }
-
-
-        });
-
-        valence.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            if(valence.isSelected()){
-
-                min[1].setDisable(false);
-                max[1].setDisable(false);
-            } else {
-                min[1].setDisable(true);
-                max[1].setDisable(true);
-                min[1].clear();
-                max[1].clear();
-            }
-
-
-        });
-        energy.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            if(energy.isSelected()){
-                min[2].setDisable(false);
-                max[2].setDisable(false);
-            } else {
-                min[2].setDisable(true);
-                max[2].setDisable(true);
-                min[2].clear();
-                max[2].clear();
-            }
-
-
-        });
-        danceability.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            if(danceability.isSelected()){
-                min[3].setDisable(false);
-                max[3].setDisable(false);
-            } else {
-                min[3].setDisable(true);
-                max[3].setDisable(true);
-                min[3].clear();
-                max[3].clear();
-            }
-
-
-        });
-        instrumentalness.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            if(instrumentalness.isSelected()){
-                min[4].setDisable(false);
-                max[4].setDisable(false);
-            } else {
-                min[4].setDisable(true);
-                max[4].setDisable(true);
-                min[4].clear();
-                max[4].clear();
-            }
-
-
-        });
-        acousticness.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            if(acousticness.isSelected()){
-                min[5].setDisable(false);
-                max[5].setDisable(false);
-            } else {
-                min[5].setDisable(true);
-                max[5].setDisable(true);
-                min[5].clear();
-                max[5].clear();
-            }
-
-
-        });
 
         min[0].setPromptText("Min BPM");
         max[0].setPromptText("Max BPM");
@@ -264,7 +189,7 @@ public class CreatePlaylistView extends ScrollPane {
 
         cancel.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             for (int i = 0; i < min.length; i++) {
-                min[i].setDisable(true);
+                min[i].clear();
                 observView.switchView(Views.ACTPLAYLISTDESKTOP);
 
             }
@@ -289,7 +214,7 @@ public class CreatePlaylistView extends ScrollPane {
         newPlaylistName.setText("DEFAULT");
         newPlaylistName.getStyleClass().add("playlistname");
 
-
+        System.out.println(bpm);
 
         //PLAYLIST DATA
         status = new Text();
@@ -382,6 +307,10 @@ public class CreatePlaylistView extends ScrollPane {
 
     public void updatePlaylistInfo(Playlist playlist){
 
+
+    }
+
+    public void setLastOpen(Playlist playlist){
 
     }
 

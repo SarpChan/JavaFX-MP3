@@ -9,6 +9,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
@@ -25,36 +28,48 @@ import javafx.scene.input.MouseEvent;
 import scenes.singleSong.observView.ObservView;
 import scenes.singleSong.observView.Views;
 
+import java.util.List;
+
 public class AllPlaylistsView extends ScrollPane {
-   ListView <Playlist> allPlaylists;
-   ObservableList<Playlist> list;
-   Text bibliothekenTxt, playlistsTxt, suggestedPlayliststTxt;
+   ListView <Playlist> allPlaylists, suggestedPlaylists;
+
+   Label bibliothekenTxt,  suggestedPlayliststTxt ;
+   Button playlistsTxt,neueKompiliertePlaylist;
    final int LIST_CELL_HEIGHT = 50;
-   VBox all;
+   Region region = new Region();
+   VBox all , buttons;
 
     public AllPlaylistsView(ObservView observView){
-        allPlaylists = new ListView<>();
-        list = FXCollections.observableArrayList();
-        list.addAll(PlaylistManager.getPlaylistArrayList());
-        all = new VBox();
 
-        for (Playlist playlist: list)
-        {
-            allPlaylists.getItems().add(playlist);
+        buttons = new VBox(10);
+        region.setPrefHeight(40);
+        allPlaylists = new ListView<>();
+        suggestedPlaylists = new ListView<>();
+        all = new VBox();
+        if(!PlaylistManager.getSuggestedPlaylists().isEmpty()) {
+            suggestedPlaylists.setItems(PlaylistManager.getSuggestedPlaylists());
         }
 
-        bibliothekenTxt = new Text(("Bibliotheken").toUpperCase());
-        playlistsTxt = new Text(("Playlists +").toUpperCase());
-        suggestedPlayliststTxt = new Text(("Kompilierte Playlist + ").toUpperCase());
+        allPlaylists.setItems(PlaylistManager.getPlaylistArrayList());
+
+        bibliothekenTxt = new Label(("Bibliotheken").toUpperCase());
+        playlistsTxt = new Button("Neue Playlist");
+        neueKompiliertePlaylist = new Button("Neue kompilierte Playlist ");
+        suggestedPlayliststTxt = new Label(("Playlisten für dich ").toUpperCase());
         bibliothekenTxt.setTextAlignment(TextAlignment.LEFT);
         playlistsTxt.setTextAlignment(TextAlignment.LEFT);
         suggestedPlayliststTxt.setTextAlignment(TextAlignment.LEFT);
         bibliothekenTxt.getStyleClass().add("headline");
-        playlistsTxt.getStyleClass().add("headline");
+        neueKompiliertePlaylist.getStyleClass().add("create");
+        playlistsTxt.getStyleClass().add("create");
         suggestedPlayliststTxt.getStyleClass().add("headline");
 
-        suggestedPlayliststTxt.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+        neueKompiliertePlaylist.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+
+
             observView.switchView(Views.CREATEVIEW);
+            allPlaylists.getSelectionModel().clearSelection();
+            suggestedPlaylists.getSelectionModel().clearSelection();
 
         });
 
@@ -62,21 +77,46 @@ public class AllPlaylistsView extends ScrollPane {
         allPlaylists.setBackground(new Background(new BackgroundFill( new Color(0,0,0,0), CornerRadii.EMPTY, Insets.EMPTY)));
         allPlaylists.prefHeightProperty().bind(Bindings.size(PlaylistManager.getPlaylistArrayList()).multiply(LIST_CELL_HEIGHT));
 
+        suggestedPlaylists.getStyleClass().add("scrollbar");
+        suggestedPlaylists.setBackground(new Background(new BackgroundFill( new Color(0,0,0,0), CornerRadii.EMPTY, Insets.EMPTY)));
+        suggestedPlaylists.prefHeightProperty().bind(Bindings.size(PlaylistManager.getSuggestedPlaylists()).multiply(LIST_CELL_HEIGHT));
+
         PlaylistManager.getPlaylistArrayList().addListener((ListChangeListener)observable -> {
 
             allPlaylists.setItems(PlaylistManager.getPlaylistArrayList());
 
         });
-
-
-
-        allPlaylists.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
-            observView.getAktPlaylistViewWeb().setAktPlaylist(newValue);
-            observView.getAktPlaylistViewWeb().updatePlaylistInfo(newValue);
+        PlaylistManager.getSuggestedPlaylists().addListener((ListChangeListener) observable -> {
+            suggestedPlaylists.setItems(PlaylistManager.getSuggestedPlaylists());
         });
 
 
-        all.getChildren().addAll(bibliothekenTxt, allPlaylists, playlistsTxt,suggestedPlayliststTxt);
+
+        allPlaylists.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->{
+            observView.getAktPlaylistViewWeb().setAktPlaylist(allPlaylists.getSelectionModel().getSelectedItem());
+            observView.getAktPlaylistViewWeb().updatePlaylistInfo(allPlaylists.getSelectionModel().getSelectedItem());
+
+            if(!suggestedPlaylists.getSelectionModel().isEmpty()) {
+                suggestedPlaylists.getSelectionModel().clearSelection();
+            }
+            observView.switchView(Views.ACTPLAYLISTDESKTOP);
+        } );
+
+        suggestedPlaylists.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            observView.getAktPlaylistViewWeb().setAktPlaylist(suggestedPlaylists.getSelectionModel().getSelectedItem());
+            observView.getAktPlaylistViewWeb().updatePlaylistInfo(suggestedPlaylists.getSelectionModel().getSelectedItem());
+            observView.switchView(Views.ACTPLAYLISTDESKTOP);
+            if(!allPlaylists.getSelectionModel().isEmpty()) {
+                allPlaylists.getSelectionModel().clearSelection();
+            }
+        });
+
+
+
+buttons.getChildren().addAll(playlistsTxt,neueKompiliertePlaylist);
+
+        all.getChildren().addAll(bibliothekenTxt, allPlaylists, buttons, region, suggestedPlayliststTxt, suggestedPlaylists);
+
 
 
         this.setContent(all);

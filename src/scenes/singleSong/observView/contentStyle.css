@@ -47,10 +47,17 @@
 
 .headline{
         -fx-fill:rgba(255, 255, 255, 0.5);
+         -overflow:hidden;
+         -white-space:nowrap;
+         -text-overflow:ellipsis;
    }
 .headline:hover{
         -fx-fill:rgba(255, 255, 255);
+         -overflow:hidden;
+             white-space:nowrap;
+             text-overflow:ellipsis;
  }
+
 
 
 
