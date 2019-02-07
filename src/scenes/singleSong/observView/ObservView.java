@@ -35,6 +35,7 @@ public class ObservView {
     private SongInfoController songInfoControl;
     private Views currentDesktop;
     private Views currentMobile;
+    private Views current;
 
 
     public Scene buildScene(PlayerGUI gui, MP3Player player) {
@@ -91,9 +92,14 @@ public class ObservView {
 
         observView.widthProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue.doubleValue() <= 550){
-                switchView(currentMobile);
+                if(current != currentMobile) {
+                    switchView(currentMobile);
+                }
             }else{
-                switchView(currentDesktop);
+                if(current != currentDesktop) {
+                    switchView(currentDesktop);
+                }
+
             }
         });
 
@@ -136,6 +142,7 @@ public class ObservView {
                 all.getChildren().addAll(top, region, bottom);
                 currentDesktop = Views.ACTPLAYLISTDESKTOP;
                 currentMobile = Views.ACTPLAYLISTMOBILE;
+                current = Views.ACTPLAYLISTDESKTOP;
 
                 break;
 
@@ -146,6 +153,7 @@ public class ObservView {
                 all.getChildren().addAll(top,region,bottom);
                 currentDesktop = Views.ACTPLAYLISTDESKTOP;
                 currentMobile = Views.ACTPLAYLISTMOBILE;
+                current = Views.ACTPLAYLISTMOBILE;
                 break;
 
             case CREATEVIEW:
@@ -158,6 +166,7 @@ public class ObservView {
                 all.getChildren().addAll(top, region, bottom);
                 currentDesktop = Views.CREATEVIEW;
                 currentMobile = Views.CREATEVIEW;
+                current = Views.CREATEVIEW;
                 break;
 
             case SONGINFODESKTOP:
@@ -171,6 +180,8 @@ public class ObservView {
                     songInfoControl.animate();
                     currentDesktop = Views.SONGINFODESKTOP;
                     currentMobile = Views.SONGINFOMOBILE;
+                    current = Views.SONGINFODESKTOP;
+                    break;
 
 
 

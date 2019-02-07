@@ -239,9 +239,10 @@
     -fx-background-insets: 0 0 0 0, 0 0 0 0, 0 0 0 0;
 }
 
-.minmax:selected {
+.minmax:focused {
     -fx-background-color: #a9a9a9 , white , white;
     -fx-background-color: #2F2F2F;
+
     -fx-background-insets: 0 0 0 0, 0 0 0 0, 0 0 0 0;
     -fx-cursor: text;
 }

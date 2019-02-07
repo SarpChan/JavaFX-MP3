@@ -192,7 +192,7 @@ public class PlaylistManager {
 		BPM,VALENCE,ENERGY,DANCEABITLITY,INSTRUMENTALNESS, ACOUSTICNESS
 		 */
 
-		PlaylistCreator.createSuggestionPlaylist(new float [] {/*BPM*/100f,0.0f, /* VALENCE*/0.4f,0.0f, /*ENERGY*/0.8f,0.0f,
+		PlaylistCreator.createSuggestionPlaylist(new float [] {/*BPM*/100f,0.0f, /* VALENCE*/0.2f,0.0f, /*ENERGY*/0.8f,0.0f,
 				/*DANCE*/0.0f,0.0f, /*INSTRU*/0.0f,0.0f, /*ACOUST*/0.0f,0.0f,},"Workout");
 
 		PlaylistCreator.createSuggestionPlaylist(new float [] {/*BPM*/0.0f,60f, /* VALENCE*/0.2f,0.0f, /*ENERGY*/0.0f,0.3f,
