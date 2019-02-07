@@ -16,6 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 import scenes.singleSong.SelectMainView;
+import scenes.singleSong.observView.ObservView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -33,10 +34,10 @@ public class ActPlaylistViewController {
     ObservableList<Track> list;
 
 
-    public ActPlaylistViewController(PlayerGUI gui, MP3Player player, SelectMainView select){
+    public ActPlaylistViewController(ObservView observView, MP3Player player, SelectMainView select){
 
-        view = new ActPlaylistView(gui, player);
-        viewMobile = new ActPlaylistViewMobile(gui, player);
+        view = new ActPlaylistView(observView, player);
+        viewMobile = new ActPlaylistViewMobile(observView, player);
         this.player = player;
         view.getStyleClass().add("scrolling");
         view.getStylesheets().add(getClass().getResource("contentStyle.css").toExternalForm());

@@ -170,3 +170,112 @@
      -fx-font-size: 35px;
 
 }
+.playlistname  {
+    -fx-background-color: transparent;
+    -fx-font-size: 24px;
+    -fx-text-fill: white;
+    -fx-background-insets: 0 0 0 0, 0 0 0 0, 0 0 0 0;
+}
+
+.playlistname:focused {
+    -fx-background-color: #a9a9a9 , white , white;
+    -fx-background-color: #2F2F2F;
+    -fx-background-insets: 0 0 0 0, 0 0 0 0, 0 0 0 0;
+    -fx-cursor: text;
+}
+
+
+
+.radio-button {
+
+    -fx-label-padding: 0.0em 0.0em 0.0em 0.416667em; /* 0 0 0 5 */
+
+    -fx-text-fill: white;
+
+}
+.radio-button:selected {
+
+    -fx-label-padding: 0.0em 0.0em 0.0em 0.416667em; /* 0 0 0 5 */
+
+    -fx-text-fill: -fx-primarycolor;
+
+}
+.radio-button:hover {
+
+    -fx-label-padding: 0.0em 0.0em 0.0em 0.416667em; /* 0 0 0 5 */
+
+    -fx-text-fill: -fx-primarycolor;
+
+}
+
+.radio-button > .radio,
+
+.radio-button:focused > .radio  {
+
+-fx-background-color: transparent;
+
+   -fx-background-radius: 1.0em; /* large value to make sure this remains circular */
+
+   -fx-padding: 0.333333em; /* 4 -- padding from outside edge to the inner black dot */
+
+
+
+}
+
+.radio-button > .radio > .dot {
+
+   -fx-background-color: transparent;
+
+   -fx-background-radius: 1.0em; /* large value to make sure this remains circular */
+
+   -fx-padding: 0.333333em; /* 4 -- radius of the inner black dot when selected */
+
+   -fx-text-fill: white;
+}
+
+.minmax  {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-background-insets: 0 0 0 0, 0 0 0 0, 0 0 0 0;
+}
+
+.minmax:selected {
+    -fx-background-color: #a9a9a9 , white , white;
+    -fx-background-color: #2F2F2F;
+    -fx-background-insets: 0 0 0 0, 0 0 0 0, 0 0 0 0;
+    -fx-cursor: text;
+}
+.minmax:readonly {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-background-insets: 0 0 0 0, 0 0 0 0, 0 0 0 0;
+}
+
+.create{
+    -fx-border-radius : 40px;
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-border-color: white;
+}
+
+.create:hover{
+
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-primarycolor;
+
+}
+
+.cancel{
+    -fx-border-radius : 40px;
+    -fx-background-color: transparent;
+    -fx-border-color: white;
+    -fx-text-fill: white;
+}
+
+
+.cancel:hover{
+
+    -fx-background-color: transparent;
+    -fx-text-fill: orangered;
+
+}

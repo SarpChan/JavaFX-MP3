@@ -1,30 +1,27 @@
 package Controller;
 
 
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.scene.control.Label;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.nio.file.*;
 import java.util.LinkedList;
-import java.util.Map;
 
 
 public class PlaylistManager {
 
-	private static ArrayList<Playlist> playlistArrayList = new ArrayList<>();
+	private static ObservableList<Playlist> playlistArrayList = FXCollections.observableArrayList();
 
 	private static HashMap<String, Track> trackMap = new HashMap<>();
-	private static LinkedList<newPlaylist> openPlaylists = new LinkedList<>();
-	private static SimpleObjectProperty<ArrayList<Playlist>> playlistsChange = new SimpleObjectProperty<>();
+
+	private static SimpleIntegerProperty playlistsChange = new SimpleIntegerProperty();
 
 	/**
 	 * Gibt Playlist mit dem Namen nameOfPlaylist zurück
@@ -86,7 +83,7 @@ public class PlaylistManager {
 	 * @return ArrayList aller Tracks als String
 	 */
 	
-	public static ArrayList<String> getAllTracks() {
+	public static ArrayList<String> searchAllTracks() {
 		
 		ArrayList <String> allMp3s = new ArrayList <String> ();
 
@@ -153,7 +150,7 @@ public class PlaylistManager {
 	 *
 	 * @return ArrayList aller Playlisten als Playlistobjekte
 	 */
-	public static ArrayList<Playlist> getAllPlaylists(){
+	public static ObservableList<Playlist> getAllPlaylists(){
 		ArrayList <String> allM3us = new ArrayList <> ();
 
 		String username = System.getProperty("user.name");
@@ -176,12 +173,12 @@ public class PlaylistManager {
 				playlists.put(name, new Playlist(absolutePath, name));
 			}
 		}
-		playlistsChange.set(playlistArrayList);
+		playlistsChange.set(playlistArrayList.size());
 		playlistArrayList.addAll(playlists.values());
 
 		if(playlistArrayList.isEmpty()){
 			try {
-				savePlaylist(PlaylistManager.getAllTracks(), "default");
+				savePlaylist(PlaylistManager.searchAllTracks(), "default");
 			} catch (IOException e) {
 				e.printStackTrace();
 
@@ -189,14 +186,29 @@ public class PlaylistManager {
 			getAllPlaylists();
 		}
 
-		collectExistingTracks();
+
 		/*
 		minmax Paare:
-		Acousticness, Danceability, Energy, Instrumentalness, Valence, Tempo
+		BPM,VALENCE,ENERGY,DANCEABITLITY,INSTRUMENTALNESS, ACOUSTICNESS
 		 */
-		createPlaylist(new float [] {/*Acoustic*/0.2f,0.0f, /* Danceability*/0.4f,0.0f, /*Energy*/0.5f,0.0f,
-				/*Instrumentalness*/0.0f,0.0f, /*Valence*/0.4f,0.0f, /*Tempo*/60.0f,0.0f,},"energy");
-		createSuggestionPlaylist(SuggestionParams.MINVALENCE, SuggestionParams.MINBPM);
+
+		PlaylistCreator.createSuggestionPlaylist(new float [] {/*BPM*/100f,0.0f, /* VALENCE*/0.4f,0.0f, /*ENERGY*/0.8f,0.0f,
+				/*DANCE*/0.0f,0.0f, /*INSTRU*/0.0f,0.0f, /*ACOUST*/0.0f,0.0f,},"Workout");
+
+		PlaylistCreator.createSuggestionPlaylist(new float [] {/*BPM*/0.0f,60f, /* VALENCE*/0.2f,0.0f, /*ENERGY*/0.0f,0.3f,
+				/*DANCE*/0.0f,0.4f, /*INSTRU*/0.0f,1.0f, /*ACOUST*/0.0f,0.0f,},"Chillout");
+
+		PlaylistCreator.createSuggestionPlaylist(new float [] {/*BPM*/80f,0.0f, /* VALENCE*/0.6f,0.0f, /*ENERGY*/0.4f,0.0f,
+				/*DANCE*/0.5f,0.0f, /*INSTRU*/0.0f,0.0f, /*ACOUST*/0.0f,0.1f,},"Party");
+
+		PlaylistCreator.createSuggestionPlaylist(new float [] {/*BPM*/0.0f,60f, /* VALENCE*/0.0f,0.2f, /*ENERGY*/0.0f,0.4f,
+				/*DANCE*/0.0f,0.3f, /*INSTRU*/0.0f,0.8f, /*ACOUST*/0.0f,0.9f,},"Traurig");
+
+		PlaylistCreator.createSuggestionPlaylist(new float [] {/*BPM*/40f,0.0f, /* VALENCE*/0.4f,0.0f, /*ENERGY*/0.0f,0.5f,
+				/*DANCE*/0.4f,0.0f, /*INSTRU*/0.0f,0.9f, /*ACOUST*/0.0f,0.9f,},"Slowdance");
+
+		PlaylistCreator.createSuggestionPlaylist(new float [] {/*BPM*/90f,0.0f, /* VALENCE*/0.0f,0.0f, /*ENERGY*/0.4f,0.9f,
+				/*DANCE*/0.0f,1.0f, /*INSTRU*/0.0f,0.9f, /*ACOUST*/1.0f,0.0f,},"Gaming");
 
 
 
@@ -238,11 +250,11 @@ public class PlaylistManager {
 	 * Gibt Liste der Playlisten zurück
 	 * @return
 	 */
-	public static ArrayList<Playlist> getPlaylistArrayList() {
+	public static ObservableList<Playlist> getPlaylistArrayList() {
 		return playlistArrayList;
 	}
 
-	private static void collectExistingTracks() {
+	public static HashMap<String, Track> collectExistingTracks() {
 
 		LinkedList<Track> temp = new LinkedList<>();
 		for (Playlist playlist:
@@ -255,152 +267,22 @@ public class PlaylistManager {
 				}
 			}
 		}
+
+		return trackMap;
 	}
 
-	private static void createPlaylist(float[] array, String name){
-		openPlaylists.addLast(new newPlaylist(array, name));
 
-	}
-
-	private static void createSuggestionPlaylist(SuggestionParams... param){
-			HashMap<String,Track> suggestedTracklist = (HashMap)trackMap.clone();
-
-
-		for (SuggestionParams actParam:
-			 param) {
-			switch (actParam){
-				case MINVALENCE:
-					for (Map.Entry<String, Track> entry : trackMap.entrySet()){
-
-						if(entry.getValue().getSpotId().equals(null)){
-							continue;
-						}
-
-						if(openPlaylists.getLast().getMinValence() > entry.getValue().getValence()){
-							suggestedTracklist.remove(entry.getKey());
-						}
-					} break;
-				case MINBPM:
-					for (Map.Entry<String, Track> entry : trackMap.entrySet()){
-
-						if(entry.getValue().getSpotId().equals(null)){
-							continue;
-						} else if(openPlaylists.getLast().getMinTempo() > entry.getValue().getBPM()){
-							suggestedTracklist.remove(entry.getKey());
-						}
-					} break;
-				case MINACOUSTICNESS:
-					for (Map.Entry<String, Track> entry : trackMap.entrySet()){
-
-						if(entry.getValue().getSpotId().equals(null)){
-							continue;
-						} else if(openPlaylists.getLast().getMinAcousticness() > entry.getValue().getAcousticness()){
-							suggestedTracklist.remove(entry.getKey());
-						}
-					} break;
-				case MINDANCEABILITY:
-					for (Map.Entry<String, Track> entry : trackMap.entrySet()){
-
-						if(entry.getValue().getSpotId().equals(null)){
-							continue;
-						} else if(openPlaylists.getLast().getMinDanceability() > entry.getValue().getDanceability()){
-							suggestedTracklist.remove(entry.getKey());
-						}
-					} break;
-				case MINENERGY:
-					for (Map.Entry<String, Track> entry : trackMap.entrySet()){
-						if(entry.getValue().getSpotId().equals(null)){
-							continue;
-						} else if(openPlaylists.getLast().getMinEnergy() > entry.getValue().getEnergy()){
-							suggestedTracklist.remove(entry.getKey());
-						}
-					} break;
-				case MININSTRUMENTALNESS:
-					for (Map.Entry<String, Track> entry : trackMap.entrySet()){
-						if(entry.getValue().getSpotId().equals(null)){
-							continue;
-						} else if(openPlaylists.getLast().getMinInstrumentalness() > entry.getValue().getInstrumentalness()){
-							suggestedTracklist.remove(entry.getKey());
-						}
-					} break;
-				case MAXVALENCE:
-					for (Map.Entry<String, Track> entry : trackMap.entrySet()){
-
-						if(entry.getValue().getSpotId().equals(null)){
-							continue;
-						}
-
-						if(openPlaylists.getLast().getMaxValence() > entry.getValue().getValence()){
-							suggestedTracklist.remove(entry.getKey());
-						}
-					} break;
-				case MAXBPM:
-					for (Map.Entry<String, Track> entry : trackMap.entrySet()){
-
-						if(entry.getValue().getSpotId().equals(null)){
-							continue;
-						} else if(openPlaylists.getLast().getMaxTempo() > entry.getValue().getBPM()){
-							suggestedTracklist.remove(entry.getKey());
-						}
-					} break;
-				case MAXACOUSTICNESS:
-					for (Map.Entry<String, Track> entry : trackMap.entrySet()){
-
-						if(entry.getValue().getSpotId().equals(null)){
-							continue;
-						} else if(openPlaylists.getLast().getMaxAcousticness() < entry.getValue().getAcousticness()){
-							suggestedTracklist.remove(entry.getKey());
-						}
-					} break;
-				case MAXDANCEABILITY:
-					for (Map.Entry<String, Track> entry : trackMap.entrySet()){
-
-						if(entry.getValue().getSpotId().equals(null)){
-							continue;
-						} else if(openPlaylists.getLast().getMaxDanceability() < entry.getValue().getDanceability()){
-							suggestedTracklist.remove(entry.getKey());
-						}
-					} break;
-				case MAXENERGY:
-					for (Map.Entry<String, Track> entry : trackMap.entrySet()){
-						if(entry.getValue().getSpotId().equals(null)){
-							continue;
-						} else if(openPlaylists.getLast().getMaxEnergy() < entry.getValue().getEnergy()){
-							suggestedTracklist.remove(entry.getKey());
-						}
-					} break;
-				case MAXINSTRUMENTALNESS:
-					for (Map.Entry<String, Track> entry : trackMap.entrySet()){
-						if(entry.getValue().getSpotId().equals(null)){
-							continue;
-						} else if(openPlaylists.getLast().getMaxInstrumentalness() < entry.getValue().getInstrumentalness()){
-							suggestedTracklist.remove(entry.getKey());
-						}
-					} break;
-				default: continue;
-
-			}
-
-		}
-
-		assert !suggestedTracklist.isEmpty();
-
-
-		playlistArrayList.add(new Playlist(openPlaylists.getLast().getName(), suggestedTracklist ));
-		/*try {
-			savePlaylist(playlistArrayList.get(playlistArrayList.size()-1), openPlaylists.getLast().getName());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}*/
-		openPlaylists.removeLast();
-
-	}
 
 	public static void addTrack(Track track, Playlist playlist){
 		playlist.addTrack(track);
 	}
 
-	public static SimpleObjectProperty<ArrayList<Playlist>> allPlaylistProperty(){
+	public static SimpleIntegerProperty allPlaylistProperty(){
 		return playlistsChange;
+	}
+
+	public static void addPlaylist(Playlist playlist) {
+		playlistArrayList.add(playlist);
+
 	}
 }

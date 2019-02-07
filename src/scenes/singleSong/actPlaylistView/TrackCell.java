@@ -37,13 +37,13 @@ public class TrackCell extends javafx.scene.control.ListCell<Controller.Track> {
         songlength.getStyleClass().add("label");
 
         ColumnConstraints titleColumn = new ColumnConstraints();
-        titleColumn.setPercentWidth(50);
+        titleColumn.setPercentWidth(40);
         ColumnConstraints artistColumn = new ColumnConstraints();
         artistColumn.setPercentWidth(20);
         ColumnConstraints albumColumn = new ColumnConstraints();
         albumColumn.setPercentWidth(20);
         ColumnConstraints songlengthColumn = new ColumnConstraints();
-        songlengthColumn.setPercentWidth(10);
+        songlengthColumn.setPercentWidth(20);
         songlengthColumn.setHalignment(HPos.RIGHT);
         root.getColumnConstraints().addAll(titleColumn, artistColumn, albumColumn, songlengthColumn);
         root.prefWidthProperty().bind(this.widthProperty());

@@ -11,6 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import scenes.singleSong.observView.ObservView;
+import scenes.singleSong.observView.Views;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -142,7 +143,7 @@ public class SongInfoController {
         });
 
         buttonBox.setOnMouseClicked(event -> {
-            observ.switchToListView();
+            observ.switchView(Views.ACTPLAYLISTDESKTOP);
         });
 
         view.widthProperty().addListener((observable, oldValue, newValue) -> {

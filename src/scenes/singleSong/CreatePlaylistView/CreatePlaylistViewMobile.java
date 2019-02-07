@@ -1,4 +1,4 @@
-package scenes.singleSong.actPlaylistView;
+package scenes.singleSong.CreatePlaylistView;
 
 
 import Applikation.PlayerGUI;
@@ -6,20 +6,18 @@ import Controller.MP3Player;
 import Controller.Playlist;
 import Controller.PlaylistManager;
 import Controller.Track;
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -37,7 +35,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-public class ActPlaylistViewMobile extends ScrollPane {
+public class CreatePlaylistViewMobile extends ScrollPane {
 
     boolean paused = true;
     static VBox dataAndTitle, all;
@@ -52,14 +50,14 @@ public class ActPlaylistViewMobile extends ScrollPane {
     ObservableList<Playlist> allPlaylists = FXCollections.observableArrayList();;
 
 
-    Text status, actPlaylistTitle, actPlaylistLength, actTrackAmmount;
+    Text status, newPlaylistName, actPlaylistLength, actTrackAmmount;
     ImageView actImg;
     Button shuffle, repeat;
     Playlist aktPlaylist;
     ObservableList<Track> list = FXCollections.observableArrayList();
     DateFormat zeitanzeige = new SimpleDateFormat("mm:ss");
 
-    public ActPlaylistViewMobile(ObservView observView, MP3Player player) {
+    public CreatePlaylistViewMobile(ObservView observView, MP3Player player) {
         dataAndTitleAndImg = new HBox();
         dataAndTitle = new VBox();
         data = new HBox();
@@ -77,69 +75,33 @@ public class ActPlaylistViewMobile extends ScrollPane {
         dataAndTitleAndImg.setAlignment(Pos.TOP_LEFT);
         data.setPadding(new Insets(0, 00, 8, 00));
         dataAndTitle.setPadding(new Insets(0,30,0,10));
-        data.setPrefWidth(300);
+        data.setPrefWidth(400);
         playeinstellung.setAlignment(Pos.TOP_LEFT);
         playeinstellung.setPadding(new Insets(70, 0, 0, 0));
 
 
         allPlaylists.addAll(PlaylistManager.getPlaylistArrayList());
-        aktPlaylist = PlaylistManager.getPlaylistArrayList().get(0);
 
 
 
-        actPlaylistTitle = new Text(aktPlaylist.getName());
-        actPlaylistLength = new Text(String.valueOf(zeitanzeige.format(aktPlaylist.getPlaytime())) + " Minuten");
-        actTrackAmmount = new Text(String.valueOf(aktPlaylist.getNumberTracks()) + (" Tracks - "));
 
-        shuffle = new Button();
-        shuffle.getStyleClass().add("notActive-button");
-        shuffle.setStyle("-fx-shape: \"" + getPathFromSVG("shuffle") + "\";");
-        shuffle.setPadding(new Insets(20, 100, 0, 100));
+        newPlaylistName = new Text("DEFAULT");
 
 
-        repeat = new Button();
-        repeat.getStyleClass().add("notActive-button");
-        repeat.setStyle("-fx-shape: \"" + getPathFromSVG("repeat") + "\";");
-        repeat.setPadding(new Insets(20, 100, 0, 100));
 
-        //TABELLE
-        tableHeader.add(titel, 0,0);
-        tableHeader.add(artist,1,0);
-
-        ColumnConstraints titleColumn = new ColumnConstraints();
-        titleColumn.setPercentWidth(70);
-        ColumnConstraints artistColumn = new ColumnConstraints();
-        artistColumn.setPercentWidth(30);
-        tableHeader.getColumnConstraints().addAll(titleColumn, artistColumn);
-
-        trackListView = new ListView<>();
-
-
-        // Hier muss von der PlaylistListe die darzustellende Playlist geholt werden
-        list.addAll(aktPlaylist.getTracks());
-        trackListView.prefHeightProperty().bind(Bindings.size(list).multiply(LIST_CELL_HEIGHT));
-        trackListView.setItems(list);
-        trackListView.setBackground(new Background(new BackgroundFill(new Color(0.2, 0.2, 0.2, 1.0), CornerRadii.EMPTY, Insets.EMPTY)));
-
-        trackListView.getStyleClass().add("list-view");
-
-        trackListView.maxWidthProperty().bind(all.widthProperty());
-        trackListView.setPrefWidth(300);
 
         //PLAYLIST DATA
-        status = new Text(("Playlist / ").toUpperCase());
+        status = new Text(("Create Playlist").toUpperCase());
         status.getStyleClass().add("basictxt");
-        actTrackAmmount.getStyleClass().add("basictxt");
-        actPlaylistLength.getStyleClass().add("basictxt");
-        actPlaylistTitle.getStyleClass().add("playlistHeadline");
 
-        playeinstellung.getChildren().addAll(shuffle, repeat);
-        data.getChildren().addAll(status, actTrackAmmount, actPlaylistLength);
-        dataAndTitle.getChildren().addAll(data, actPlaylistTitle, playeinstellung);
+
+
+        data.getChildren().addAll(status);
+        dataAndTitle.getChildren().addAll(data, newPlaylistName);
 
         //ALL PLAYLIST INFO
         actImg = new ImageView();
-        actImg.setImage(aktPlaylist.getTracks().getFirst().getImage());
+        actImg.setImage(new Image("defaultCover.png"));
         actImg.setFitWidth(150);
         actImg.setFitHeight(150);
 
@@ -152,7 +114,7 @@ public class ActPlaylistViewMobile extends ScrollPane {
         */
 
         dataAndTitleAndImg.getChildren().addAll(actImg, dataAndTitle);
-        all.getChildren().addAll(dataAndTitleAndImg, tableHeader, trackListView);
+        all.getChildren().addAll(dataAndTitleAndImg);
 
 
 
@@ -204,29 +166,10 @@ public class ActPlaylistViewMobile extends ScrollPane {
         paused = !paused;
     }
 
-    public void setAktPlaylist(Playlist playlist ){
-
-
-
-        list.addAll(playlist.getTracks());
-        list.removeAll(aktPlaylist.getTracks());
-        aktPlaylist = playlist;
-
-        trackListView.setItems(list);
-
-    }
 
     public static ReadOnlyDoubleProperty getPlaylistWidth(){
         return all.widthProperty();
     }
 
-
-
-    public void updatePlaylistInfo(Playlist playlist){
-        actPlaylistTitle.setText(playlist.getName());
-        actPlaylistLength.setText(String.valueOf(zeitanzeige.format(playlist.getPlaytime())) + " Minuten");
-        actTrackAmmount.setText(String.valueOf(playlist.getNumberTracks()) + (" Tracks - "));
-        actImg.setImage(playlist.getTracks().getFirst().getImage());
-    }
 
 }

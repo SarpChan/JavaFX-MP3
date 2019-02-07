@@ -69,7 +69,7 @@ public class ActPlaylistView extends ScrollPane {
     ObservableList<Track> list = FXCollections.observableArrayList();
     DateFormat zeitanzeige = new SimpleDateFormat("mm:ss");
 
-    public ActPlaylistView(PlayerGUI observView, MP3Player player) {
+    public ActPlaylistView(ObservView observView, MP3Player player) {
         dataAndTitleAndImg = new HBox();
         dataAndTitle = new VBox();
         data = new HBox();

@@ -5,15 +5,15 @@ import Controller.MP3Player;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import scenes.singleSong.*;
+import scenes.singleSong.CreatePlaylistView.CreatePlaylistView;
+import scenes.singleSong.CreatePlaylistView.CreatePlaylistViewController;
 import scenes.singleSong.actPlaylistView.ActPlaylistView;
 import scenes.singleSong.actPlaylistView.ActPlaylistViewController;
+import scenes.singleSong.actPlaylistView.ActPlaylistViewMobile;
 import scenes.singleSong.allPlaylistView.AllPlaylistsView;
-import scenes.singleSong.singleSongView.SingleSongView;
-
 
 
 public class ObservView {
@@ -21,55 +21,62 @@ public class ObservView {
     private GridPane top;
     private VBox all;
     private Scene observView;
-    private SingleSongView songCenter;
     private VBox bottom;
     private VBox region;
-    private AllPlaylistsView left;
-    private ActPlaylistView playlistCenter;
-    private MainViewController singleSong;
-    ActPlaylistViewController playlistControl;
+    private AllPlaylistsView allePlaylistenView;
+    private ActPlaylistView aktPlaylistViewWeb;
+    private MainViewController mainViewController;
+    private ActPlaylistViewController aktPlaylistController;
+    private CreatePlaylistView createPlaylist;
+    private MainViewController mainViewControllerMobile;
+    private ActPlaylistViewMobile aktPlaylistViewMobile;
+    private HBox playlist = new HBox();
     private VBox songInfo;
     private SongInfoController songInfoControl;
+    private Views currentDesktop;
+    private Views currentMobile;
+
 
     public Scene buildScene(PlayerGUI gui, MP3Player player) {
-        playlistControl = new ActPlaylistViewController(gui, player, SelectMainView.DESKTOP);
+        createPlaylist = new CreatePlaylistViewController(this, player, SelectMainView.DESKTOP).getView();
+        aktPlaylistController = new ActPlaylistViewController(this, player, SelectMainView.DESKTOP);
+        aktPlaylistViewWeb = aktPlaylistController.getView();
+        aktPlaylistViewMobile= new ActPlaylistViewController(this, player, SelectMainView.MOBILE).getViewMobile();
         root = new StackPane();
         top = new GridPane();
         all = new VBox();
         observView = new Scene(root, 1024, 750);
         root.setBackground(new Background(new BackgroundFill(new Color(0.2, 0.2, 0.2, 1.0), CornerRadii.EMPTY, Insets.EMPTY)));
 
-        left = new AllPlaylistsView(this);
+        currentDesktop = Views.ACTPLAYLISTDESKTOP;
+        currentMobile = Views.ACTPLAYLISTMOBILE;
+        allePlaylistenView = new AllPlaylistsView(this);
 
-        songCenter = new SingleSongView(this, player);
-        singleSong = new MainViewController(player, SelectMainView.DESKTOP, this);
-        playlistCenter = new ActPlaylistViewController(gui, player, SelectMainView.DESKTOP).getView();
-        bottom = singleSong.getView();
-        bottom.setAlignment(Pos.BOTTOM_CENTER);
+
+        mainViewController = new MainViewController(player, SelectMainView.DESKTOP, this);
+        mainViewControllerMobile = new MainViewController(player, SelectMainView.MOBILE, this);
+
         songInfoControl = new SongInfoController(player, this);
         songInfo = songInfoControl.getView();
-        top.add(left, 0,0);
 
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        top.add(playlistCenter,2,0);
-        //top.add(songInfo,2,0);
+        bottom = mainViewController.getView();
+        bottom.setAlignment(Pos.BOTTOM_CENTER);
+
+        top.add(allePlaylistenView, 0,0);
+        top.add(aktPlaylistViewWeb,2,0);
+
 
         top.setAlignment(Pos.TOP_CENTER);
         top.setPadding(new Insets(30,0,0,0));
-        ColumnConstraints leftColumn = new ColumnConstraints();
-        leftColumn.setPercentWidth(20);
-        ColumnConstraints centerColumn = new ColumnConstraints();
-        centerColumn.setPercentWidth(5);
-        ColumnConstraints rightColumn = new ColumnConstraints();
-        rightColumn.setPercentWidth(75);
-        top.getColumnConstraints().addAll(leftColumn,centerColumn,rightColumn);
+
+        webColumns();
 
         region = new VBox();
         VBox.setVgrow(region, Priority.ALWAYS);
         region.setPrefHeight(0);
 
 
-
+        playlist.setAlignment(Pos.CENTER);
 
 
         all.getChildren().addAll(top,region,bottom);
@@ -77,9 +84,17 @@ public class ObservView {
         root.getChildren().addAll(all);
 
         observView.widthProperty().addListener(e -> {
-            playlistControl.calcDataWidth(observView.getWidth());
-            songCenter.setImgWidth(observView.getWidth());
+            aktPlaylistController.calcDataWidth(observView.getWidth());
 
+
+        });
+
+        observView.widthProperty().addListener((observable, oldValue, newValue) -> {
+            if(newValue.doubleValue() <= 550){
+                switchView(currentMobile);
+            }else{
+                switchView(currentDesktop);
+            }
         });
 
         observView.getStylesheets().add(getClass().
@@ -102,34 +117,96 @@ public class ObservView {
         return observView.getWidth();
     }
 
-    public void switchView(){
-        all.getChildren().remove(top);
-        root.getChildren().add(0,songCenter);
-    }
-
-    public void switchToListView(){
-
-        top.getChildren().remove(1);
-        top.add(playlistCenter, 2, 0);
+    public void switchView(Views view){
         songInfoControl.close();
 
-    }
+        all.getChildren().clear();
+        top.getColumnConstraints().clear();
+        top.getChildren().clear();
+        bottom = null;
 
-    public void switchToSongInfoView(){
-        if(top.getChildren().get(1) != songInfo) {
-            top.getChildren().remove(1);
-            top.add(songInfo, 2, 0);
-            songInfoControl.open();
-            songInfoControl.animate();
+        switch (view){
+            case ACTPLAYLISTDESKTOP:
+
+                webColumns();
+
+                top.add(allePlaylistenView, 0,0);
+                top.add(aktPlaylistViewWeb,2,0);
+                bottom = mainViewController.getView();
+                all.getChildren().addAll(top, region, bottom);
+                currentDesktop = Views.ACTPLAYLISTDESKTOP;
+                currentMobile = Views.ACTPLAYLISTMOBILE;
+
+                break;
+
+            case ACTPLAYLISTMOBILE:
+
+                top.getChildren().addAll(aktPlaylistViewMobile);
+                bottom = mainViewControllerMobile.getView();
+                all.getChildren().addAll(top,region,bottom);
+                currentDesktop = Views.ACTPLAYLISTDESKTOP;
+                currentMobile = Views.ACTPLAYLISTMOBILE;
+                break;
+
+            case CREATEVIEW:
+
+                webColumns();
+
+                top.add(allePlaylistenView, 0,0);
+                top.add(createPlaylist,2,0);
+                bottom = mainViewController.getView();
+                all.getChildren().addAll(top, region, bottom);
+                currentDesktop = Views.CREATEVIEW;
+                currentMobile = Views.CREATEVIEW;
+                break;
+
+            case SONGINFODESKTOP:
+
+                    webColumns();
+                    top.add(allePlaylistenView, 0,0);
+                    top.add(songInfo, 2, 0);
+                    bottom = mainViewController.getView();
+                    all.getChildren().addAll(top,region, bottom);
+                    songInfoControl.open();
+                    songInfoControl.animate();
+                    currentDesktop = Views.SONGINFODESKTOP;
+                    currentMobile = Views.SONGINFOMOBILE;
+
+
+
+
         }
 
+
+
+
+
     }
+
+    private void webColumns(){
+        ColumnConstraints leftColumn = new ColumnConstraints();
+        leftColumn.setPercentWidth(20);
+        ColumnConstraints centerColumn = new ColumnConstraints();
+        centerColumn.setPercentWidth(5);
+        ColumnConstraints rightColumn = new ColumnConstraints();
+        rightColumn.setPercentWidth(75);
+        top.getColumnConstraints().addAll(leftColumn,centerColumn,rightColumn);
+    }
+
+    private void mobileColumns(){
+
+        ColumnConstraints rightColumn = new ColumnConstraints();
+        rightColumn.setPercentWidth(100);
+        top.getColumnConstraints().addAll(rightColumn);
+
+    }
+
 
     public void changePlayButton(){
-        singleSong.changePlayButton();
+        mainViewController.changePlayButton();
     }
 
-    public ActPlaylistView getPlaylistCenter() {
-        return playlistCenter;
+    public ActPlaylistView getAktPlaylistViewWeb() {
+        return aktPlaylistViewWeb;
     }
 }

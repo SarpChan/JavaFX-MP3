@@ -20,6 +20,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import scenes.singleSong.observView.ObservView;
+import scenes.singleSong.observView.Views;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -27,7 +28,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.text.DateFormat;
 
-public class MainViewController{
+public class MainViewController {
 
     MP3Player player;
     MainView view;
@@ -144,7 +145,21 @@ public class MainViewController{
         timeline.play();
 
         songInfo.setOnMouseClicked(event ->{
-            observ.switchToSongInfoView();
+            observ.switchView(Views.SONGINFODESKTOP);
+            new Thread(){
+                @Override
+                public void run() {
+                    songInfo.setDisable(true);
+
+                    try {
+                        Thread.sleep(1800);
+                        songInfo.setDisable(false);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }.start();
+
         });
 
         progress.addEventHandler(MouseEvent.MOUSE_PRESSED, event->{
