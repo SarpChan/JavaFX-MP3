@@ -10,6 +10,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import scenes.singleSong.observView.ObservView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -33,9 +34,10 @@ public class SongInfoController {
     Text backSign;
     MP3Player player;
     HBox titleBox;
+    boolean isOpen = true;
 
 
-    public SongInfoController(MP3Player player){
+    public SongInfoController(MP3Player player, ObservView observ){
         this.player = player;
         view = new SongInfoView(player);
         cover = view.cover;
@@ -139,6 +141,10 @@ public class SongInfoController {
 
         });
 
+        buttonBox.setOnMouseClicked(event -> {
+            observ.switchToListView();
+        });
+
         view.widthProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue.intValue() <= 600){
                 if (firstRings.getChildren().size() > 2 && secondRings.getChildren().size() > 2) {
@@ -153,7 +159,7 @@ public class SongInfoController {
             }
 
             calcDataWidth(newValue.doubleValue());
-
+            view.line.setEndX(newValue.doubleValue() - 15);
 
         });
 
@@ -161,12 +167,9 @@ public class SongInfoController {
             System.out.println(newValue);
         });
 
-        buttonBox.setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                back.setStyle("-fx-shape: \"" + getPathFromSVG("back2") + "\"; -icon-paint: -fx-primarycolor;");
-                backSign.setStyle("-fx-fill:#74CCDB; -fx-font-size:12px");
-            }
+        buttonBox.setOnMouseEntered(event -> {
+            back.setStyle("-fx-shape: \"" + getPathFromSVG("back2") + "\"; -icon-paint: -fx-primarycolor;");
+            backSign.setStyle("-fx-fill:#74CCDB; -fx-font-size:12px");
         });
 
         buttonBox.setOnMouseExited(new EventHandler<MouseEvent>() {
@@ -179,7 +182,15 @@ public class SongInfoController {
 
     }
 
-    public void StartAnimateCanvasThread(){
+    public void animate(){
+
+        for (AnimationStruct e: animationStructList){
+            e.setCurValue(0);
+        }
+        StartAnimateCanvasThread();
+    }
+
+    private void StartAnimateCanvasThread(){
 
         animateThread = new Thread(){
             private boolean runnable;
@@ -193,7 +204,9 @@ public class SongInfoController {
 
                 final int ADDDEGREES = 4;
 
-                for(int i = 0; i < 360 / ADDDEGREES && runnable; i++) {
+
+
+                for(int i = 0; i < 360 / ADDDEGREES && runnable && isOpen; i++) {
 
                     for (AnimationStruct e : animationStructList) {
 
@@ -211,6 +224,14 @@ public class SongInfoController {
         };
 
         animateThread.start();
+    }
+
+    public void open(){
+        isOpen = true;
+    }
+
+    public void close(){
+        isOpen = false;
     }
 
     public void calcDataWidth(double x){

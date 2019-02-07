@@ -28,6 +28,8 @@ public class ObservView {
     private ActPlaylistView playlistCenter;
     private MainViewController singleSong;
     ActPlaylistViewController playlistControl;
+    private VBox songInfo;
+    private SongInfoController songInfoControl;
 
     public Scene buildScene(PlayerGUI gui, MP3Player player) {
         playlistControl = new ActPlaylistViewController(gui, player, SelectMainView.DESKTOP);
@@ -40,16 +42,17 @@ public class ObservView {
         left = new AllPlaylistsView(this);
 
         songCenter = new SingleSongView(this, player);
-        singleSong = new MainViewController(player, SelectMainView.DESKTOP);
+        singleSong = new MainViewController(player, SelectMainView.DESKTOP, this);
         playlistCenter = new ActPlaylistViewController(gui, player, SelectMainView.DESKTOP).getView();
         bottom = singleSong.getView();
         bottom.setAlignment(Pos.BOTTOM_CENTER);
-
+        songInfoControl = new SongInfoController(player, this);
+        songInfo = songInfoControl.getView();
         top.add(left, 0,0);
-        VBox songInfo = new SongInfoController(player).getView();
+
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        //top.add(playlistCenter,2,0);
-        top.add(songInfo,2,0);
+        top.add(playlistCenter,2,0);
+        //top.add(songInfo,2,0);
 
         top.setAlignment(Pos.TOP_CENTER);
         top.setPadding(new Insets(30,0,0,0));
@@ -104,6 +107,23 @@ public class ObservView {
         root.getChildren().add(0,songCenter);
     }
 
+    public void switchToListView(){
+
+        top.getChildren().remove(1);
+        top.add(playlistCenter, 2, 0);
+        songInfoControl.close();
+
+    }
+
+    public void switchToSongInfoView(){
+        if(top.getChildren().get(1) != songInfo) {
+            top.getChildren().remove(1);
+            top.add(songInfo, 2, 0);
+            songInfoControl.open();
+            songInfoControl.animate();
+        }
+
+    }
 
     public void changePlayButton(){
         singleSong.changePlayButton();

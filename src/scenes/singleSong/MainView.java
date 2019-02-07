@@ -212,6 +212,8 @@ public class MainView extends VBox{
         songControl.getChildren().addAll(songInfo, region2, controlButtons, region, volumeAndTime);
         songControl.setMinHeight(105);
 
+        this.setMinHeight(110);
+        this.setMaxHeight(110);
         this.getChildren().addAll(progressPane, songControl);
         this.setAlignment(Pos.BOTTOM_LEFT);
 

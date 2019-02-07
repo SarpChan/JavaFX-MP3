@@ -37,6 +37,7 @@ public class MainViewMobile extends VBox {
         progress.setMax(100);
         progress.setId("progress");
 
+
         HBox controlButtons = new HBox(25);
 
         play = new Button();

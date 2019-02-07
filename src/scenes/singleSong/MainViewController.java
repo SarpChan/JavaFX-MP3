@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Slider;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
@@ -40,12 +41,15 @@ public class MainViewController{
     Label interpret, titleInfo;
     Button mute, play, previous, next;
     SelectMainView select;
+    HBox songInfo;
+    ObservView observ;
 
     private double volumePosition = 50;
 
-    public MainViewController(MP3Player player, SelectMainView select){
+    public MainViewController(MP3Player player, SelectMainView select, ObservView observ){
         this.select = select;
         this.player = player;
+        this.observ = observ;
 
         switch (select){
             case DESKTOP:
@@ -64,10 +68,11 @@ public class MainViewController{
                 play = view.play;
                 previous = view.previous;
                 next = view.next;
+                songInfo = view.songInfo;
                 break;
 
             case MOBILE:
-
+                songInfo = new HBox();
                 viewMobile = new MainViewMobile(player);
                 progress = viewMobile.progress;
                 zeitanzeige = viewMobile.zeitanzeige;
@@ -138,7 +143,9 @@ public class MainViewController{
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
 
-
+        songInfo.setOnMouseClicked(event ->{
+            observ.switchToSongInfoView();
+        });
 
         progress.addEventHandler(MouseEvent.MOUSE_PRESSED, event->{
 
@@ -181,7 +188,6 @@ public class MainViewController{
                 }
             }
 
-
             calculatePB(progress, progressTimeSlider);
         });
 
@@ -212,6 +218,7 @@ public class MainViewController{
                 mute.setStyle("-fx-shape:\""+ getPathFromSVG("mute") + "\";");
             }
             calculatePBForVolume(volume, progressBarVolume);
+
             player.volume((newvar.floatValue() / 100));
         });
 
@@ -264,6 +271,15 @@ public class MainViewController{
             } catch (keinSongException e) {
                 e.printStackTrace();
             }
+        });
+
+        songInfo.setOnMouseEntered(event -> {
+            titleInfo.setStyle("-fx-text-fill:#bbb;");
+            interpret.setStyle("-fx-text-fill:#bbb;");
+        });
+        songInfo.setOnMouseExited(event -> {
+            titleInfo.setStyle("-fx-text-fill:#74CCDB;");
+            interpret.setStyle("-fx-text-fill:#74CCDB;");
         });
     }
 

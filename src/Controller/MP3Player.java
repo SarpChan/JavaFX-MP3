@@ -359,6 +359,10 @@ public class MP3Player {
 
     }
 
+    public Track getAktTrack(){
+        return aktSong;
+    }
+
     /**
      * Setzt die Lautstärke auf den Wert value
      *

@@ -12,6 +12,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextBoundsType;
 
@@ -29,7 +30,9 @@ public class SongInfoView extends VBox {
     Text firstAccordValue, secondAccordValue, thirdAccordValue, forthAccordValue, fifthAccordValue, sixthAccordValue;
     HBox firstRings, secondRings, thirdRings, buttonBox;
     Color mainColor;
-    HBox titleBox;
+    HBox titleBox, contentHBox;
+    Line line;
+
 
 
 
@@ -49,6 +52,7 @@ public class SongInfoView extends VBox {
         buttonBox.setAlignment(Pos.CENTER_LEFT);
 
         buttonBox.getChildren().addAll(back, backSign);
+        buttonBox.setMaxWidth(40);
 
 
         mainColor = Color.rgb(116, 204, 219);
@@ -82,6 +86,7 @@ public class SongInfoView extends VBox {
 
         VBox songNames = new VBox(3);
         songNames.getChildren().addAll(titleBox, artist, album, length);
+
 
 
 
@@ -218,8 +223,27 @@ public class SongInfoView extends VBox {
 
         songValues.setAlignment(Pos.CENTER_RIGHT);
 
-        ScrollPane scrollable = new ScrollPane();
-        scrollable.setContent(new HBox(new VBox(basicSongInfo, songValues)));
+        ScrollPane scrollable;
+        Pane region, region2;
+
+        region = new HBox();
+        HBox.setHgrow(region, Priority.ALWAYS);
+        region2 = new HBox();
+        HBox.setHgrow(region2, Priority.ALWAYS);
+
+        line = new Line();
+
+        line.setStroke(Color.rgb(187, 187, 187));
+
+
+
+
+        contentHBox = new HBox();
+        contentHBox.getChildren().addAll(new VBox(basicSongInfo, line, new HBox(region,songValues, region2)));
+        contentHBox.setAlignment(Pos.CENTER_RIGHT);
+
+        scrollable = new ScrollPane();
+        scrollable.setContent(contentHBox);
         scrollable.setPadding(new Insets(20, 0, 0, 0));
         scrollable.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollable.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);

@@ -36,7 +36,7 @@ public class ObservMobile {
         root.setBackground(new Background(new BackgroundFill(new Color(0.2, 0.2, 0.2, 1.0), CornerRadii.EMPTY, Insets.EMPTY)));
 
        // songCenter = new SingleSongView(this, player);
-        singleSong = new MainViewController(player, SelectMainView.MOBILE);
+        singleSong = new MainViewController(player, SelectMainView.MOBILE, new ObservView());
         playlistCenter = new ActPlaylistViewController(gui, player, SelectMainView.MOBILE);
         bottom = singleSong.getView();
         bottom.setAlignment(Pos.BOTTOM_CENTER);
