@@ -5,6 +5,7 @@ import Exceptions.keinSongException;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.control.Button;
@@ -216,8 +217,14 @@ public class MainViewController {
         });
 
         player.songProperty().addListener(observable -> {
-            titleInfo.setText(player.getTrack());
-            interpret.setText(player.getSongArtist() + " ");
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    titleInfo.setText(player.getTrack());
+                    interpret.setText(player.getSongArtist() + " ");
+                }
+            });
+
         });
 
         mute.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {

@@ -117,11 +117,11 @@ public class ObservView {
         root.getChildren().addAll(progressBackground, all);
         root.setAlignment(Pos.TOP_LEFT);
 
-        observView.widthProperty().addListener(e -> {
+        /*observView.widthProperty().addListener(e -> {
             aktPlaylistController.calcDataWidth(observView.getWidth());
 
 
-        });
+        });*/
 
         observView.widthProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue.doubleValue() <= 550){
