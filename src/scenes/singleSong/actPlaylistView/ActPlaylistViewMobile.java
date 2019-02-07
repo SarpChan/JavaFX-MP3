@@ -75,6 +75,7 @@ public class ActPlaylistViewMobile extends ScrollPane {
         dataAndTitle.setAlignment(Pos.TOP_LEFT);
         data.setAlignment(Pos.TOP_LEFT);
         dataAndTitleAndImg.setAlignment(Pos.TOP_LEFT);
+        dataAndTitleAndImg.setPadding(new Insets(0, 00, 20, 00));
         data.setPadding(new Insets(0, 00, 8, 00));
         dataAndTitle.setPadding(new Insets(0,30,0,10));
         data.setPrefWidth(300);
@@ -107,9 +108,9 @@ public class ActPlaylistViewMobile extends ScrollPane {
         tableHeader.add(artist,1,0);
 
         ColumnConstraints titleColumn = new ColumnConstraints();
-        titleColumn.setPercentWidth(70);
+        titleColumn.setPercentWidth(50);
         ColumnConstraints artistColumn = new ColumnConstraints();
-        artistColumn.setPercentWidth(30);
+        artistColumn.setPercentWidth(50);
         tableHeader.getColumnConstraints().addAll(titleColumn, artistColumn);
 
         trackListView = new ListView<>();
@@ -119,7 +120,7 @@ public class ActPlaylistViewMobile extends ScrollPane {
         list.addAll(aktPlaylist.getTracks());
         trackListView.prefHeightProperty().bind(Bindings.size(list).multiply(LIST_CELL_HEIGHT));
         trackListView.setItems(list);
-        trackListView.setBackground(new Background(new BackgroundFill(new Color(0.2, 0.2, 0.2, 1.0), CornerRadii.EMPTY, Insets.EMPTY)));
+        trackListView.setBackground(new Background(new BackgroundFill(new Color(0, 0, 0, 0), CornerRadii.EMPTY, Insets.EMPTY)));
 
         trackListView.getStyleClass().add("list-view");
 

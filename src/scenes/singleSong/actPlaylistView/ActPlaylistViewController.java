@@ -118,6 +118,12 @@ public class ActPlaylistViewController {
                 e.printStackTrace();
             }
         });
+
+        player.songProperty().addListener((observable, oldValue, newValue) -> {
+            trackListView.getSelectionModel().clearSelection();
+            trackListView.getSelectionModel().select(newValue);
+
+        });
     }
 
     public ActPlaylistView getView(){

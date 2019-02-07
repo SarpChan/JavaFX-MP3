@@ -2,11 +2,16 @@ package scenes.singleSong.observView;
 
 import Applikation.PlayerGUI;
 import Controller.MP3Player;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Slider;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import scenes.singleSong.*;
 import scenes.singleSong.CreatePlaylistView.CreatePlaylistView;
 import scenes.singleSong.CreatePlaylistView.CreatePlaylistViewController;
@@ -14,6 +19,10 @@ import scenes.singleSong.actPlaylistView.ActPlaylistView;
 import scenes.singleSong.actPlaylistView.ActPlaylistViewController;
 import scenes.singleSong.actPlaylistView.ActPlaylistViewMobile;
 import scenes.singleSong.allPlaylistView.AllPlaylistsView;
+
+import javax.swing.event.ChangeEvent;
+import java.util.EventListener;
+import java.util.Properties;
 
 
 public class ObservView {
@@ -82,7 +91,31 @@ public class ObservView {
 
         all.getChildren().addAll(top,region,bottom);
 
-        root.getChildren().addAll(all);
+
+
+        //HINTERGRUND
+        Rectangle progressBackground = new Rectangle();
+        progressBackground.setId("progressBackground");
+        progressBackground.setHeight(750);
+
+        root.heightProperty().addListener((observable, oldValue, newValue) -> progressBackground.setHeight(newValue.doubleValue()));
+        //progressBackground.xProperty().bind(mainViewController.getWidthProperty());
+
+
+        ChangeListener<Number> listenToProgress = (observable, oldValue, newValue) -> {
+            progressBackground.setWidth((newValue.doubleValue() / 100)  * observView.getWidth());
+        };
+
+        observView.widthProperty().addListener((observable, oldValue, newValue) -> {
+            progressBackground.setWidth((mainViewController.getProgress().getValue() / 100)  * newValue.intValue());
+        });
+
+        mainViewController.getProgress().valueProperty().addListener(listenToProgress);
+
+
+
+        root.getChildren().addAll(progressBackground, all);
+        root.setAlignment(Pos.TOP_LEFT);
 
         observView.widthProperty().addListener(e -> {
             aktPlaylistController.calcDataWidth(observView.getWidth());
@@ -93,10 +126,14 @@ public class ObservView {
         observView.widthProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue.doubleValue() <= 550){
                 if(current != currentMobile) {
+                    mainViewController.getProgress().valueProperty().removeListener(listenToProgress);
+                    mainViewControllerMobile.getProgress().valueProperty().addListener(listenToProgress);
                     switchView(currentMobile);
                 }
             }else{
                 if(current != currentDesktop) {
+                    mainViewControllerMobile.getProgress().valueProperty().removeListener(listenToProgress);
+                    mainViewController.getProgress().valueProperty().addListener(listenToProgress);
                     switchView(currentDesktop);
                 }
 
@@ -220,4 +257,30 @@ public class ObservView {
     public ActPlaylistView getAktPlaylistViewWeb() {
         return aktPlaylistViewWeb;
     }
+
+    private void calculateBackgroundProgress(Slider progress, Rectangle bg) {
+        double actValue = progress.getValue();
+        double width = progress.getWidth();
+        double half = (progress.getMax()/2);
+
+        if(actValue == half){
+            bg.setWidth(width/2);
+
+        }
+        else if (actValue < half){
+            double actProgress = 1.0-(actValue/half);
+            double minwidth = progress.getWidth() / 2 + (progress.getWidth()/2) * (actProgress);
+            bg.setWidth(width-minwidth);
+
+
+        }
+        else if (actValue > half ){
+            double actProgress = (actValue-half)/half;
+            double minwidth = progress.getWidth() / 2 + (progress.getWidth()/2) * (actProgress);
+            bg.setWidth(minwidth);
+        }
+
+    }
+
+
 }

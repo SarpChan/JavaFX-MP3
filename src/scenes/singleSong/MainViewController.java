@@ -5,12 +5,15 @@ import Exceptions.keinSongException;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Slider;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
@@ -27,6 +30,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.text.DateFormat;
+import java.util.Properties;
 
 public class MainViewController {
 
@@ -44,6 +48,8 @@ public class MainViewController {
     SelectMainView select;
     HBox songInfo;
     ObservView observ;
+    Pane songControl;
+
 
     private double volumePosition = 50;
 
@@ -70,11 +76,14 @@ public class MainViewController {
                 previous = view.previous;
                 next = view.next;
                 songInfo = view.songInfo;
+                songControl = view.songControl;
                 break;
 
             case MOBILE:
+
                 songInfo = new HBox();
                 viewMobile = new MainViewMobile(player);
+                songControl = viewMobile;
                 progress = viewMobile.progress;
                 zeitanzeige = viewMobile.zeitanzeige;
                 time = viewMobile.time;
@@ -298,6 +307,13 @@ public class MainViewController {
         });
     }
 
+    public Slider getProgress(){
+        return progress;
+    }
+    public ReadOnlyDoubleProperty getWidthProperty(){
+        return progress.widthProperty();
+    }
+
     private void calculatePB(Slider progress, ProgressBar bar1) {
         double actValue = progress.getValue();
         double width = progress.getWidth();
@@ -381,6 +397,7 @@ public class MainViewController {
     public void changePlayButton(){
         play.setStyle("-fx-shape: \"" + getPathFromSVG("pause") + "\";");
     }
+
 
 
 

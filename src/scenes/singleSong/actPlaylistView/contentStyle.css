@@ -22,9 +22,12 @@
       -fx-text-fill:#fff;
 }
 
-
 .list-cell:hover .label{
-  -fx-text-fill:#74CCDB;
+  -fx-text-fill:#bbb;
+}
+
+.list-cell:selected:hover .label{
+  -fx-text-fill:#bbb;
 
 }
 

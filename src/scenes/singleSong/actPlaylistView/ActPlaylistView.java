@@ -122,14 +122,15 @@ public class ActPlaylistView extends ScrollPane {
         tableHeader.add(length, 3,0);
 
         ColumnConstraints titleColumn = new ColumnConstraints();
-        titleColumn.setPercentWidth(50);
+        titleColumn.setPercentWidth(40);
         ColumnConstraints artistColumn = new ColumnConstraints();
         artistColumn.setPercentWidth(20);
         ColumnConstraints albumColumn = new ColumnConstraints();
-        albumColumn.setPercentWidth(20);
+        albumColumn.setPercentWidth(30);
         ColumnConstraints songlengthColumn = new ColumnConstraints();
         songlengthColumn.setPercentWidth(10);
         songlengthColumn.setHalignment(HPos.RIGHT);
+        titleColumn.setHalignment(HPos.LEFT);
         tableHeader.getColumnConstraints().addAll(titleColumn, artistColumn, albumColumn, songlengthColumn);
 
         trackListView = new ListView<>();
@@ -139,7 +140,7 @@ public class ActPlaylistView extends ScrollPane {
         list.addAll(aktPlaylist.getTracks());
         trackListView.prefHeightProperty().bind(Bindings.size(list).multiply(LIST_CELL_HEIGHT));
         trackListView.setItems(list);
-        trackListView.setBackground(new Background(new BackgroundFill(new Color(0.2, 0.2, 0.2, 1.0), CornerRadii.EMPTY, Insets.EMPTY)));
+        trackListView.setBackground(new Background(new BackgroundFill(new Color(0, 0, 0, 0), CornerRadii.EMPTY, Insets.EMPTY)));
 
         trackListView.getStyleClass().add("list-view");
 
@@ -171,6 +172,7 @@ public class ActPlaylistView extends ScrollPane {
         */
 
         dataAndTitleAndImg.getChildren().addAll(actImg, dataAndTitle);
+        dataAndTitleAndImg.setPadding(new Insets(0, 0, 20, 0));
         all.getChildren().addAll(dataAndTitleAndImg, tableHeader, trackListView);
 
 
