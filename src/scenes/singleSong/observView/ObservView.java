@@ -225,7 +225,7 @@ public class ObservView {
                 webColumns();
                 top.add(allePlaylistenView, 0,0);
                 top.add(songInfo, 2, 0);
-                bottom = mainViewController.getView();
+                bottom = mainViewControllerMobile.getView();
                 all.getChildren().addAll(top,region, bottom);
                 songInfoControl.open();
                 songInfoControl.animate();

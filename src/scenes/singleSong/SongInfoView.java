@@ -30,9 +30,14 @@ public class SongInfoView extends VBox {
     Text firstAccordValue, secondAccordValue, thirdAccordValue, forthAccordValue, fifthAccordValue, sixthAccordValue;
     HBox firstRings, secondRings, thirdRings, buttonBox;
     Color mainColor;
-    HBox titleBox, contentHBox;
+    HBox titleBox;
     Line line;
-
+    VBox contentBox, mobileRings;
+    VBox songNames, mobileSongNames;
+    HBox basicSongInfo;
+    Text mobileTitle;
+    HBox mobileTitleBox;
+    StackPane firstAccordStack, secondAccordStack, thirdAccordStack, forthAccordStack, fifthAccordStack, sixthAccordStack;
 
 
 
@@ -57,7 +62,7 @@ public class SongInfoView extends VBox {
 
         mainColor = Color.rgb(116, 204, 219);
 
-        HBox basicSongInfo = new HBox(50);
+
 
 
         cover = new ImageView();
@@ -68,10 +73,17 @@ public class SongInfoView extends VBox {
         titleBox = new HBox();
 
         title = new Text(player.getTrack());
-        title.setStyle("-fx-fill:#fff; -fx-font-size: 35px;");
+        title.setStyle("-fx-fill:#fff; -fx-font-size: 35px; ");
 
         titleBox.getChildren().addAll(title);
         titleBox.setPadding(new Insets(0,20,6,0));
+        titleBox.setStyle("-overflow:hidden");
+
+        mobileTitle = new Text();
+        mobileTitle.setStyle("-fx-fill:#fff; -fx-font-size: 35px; ");
+
+        mobileTitleBox = new HBox();
+        mobileTitleBox.setAlignment(Pos.CENTER);
 
 
         artist = new Text(player.getSongArtist());
@@ -84,12 +96,16 @@ public class SongInfoView extends VBox {
         length.setStyle("-fx-fill:#bbb;");
 
 
-        VBox songNames = new VBox(3);
+        songNames = new VBox(3);
         songNames.getChildren().addAll(titleBox, artist, album, length);
 
+        mobileSongNames = new VBox(6);
+        mobileSongNames.setPadding(new Insets(0,0,20,0));
+        mobileSongNames.getChildren().addAll(mobileTitleBox);
+        mobileSongNames.setAlignment(Pos.CENTER);
 
 
-
+        basicSongInfo = new HBox(50);
         basicSongInfo.getChildren().addAll( cover, songNames);
         basicSongInfo.setPadding(new Insets(10,0,20,0));
 
@@ -109,7 +125,7 @@ public class SongInfoView extends VBox {
         firstAccordValue = new Text("Value");
         firstAccordValue.setStyle("-fx-font-size: 16px; -fx-fill:#bbb;");
         firstAccordValue.setBoundsType(TextBoundsType.VISUAL);
-        StackPane firstAccordStack = new StackPane();
+        firstAccordStack = new StackPane();
         firstAccordStack.getChildren().addAll(firstAccordCanvas, firstAccordValue);
 
         Circle thirdAccordCircle = new Circle(75);
@@ -127,7 +143,7 @@ public class SongInfoView extends VBox {
         thirdAccordValue = new Text("Value");
         thirdAccordValue.setStyle("-fx-font-size: 16px; -fx-fill:#bbb;");
         thirdAccordValue.setBoundsType(TextBoundsType.VISUAL);
-        StackPane thirdAccordStack = new StackPane();
+        thirdAccordStack = new StackPane();
         thirdAccordStack.getChildren().addAll(thirdAccordCanvas, thirdAccordValue);
 
 
@@ -146,7 +162,7 @@ public class SongInfoView extends VBox {
         secondAccordValue = new Text("Value");
         secondAccordValue.setStyle("-fx-font-size: 16px; -fx-fill:#bbb;");
         secondAccordValue.setBoundsType(TextBoundsType.VISUAL);
-        StackPane secondAccordStack = new StackPane();
+        secondAccordStack = new StackPane();
         secondAccordStack.getChildren().addAll(secondAccordCanvas, secondAccordValue);
 
         Circle forthAccordCircle = new Circle(75);
@@ -164,7 +180,7 @@ public class SongInfoView extends VBox {
         forthAccordValue = new Text("Value");
         forthAccordValue.setStyle("-fx-font-size: 16px; -fx-fill:#bbb;");
         forthAccordValue.setBoundsType(TextBoundsType.VISUAL);
-        StackPane forthAccordStack = new StackPane();
+        forthAccordStack = new StackPane();
         forthAccordStack.getChildren().addAll(forthAccordCanvas, forthAccordValue);
 
         Circle fifthAccordCircle = new Circle(75);
@@ -182,7 +198,7 @@ public class SongInfoView extends VBox {
         fifthAccordValue = new Text("Value");
         fifthAccordValue.setStyle("-fx-font-size: 16px; -fx-fill:#bbb;");
         fifthAccordValue.setBoundsType(TextBoundsType.VISUAL);
-        StackPane fifthAccordStack = new StackPane();
+        fifthAccordStack = new StackPane();
         fifthAccordStack.getChildren().addAll(fifthAccordCanvas, fifthAccordValue);
 
         Circle sixthAccordCircle = new Circle(75);
@@ -201,7 +217,7 @@ public class SongInfoView extends VBox {
         sixthAccordValue = new Text("Value");
         sixthAccordValue.setStyle("-fx-font-size: 16px; -fx-fill:#bbb;");
         sixthAccordValue.setBoundsType(TextBoundsType.VISUAL);
-        StackPane sixthAccordStack = new StackPane();
+        sixthAccordStack = new StackPane();
         sixthAccordStack.getChildren().addAll(sixthAccordCanvas, sixthAccordValue);
 
 
@@ -235,15 +251,15 @@ public class SongInfoView extends VBox {
 
         line.setStroke(Color.rgb(187, 187, 187));
 
+        mobileRings = new VBox(20);
+        mobileRings.setPadding(new Insets(20,0,0,0));
 
-
-
-        contentHBox = new HBox();
-        contentHBox.getChildren().addAll(new VBox(basicSongInfo, line, new HBox(region,songValues, region2)));
-        contentHBox.setAlignment(Pos.CENTER_RIGHT);
+        contentBox = new VBox();
+        contentBox.getChildren().addAll(basicSongInfo, mobileSongNames, line, new HBox(region,mobileRings, songValues, region2));
+        contentBox.setAlignment(Pos.CENTER_RIGHT);
 
         scrollable = new ScrollPane();
-        scrollable.setContent(contentHBox);
+        scrollable.setContent(contentBox);
         scrollable.setPadding(new Insets(20, 0, 0, 0));
         scrollable.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollable.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);

@@ -10,6 +10,10 @@ import javafx.beans.value.ObservableIntegerValue;
 import javafx.scene.image.Image;
 
 
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Random;
 
 
@@ -35,6 +39,47 @@ public class MP3Player {
         minim = new SimpleMinim();
         songProperty = new SimpleObjectProperty<Track>();
         aktTime = new SimpleIntegerProperty();
+
+
+        if(Files.exists(Paths.get("./startValues.cooleGruppe"))){
+            try (Reader reader = new BufferedReader(new InputStreamReader(new FileInputStream("startValues.cooleGruppe"), "utf-8"))){
+                aktSong = new Track(((BufferedReader) reader).readLine());
+                aktPlaylist = new Playlist(((BufferedReader) reader).readLine());
+                play(aktSong, aktPlaylist);
+                pause();
+
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (keinSongException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+
+            @Override
+            public void run() {
+                System.out.println(aktSong.getPath());
+                System.out.println(aktPlaylist.getPath());
+                try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("startValues.cooleGruppe"), "utf-8"))) {
+                    writer.write(aktSong.getPath());
+                    ((BufferedWriter) writer).newLine();
+                    writer.write(aktPlaylist.getPath());
+
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        });
 
     }
 

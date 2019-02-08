@@ -9,6 +9,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.ArcType;
 import javafx.scene.text.Text;
 import scenes.singleSong.observView.ObservView;
 import scenes.singleSong.observView.Views;
@@ -36,6 +37,7 @@ public class SongInfoController {
     MP3Player player;
     HBox titleBox;
     boolean isOpen = true;
+    boolean isRunnable = true;
 
 
     public SongInfoController(MP3Player player, ObservView observ){
@@ -83,6 +85,7 @@ public class SongInfoController {
         player.songProperty().addListener((observable, oldValue, newValue) -> {
             cover.setImage(player.getAlbumImage());
             title.setText(player.getTrack());
+            view.mobileTitle.setText(player.getTrack());
             artist.setText(player.getSongArtist());
             album.setText(player.getAlbum());
             length.setText(zeitanzeige.format(player.getSongLength()));
@@ -123,10 +126,15 @@ public class SongInfoController {
 
                 animationStructList.get(5).setMaxValue((int) (-(valuesOfSong.get(values.get(5)) * 360)));
                 sixthAccordValue.setText(values.get(5).toString());
+
+                StartAnimateCanvasThread();
             } else{
 
                 for (AnimationStruct e: animationStructList){
-                    e.setMaxValue(0);
+                    e.getCanvas().getGraphicsContext2D().clearRect(0, 0, e.getCanvas().getWidth(), e.getCanvas().getHeight());
+                    e.getCanvas().getGraphicsContext2D().setStroke(Color.rgb(187, 187, 187));
+                    e.getCanvas().getGraphicsContext2D().setLineWidth(1);
+                    e.getCanvas().getGraphicsContext2D().strokeArc(4, 4, 144, 144, 90, 360, ArcType.OPEN);
                 }
                 firstAccordValue.setText("N.A.");
                 secondAccordValue.setText("N.A.");
@@ -137,7 +145,7 @@ public class SongInfoController {
             }
 
 
-            StartAnimateCanvasThread();
+
 
 
         });
@@ -147,15 +155,41 @@ public class SongInfoController {
         });
 
         view.widthProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue.intValue() <= 600){
+            if(newValue.intValue() <= 467){
+                if(view.mobileRings.getChildren().size() == 0){
+                    view.mobileRings.getChildren().addAll(view.firstAccordStack, view.secondAccordStack, view.thirdAccordStack, view.forthAccordStack, view.fifthAccordStack, view.sixthAccordStack);
+                    view.mobileSongNames.getChildren().add(0, cover);
+                    view.titleBox.getChildren().remove(title);
+                    view.mobileTitleBox.getChildren().add(view.mobileTitle);
+                    view.mobileSongNames.getChildren().addAll(view.artist, view.album, view.length);
+                }
+                cover.setFitWidth(newValue.doubleValue() / 1.5);
+                cover.setFitHeight(newValue.doubleValue() / 1.5);
+
+            } else if(newValue.intValue() <= 600){
+
                 if (firstRings.getChildren().size() > 2 && secondRings.getChildren().size() > 2) {
                     thirdRings.getChildren().addAll(secondRings.getChildren().get(1), secondRings.getChildren().get(2));
                     secondRings.getChildren().add(0, firstRings.getChildren().get(2));
+                    cover.setFitHeight(150);
+                    cover.setFitWidth(150);
+                } else if(view.mobileRings.getChildren().size() >= 5){
+                    thirdRings.getChildren().addAll(view.fifthAccordStack, view.sixthAccordStack);
+                    secondRings.getChildren().addAll(view.thirdAccordStack, view.forthAccordStack);
+                    firstRings.getChildren().addAll(view.firstAccordStack, view.secondAccordStack);
+                    view.basicSongInfo.getChildren().add(0, cover);
+                    titleBox.getChildren().add(title);
+                    view.mobileTitleBox.getChildren().remove(view.mobileTitle);
+                    view.songNames.getChildren().addAll(view.artist, view.album, view.length);
+                    cover.setFitHeight(150);
+                    cover.setFitWidth(150);
                 }
             } else{
                 if(thirdRings.getChildren().size() > 0){
-                    firstRings.getChildren().add(secondRings.getChildren().get(0));
-                    secondRings.getChildren().addAll(thirdRings.getChildren().get(0), thirdRings.getChildren().get(1));
+                    cover.setFitHeight(150);
+                    cover.setFitWidth(150);
+                    firstRings.getChildren().add(view.thirdAccordStack);
+                    secondRings.getChildren().addAll(view.fifthAccordStack, view.sixthAccordStack);
                 }
             }
 
@@ -197,32 +231,35 @@ public class SongInfoController {
             private boolean runnable;
             @Override
             public void run() {
-                runnable = true;
 
-                player.songProperty().addListener(observable -> {
-                    runnable = false;
-                });
+                if (isRunnable){
+                    isRunnable = false;
+                    runnable = true;
 
-
-
-                final int ADDDEGREES = 4;
-
+                    player.songProperty().addListener(observable -> {
+                        runnable = false;
+                    });
 
 
-                for(int i = 0; i < 360 / ADDDEGREES && runnable && isOpen; i++) {
+                    final int ADDDEGREES = 4;
 
-                    for (AnimationStruct e : animationStructList) {
 
-                        e.addCurValue(ADDDEGREES);
+                    for (int i = 0; i < 360 / ADDDEGREES && runnable ; i++) {
+
+                        for (AnimationStruct e : animationStructList) {
+
+                            e.addCurValue(ADDDEGREES);
+                        }
+
+                        try {
+                            sleep(20);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
-
-                    try {
-                        sleep(20);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                    isRunnable = true;
+                    return;
                 }
-                return;
             }
         };
 
