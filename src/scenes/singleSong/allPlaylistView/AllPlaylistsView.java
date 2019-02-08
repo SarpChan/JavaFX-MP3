@@ -2,54 +2,44 @@ package scenes.singleSong.allPlaylistView;
 
 import Controller.Playlist;
 import Controller.PlaylistManager;
-
-
 import javafx.beans.binding.Bindings;
-import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
-
 import javafx.scene.text.TextAlignment;
-
-
 import javafx.scene.layout.VBox;
-
-
 import javafx.scene.input.MouseEvent;
 import scenes.singleSong.observView.ObservView;
 import scenes.singleSong.observView.Views;
 
-import java.util.List;
-
 public class AllPlaylistsView extends ScrollPane {
-   ListView <Playlist> allPlaylists, suggestedPlaylists;
+    final int LIST_CELL_HEIGHT = 50;
+    ListView <Playlist> allPlaylists, suggestedPlaylists;
 
-   Label bibliothekenTxt,  suggestedPlayliststTxt ;
-   Button playlistsTxt,neueKompiliertePlaylist;
-   final int LIST_CELL_HEIGHT = 50;
-   Region region = new Region();
-   VBox all , buttons;
+    Label bibliothekenTxt,  suggestedPlayliststTxt;
+    Button playlistsTxt,neueKompiliertePlaylist;
+    VBox all, buttons;
+    Region region;
 
+    /** Constructor
+     *
+     */
     public AllPlaylistsView(ObservView observView){
-
-        buttons = new VBox(10);
-        region.setPrefHeight(40);
         allPlaylists = new ListView<>();
         suggestedPlaylists = new ListView<>();
         all = new VBox();
+        buttons = new VBox(10);
+        region = new Region();
+        region.setPrefHeight(40);
+
         if(!PlaylistManager.getSuggestedPlaylists().isEmpty()) {
             suggestedPlaylists.setItems(PlaylistManager.getSuggestedPlaylists());
         }
-
         allPlaylists.setItems(PlaylistManager.getPlaylistArrayList());
 
         bibliothekenTxt = new Label(("Bibliotheken").toUpperCase());
@@ -93,7 +83,7 @@ public class AllPlaylistsView extends ScrollPane {
 
 
         allPlaylists.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->{
-            observView.getAktPlaylistViewWeb().setAktPlaylist(allPlaylists.getSelectionModel().getSelectedItem());
+            observView.getAktPlaylistViewWeb().setActPlaylist(allPlaylists.getSelectionModel().getSelectedItem());
             observView.getAktPlaylistViewWeb().updatePlaylistInfo(allPlaylists.getSelectionModel().getSelectedItem());
 
             if(!suggestedPlaylists.getSelectionModel().isEmpty()) {
@@ -103,7 +93,7 @@ public class AllPlaylistsView extends ScrollPane {
         } );
 
         suggestedPlaylists.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            observView.getAktPlaylistViewWeb().setAktPlaylist(suggestedPlaylists.getSelectionModel().getSelectedItem());
+            observView.getAktPlaylistViewWeb().setActPlaylist(suggestedPlaylists.getSelectionModel().getSelectedItem());
             observView.getAktPlaylistViewWeb().updatePlaylistInfo(suggestedPlaylists.getSelectionModel().getSelectedItem());
             observView.switchView(Views.ACTPLAYLISTDESKTOP);
             if(!allPlaylists.getSelectionModel().isEmpty()) {
