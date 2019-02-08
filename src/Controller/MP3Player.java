@@ -4,6 +4,7 @@ package Controller;
 import Exceptions.keinSongException;
 import de.hsrm.mi.eibo.simpleplayer.SimpleAudioPlayer;
 import de.hsrm.mi.eibo.simpleplayer.SimpleMinim;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableIntegerValue;
@@ -30,6 +31,8 @@ public class MP3Player {
     private boolean skipping = false;
     private SimpleObjectProperty<Track> songProperty;
     private SimpleIntegerProperty aktTime;
+    private final IntegerProperty time = new SimpleIntegerProperty();
+
 
 
     /** Constructor
@@ -39,7 +42,34 @@ public class MP3Player {
         minim = new SimpleMinim();
         songProperty = new SimpleObjectProperty<Track>();
         aktTime = new SimpleIntegerProperty();
+        startThread();
+
+
     }
+
+    private void startThread(){
+        Thread thread = new Thread(() -> {
+
+            while (true){
+                try {
+                    setTime(getAktZeit());
+                    Thread.sleep(200);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+        });
+
+        thread.start();
+    }
+
+    public IntegerProperty timeProperty() {
+        return this.time;
+    }
+    public final int getTime() { return this.timeProperty().get(); }
+    public final void setTime(int value) { this.timeProperty().setValue(value); }
 
 
     public SimpleIntegerProperty aktZeitProperty(){
@@ -218,10 +248,10 @@ public class MP3Player {
             audioPlayer = minim.loadMP3File(aktSong.getPath());
         }
 
-            songProperty.set(aktSong);
-            playThread = new MyThread();
+        songProperty.set(aktSong);
+        playThread = new MyThread();
 
-            playThread.start();
+        playThread.start();
 
 
 
@@ -238,47 +268,47 @@ public class MP3Player {
      */
     public boolean next() throws keinSongException{
 
-    if (isInitialized()) {
-        if (shuffle) {
-            jumpTo = 0;
-            aktSong = aktPlaylist.getTracks().get(getRandomNumberInRange(0, aktPlaylist.getTracks().size()));
-            autoNextOff();
-            playThread.interrupt();
+        if (isInitialized()) {
+            if (shuffle) {
+                jumpTo = 0;
+                aktSong = aktPlaylist.getTracks().get(getRandomNumberInRange(0, aktPlaylist.getTracks().size()));
+                autoNextOff();
+                playThread.interrupt();
 
-            play(aktSong);
-            return true;
+                play(aktSong);
+                return true;
 
-        } else {
+            } else {
 
-            for (Track track : aktPlaylist.getTracks()
-                    ) {
-                if (aktSong.equals(track)) {
-                    int temp = aktPlaylist.getTracks().indexOf(track);
-                    if (temp < aktPlaylist.getNumberTracks()-1) {
-                        jumpTo = 0;
-                        aktSong = aktPlaylist.getTracks().get(temp + 1);
-                        autoNextOff();
-                        playThread.interrupt();
+                for (Track track : aktPlaylist.getTracks()
+                        ) {
+                    if (aktSong.equals(track)) {
+                        int temp = aktPlaylist.getTracks().indexOf(track);
+                        if (temp < aktPlaylist.getNumberTracks()-1) {
+                            jumpTo = 0;
+                            aktSong = aktPlaylist.getTracks().get(temp + 1);
+                            autoNextOff();
+                            playThread.interrupt();
 
-                        play(aktSong);
-                        return true;
+                            play(aktSong);
+                            return true;
 
-                    } else if (repeat && temp == aktPlaylist.getNumberTracks()-1){
-                        jumpTo = 0;
-                        aktSong = aktPlaylist.getTracks().getFirst();
-                        autoNextOff();
-                        playThread.interrupt();
+                        } else if (repeat && temp == aktPlaylist.getNumberTracks()-1){
+                            jumpTo = 0;
+                            aktSong = aktPlaylist.getTracks().getFirst();
+                            autoNextOff();
+                            playThread.interrupt();
 
-                        play(aktSong);
-                        return true;
+                            play(aktSong);
+                            return true;
+                        }
                     }
-                }
 
+                }
             }
         }
+        return false;
     }
-    return false;
-}
 
     /**
      * Springt an eine bestimmte Stelle im Lied

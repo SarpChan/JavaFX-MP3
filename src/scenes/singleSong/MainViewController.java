@@ -120,55 +120,27 @@ public class MainViewController {
 
     public void initialize(){
 
-        KeyFrame watchTimeLine = new KeyFrame(Duration.millis(50), event -> {
+        player.timeProperty().addListener((observable, oldValue, newValue) -> {
 
-            if (player.getAktZeit() <= 50) {
-                songLength.setText(zeitanzeige.format(player.getSongLength()));
-                if(player.isPlayerActive()){
-                    play.setStyle("-fx-shape: \"" + getPathFromSVG("pause") + "\";");
-                } else{
-                    play.setStyle("-fx-shape: \"" + getPathFromSVG("play") + "\";");
-                } if(player.isInitialized()) {
-                    player.volume((float) volume.getValue() / 100);
-                }
+            time.setText(zeitanzeige.format(player.getAktZeit()));
 
-            } else if(player.getAktZeit() >= player.getSongLength() - 50){
-                try {
-                    player.next();
-                    songLength.setText(zeitanzeige.format(player.getSongLength()));
-                    player.volume((float) volume.getValue() / 100);
-                } catch (keinSongException e) {
-                    e.printStackTrace();
-                }
-            }else {
-                time.setText(zeitanzeige.format(player.getAktZeit()));
+            if(! progress.isValueChanging()) progress.setValue((newValue.doubleValue() / (double) player.getSongLength()) * 100);
 
-                if(! progress.isValueChanging()) progress.setValue(((double) player.getAktZeit() / (double) player.getSongLength()) * 100);
 
-            }
         });
-
-
-
-        final Timeline timeline = new Timeline(watchTimeLine);
-        timeline.setCycleCount(Animation.INDEFINITE);
-        timeline.play();
 
         songInfo.setOnMouseClicked(event ->{
             observ.switchView(Views.SONGINFODESKTOP);
-            new Thread(){
-                @Override
-                public void run() {
-                    songInfo.setDisable(true);
+            new Thread(() -> {
+                songInfo.setDisable(true);
 
-                    try {
-                        Thread.sleep(1800);
-                        songInfo.setDisable(false);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                try {
+                    Thread.sleep(1800);
+                    songInfo.setDisable(false);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-            }.start();
+            }).start();
 
         });
 
@@ -222,6 +194,7 @@ public class MainViewController {
                 public void run() {
                     titleInfo.setText(player.getTrack());
                     interpret.setText(player.getSongArtist() + " ");
+                    songLength.setText(zeitanzeige.format(player.getSongLength()));
                 }
             });
 
