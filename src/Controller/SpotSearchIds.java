@@ -14,11 +14,18 @@ public class SpotSearchIds extends AbstractSearch {
 
     private static HashMap<String, String> ids = new HashMap<>();
 
+    /**
+     * Erstellt Anfrage an Spotify API, um die SpotifyID eines Tracks zu holen.
+     * Die ist nötig, um weitere Anfragen zum Track zu formulieren
+     *
+     * @param track zu dem die ID gesucht werden soll
+     * @return SpotifyID
+     */
 
     public static String search(Track track) {
 
-        assert !track.getArtist().equals(null) || !track.getArtist().equals("Unbekannt") ;
-        assert !track.getTitle().equals(null) || !track.getTitle().equals("Unbekannt");
+        assert !track.getArtist().equals(null) || !track.getArtist().equals("N.A.") ;
+        assert !track.getTitle().equals(null) || !track.getTitle().equals("N.A.");
 
         if (ids.containsKey(track.getTitle()+track.getArtist())) {
             return ids.get(track.getTitle()+track.getArtist());
@@ -44,9 +51,7 @@ public class SpotSearchIds extends AbstractSearch {
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (IndexOutOfBoundsException e) {
-
             } catch (AssertionError e) {
-
             } catch (SpotifyWebApiException e) {
                 e.printStackTrace();
             }

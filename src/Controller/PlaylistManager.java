@@ -20,9 +20,7 @@ public class PlaylistManager {
 	private static ObservableList<Playlist> playlistArrayList = FXCollections.observableArrayList();
 	private static boolean createOnce= true;
 
-	public static ObservableList<Playlist> getSuggestedPlaylists() {
-		return suggestedPlaylists;
-	}
+
 
 	private static ObservableList<Playlist> suggestedPlaylists = FXCollections.observableArrayList();
 
@@ -42,13 +40,20 @@ public class PlaylistManager {
 	}
 
 
-
+	/**
+	 * Fügt eine vom Programm vorerstellte Playlist zur Liste für solche Playlisten hinzu.
+	 * @param playlist
+	 */
 	public static void addToSuggestedPlaylist(Playlist playlist){
 		suggestedPlaylists.add(playlist);
 
+
+	}
+	public static ObservableList<Playlist> getSuggestedPlaylists() {
+		return suggestedPlaylists;
 	}
 	/**
-	 * Speichert Playlist mit Namen
+	 * Speichert Playlist in ArrayListForm als M3U im Musik Ordner
 	 * @param playlist
 	 * @param name
 	 * @throws IOException
@@ -65,7 +70,7 @@ public class PlaylistManager {
 				writer.newLine();
 				
 			}
-			System.out.println("speichern erfolgreich");
+
 			
 		}catch(IOException e) {
 			e.printStackTrace();
@@ -73,6 +78,12 @@ public class PlaylistManager {
 		
 	}
 
+	/**
+	 * Speichert Playlistobjekt als M3U im Musik Ordner
+	 * @param playlist
+	 * @param name
+	 * @throws IOException
+	 */
 	public static void savePlaylist(Playlist playlist, String name) throws IOException{
 
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter("/Users/"+ System.getProperty("user.name") +"/Music/" + name + ".m3u"))){
@@ -167,6 +178,12 @@ public class PlaylistManager {
 		ArrayList <String> allM3us = new ArrayList <> ();
 
 		String username = System.getProperty("user.name");
+		try {
+			savePlaylist(PlaylistManager.searchAllTracks(), "default");
+		} catch (IOException e) {
+			e.printStackTrace();
+
+		}
 
 		allM3us.addAll(searchForM3u("/Users/"+ username +"/Music"));
 
@@ -189,15 +206,9 @@ public class PlaylistManager {
 		playlistsChange.set(playlistArrayList.size());
 		playlistArrayList.addAll(playlists.values());
 
-		if(playlistArrayList.isEmpty()){
-			try {
-				savePlaylist(PlaylistManager.searchAllTracks(), "default");
-			} catch (IOException e) {
-				e.printStackTrace();
 
-			}
-			getAllPlaylists();
-		}
+
+
 
 		if(createOnce) {
 			createSuggestionPlaylists();
@@ -247,6 +258,11 @@ public class PlaylistManager {
 		return playlistArrayList;
 	}
 
+
+	/**
+	 * Sammelt einzigartige Lieder aus den Liedern, die zu Beginn des Programms gesammelt werden.
+	 * @return
+	 */
 	public static HashMap<String, Track> collectExistingTracks() {
 
 		LinkedList<Track> temp = new LinkedList<>();
@@ -265,20 +281,19 @@ public class PlaylistManager {
 	}
 
 
-
-	public static void addTrack(Track track, Playlist playlist){
-		playlist.addTrack(track);
-	}
-
-	public static SimpleIntegerProperty allPlaylistProperty(){
-		return playlistsChange;
-	}
+	/**
+	 * Fügt Playlist zur Liste, die alle Playlisten, die vom User erstellt wurden, hinzu.
+	 * @param playlist
+	 */
 
 	public static void addPlaylist(Playlist playlist) {
 		playlistArrayList.add(playlist);
 
 	}
 
+	/**
+	 * Erstellt vorgeschlagene Playlisten
+	 */
 	private static void createSuggestionPlaylists(){
 		/*
 		minmax Paare:

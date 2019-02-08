@@ -9,7 +9,7 @@ import static Controller.SuggestionParams.*;
 
 public class PlaylistCreator {
 
-    /** Sortiert die auf dem Computer vorhandenen Audiodateien in Themen-Playlisten die vorgeschlagen werden.
+    /** Erstellt vorgeschlagene Playlisten anhand von Parametern. Diese werden nicht gespeichert.
      *
      */
     public static void createSuggestionPlaylist(float [] array, String ... name){

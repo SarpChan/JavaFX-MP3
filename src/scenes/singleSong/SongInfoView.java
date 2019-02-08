@@ -47,7 +47,7 @@ public class SongInfoView extends VBox {
         back = new Button();
         back.setMaxWidth(7);
         back.setMaxHeight(7);
-        back.setStyle("-fx-shape: \"" + getPathFromSVG("back2") + "\"; -fx-fill:white");
+        back.setStyle("-fx-shape: \"" + getPathFromSVG("back2") + "\";");
         back.getStyleClass().add("back-button");
         backSign = new Text("BACK");
         backSign.setStyle("-fx-fill:white; -fx-font-size:12px");

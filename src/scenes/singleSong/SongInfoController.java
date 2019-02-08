@@ -91,6 +91,7 @@ public class SongInfoController {
             length.setText(zeitanzeige.format(player.getSongLength()));
 
 
+
             if(newValue.getSpotId() != null) {
 
                 HashMap<SongValues, Float> valuesOfSong = new HashMap();
@@ -152,7 +153,12 @@ public class SongInfoController {
         });
 
         buttonBox.setOnMouseClicked(event -> {
-            observ.switchView(Views.ACTPLAYLISTDESKTOP);
+            if (observ.getCurrent() == Views.SONGINFODESKTOP) {
+                observ.switchView(Views.ACTPLAYLISTDESKTOP);
+            } else if (observ.getCurrent() == Views.SONGINFOMOBILE){
+                observ.switchView(Views.ACTPLAYLISTMOBILE);
+            }
+
         });
 
         view.widthProperty().addListener((observable, oldValue, newValue) -> {
@@ -199,25 +205,15 @@ public class SongInfoController {
 
         });
 
-        player.aktZeitProperty().addListener((observable, oldValue, newValue) -> {
-            System.out.println(newValue);
-        });
 
-        buttonBox.setOnMouseEntered(event -> {
-            back.setStyle("-fx-shape: \"" + getPathFromSVG("back2") + "\"; -icon-paint: -fx-primarycolor;");
-            backSign.setStyle("-fx-fill:#74CCDB; -fx-font-size:12px");
-        });
 
-        buttonBox.setOnMouseExited(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                back.setStyle("-fx-shape: \"" + getPathFromSVG("back2") + "\"; -icon-paint: white;");
-                backSign.setStyle("-fx-fill:white; -fx-font-size:12px");
-            }
-        });
+
 
     }
 
+    /**
+     * Auslöser für die Animation der Anzeige der Audio Features
+     */
     public void animate(){
 
         for (AnimationStruct e: animationStructList){
@@ -226,6 +222,9 @@ public class SongInfoController {
         StartAnimateCanvasThread();
     }
 
+    /**
+     * Animiert die Valueanzeige der Audio Features eines Tracks
+     */
     private void StartAnimateCanvasThread(){
 
         animateThread = new Thread(){
@@ -267,10 +266,15 @@ public class SongInfoController {
         animateThread.start();
     }
 
+    /**
+     * Erlaubt, dass eine Animation stattfindet (Security Methode, damit es nicht zu visual Bugs kommt)
+     */
     public void open(){
         isOpen = true;
     }
-
+    /**
+     * Verbietet eine Animation stattfindet (Security Methode, damit es nicht zu visual Bugs kommt)
+     */
     public void close(){
         isOpen = false;
     }

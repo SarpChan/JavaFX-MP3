@@ -14,7 +14,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import scenes.singleSong.*;
 import scenes.singleSong.CreatePlaylistView.CreatePlaylistView;
-import scenes.singleSong.CreatePlaylistView.CreatePlaylistViewController;
 import scenes.singleSong.CreatePlaylistView.CreatePlaylistViewMobile;
 import scenes.singleSong.actPlaylistView.ActPlaylistView;
 import scenes.singleSong.actPlaylistView.ActPlaylistViewController;
@@ -46,6 +45,9 @@ public class ObservView {
     private SongInfoController songInfoControl;
     private Views currentDesktop;
     private Views currentMobile;
+
+
+
     private Views current;
 
 
@@ -229,9 +231,8 @@ public class ObservView {
 
             case SONGINFOMOBILE:
 
-                webColumns();
-                top.add(allePlaylistenView, 0,0);
-                top.add(songInfo, 2, 0);
+
+                top.getChildren().add(songInfo);
                 bottom = mainViewControllerMobile.getView();
                 all.getChildren().addAll(top,region, bottom);
                 songInfoControl.open();
@@ -279,5 +280,7 @@ public class ObservView {
         return aktPlaylistViewWeb;
     }
 
-
+    public Views getCurrent() {
+        return current;
+    }
 }

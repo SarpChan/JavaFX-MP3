@@ -1,6 +1,7 @@
 package Applikation;
 
 import Controller.MP3Player;
+import Controller.PlaylistManager;
 import javafx.application.Application;
 
 
@@ -46,6 +47,7 @@ public class PlayerGUI extends Application {
         main.setMinHeight(150);
         main.setMinWidth(400);
         szenen = new HashMap<>();
+        PlaylistManager.getAllPlaylists();
 
         observView = new ObservView();
         szenen.put("01", observView.buildScene(this, player));

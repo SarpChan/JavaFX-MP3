@@ -306,7 +306,7 @@
          -fx-text-overflow:ellipsis;
    }
 .headline:hover{
-        -fx-text-fill: -fx-primarycolor;
+
          -fx-overflow:hidden;
          -fx-white-space:nowrap;
          -fx-text-overflow:ellipsis;

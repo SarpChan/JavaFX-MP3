@@ -295,32 +295,6 @@ public class CreatePlaylistView extends ScrollPane {
         return d;
     }
 
-    private void changePause(){
-        paused = !paused;
-    }
-
-    public void setAktPlaylist(Playlist playlist ){
-
-        aktPlaylist = playlist;
-
-
-
-    }
-
-    public static ReadOnlyDoubleProperty getPlaylistWidth(){
-        return all.widthProperty();
-    }
-
-
-
-    public void updatePlaylistInfo(Playlist playlist){
-
-
-    }
-
-    public void setLastOpen(Playlist playlist){
-
-    }
 
 
 

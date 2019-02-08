@@ -62,15 +62,6 @@ public class Playlist {
 
     }
 
-    /** Löscht Track aus der Playlist.
-     *
-     */
-    public void deleteTrack(Track track){
-        playtime -= tracks.get(tracks.indexOf(track)).getSonglength();
-        numberTracks--;
-        tracks.remove(track);
-    }
-
     /** Fügt Track zur Playlist hinzu.
      *
      */
@@ -109,12 +100,6 @@ public class Playlist {
         return name;
     }
 
-    /** Getter - Playlistname ändern.
-     *
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
 
     /** Getter - Gespeicherte Tracks der Playlist werden zurückgegeben.
      *

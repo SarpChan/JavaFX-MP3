@@ -8,6 +8,11 @@ import java.io.IOException;
 
 public class SpotSearchFeats extends AbstractSearch {
 
+    /**
+     * Sucht nach Audio Features eines Tracks.
+     *
+     * @param track Track zu dem AUdio Features gesucht werden sollen.
+     */
     public static void search(Track track) {
 
         try {

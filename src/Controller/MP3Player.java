@@ -20,7 +20,9 @@ import java.util.Random;
 public class MP3Player {
     private SimpleMinim minim;
     private SimpleAudioPlayer audioPlayer;
+
     private boolean autoNext = true, shuffle=false, repeat = false;
+
     private Playlist aktPlaylist;
     private Track aktSong;
     private MyThread playThread;

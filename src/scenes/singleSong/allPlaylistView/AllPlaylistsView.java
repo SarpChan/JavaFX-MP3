@@ -22,7 +22,7 @@ public class AllPlaylistsView extends ScrollPane {
     protected ListView <Playlist> allPlaylists, suggestedPlaylists;
 
     protected Label bibliothekenTxt,  suggestedPlayliststTxt;
-    protected Button playlistsTxt,neueKompiliertePlaylist;
+    protected Button neueKompiliertePlaylist;
     protected VBox all, buttons;
     protected Region region;
 
@@ -47,17 +47,17 @@ public class AllPlaylistsView extends ScrollPane {
 
         //BUTTONS UND LABELS WERDEN ERSTELLT UND BEKOMMEN CSS-TAGS ZUGEWIESEN
         bibliothekenTxt = new Label(("Bibliotheken").toUpperCase());
-        playlistsTxt = new Button("Neue Playlist");
+
         neueKompiliertePlaylist = new Button("Neue kompilierte Playlist ");
         suggestedPlayliststTxt = new Label(("Playlisten für dich ").toUpperCase());
 
         bibliothekenTxt.setTextAlignment(TextAlignment.LEFT);
-        playlistsTxt.setTextAlignment(TextAlignment.LEFT);
+
         suggestedPlayliststTxt.setTextAlignment(TextAlignment.LEFT);
 
         bibliothekenTxt.getStyleClass().add("headline");
         neueKompiliertePlaylist.getStyleClass().add("create");
-        playlistsTxt.getStyleClass().add("create");
+
         suggestedPlayliststTxt.getStyleClass().add("headline");
 
         //EVENTHANDLER & LISTENER WERDEN ANGEMELDET
@@ -105,7 +105,7 @@ public class AllPlaylistsView extends ScrollPane {
         });
 
         //BOXEN WERDEN ZUGEWIESEN
-        buttons.getChildren().addAll(playlistsTxt,neueKompiliertePlaylist);
+        buttons.getChildren().addAll(neueKompiliertePlaylist);
         all.getChildren().addAll(bibliothekenTxt, allPlaylists, buttons, region, suggestedPlayliststTxt, suggestedPlaylists);
         this.setContent(all);
         this.getStyleClass().add("allPlaylistsView");
