@@ -71,7 +71,7 @@ public class ActPlaylistView extends ScrollPane {
         album = new Label(("Album").toUpperCase());
         length = new Label(("Länge").toUpperCase());
         zeitanzeige = new SimpleDateFormat("mm:ss");
-
+        actPlaylist = PlaylistManager.getPlaylistArrayList().get(0);
         titel.setOpacity(OPACITY);
         artist.setOpacity(OPACITY);
         album.setOpacity(OPACITY);
