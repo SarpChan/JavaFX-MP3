@@ -136,12 +136,13 @@ public class SongInfoController {
                     e.getCanvas().getGraphicsContext2D().setLineWidth(1);
                     e.getCanvas().getGraphicsContext2D().strokeArc(4, 4, 144, 144, 90, 360, ArcType.OPEN);
                 }
-                firstAccordValue.setText("N.A.");
-                secondAccordValue.setText("N.A.");
-                thirdAccordValue.setText("N.A.");
-                forthAccordValue.setText("N.A.");
-                fifthAccordValue.setText("N.A.");
-                sixthAccordValue.setText("N.A.");
+
+                firstAccordValue.setText("unbekannt");
+                secondAccordValue.setText("unbekannt");
+                thirdAccordValue.setText("unbekannt");
+                forthAccordValue.setText("unbekannt");
+                fifthAccordValue.setText("unbekannt");
+                sixthAccordValue.setText("unbekannt");
             }
 
 
