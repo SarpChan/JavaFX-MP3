@@ -252,6 +252,9 @@
     -fx-background-color: transparent;
     -fx-text-fill: white;
     -fx-background-insets: 0 0 0 0, 0 0 0 0, 0 0 0 0;
+    -overflow:hidden;
+    -white-space:nowrap;
+    -text-overflow:ellipsis;
 }
 
 .minmax:focused {

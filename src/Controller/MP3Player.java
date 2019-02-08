@@ -100,17 +100,17 @@ public class MP3Player {
 
     public String getSongArtist(){
 
-        return aktSong!=null? aktSong.getArtist():"N.A.";
+        return aktSong!=null? aktSong.getArtist():"Unbekannt";
     }
 
     public String getAlbum(){
 
-        return aktSong!=null? aktSong.getAlbum():"N.A.";
+        return aktSong!=null? aktSong.getAlbum():"Unbekannt";
     }
 
     public String getTrack(){
 
-        return aktSong!=null? aktSong.getTitle():"N.A.";
+        return aktSong!=null? aktSong.getTitle():"Unbekannt";
     }
 
 

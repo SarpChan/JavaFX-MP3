@@ -13,8 +13,8 @@ public class SpotSearchFeats extends AbstractSearch {
     public static void search(Track track) {
 
         try {
-            assert !track.getArtist().equals(null) || !track.getArtist().equals("N.A.") ;
-            assert !track.getTitle().equals(null) || !track.getTitle().equals("N.A.");
+            assert !track.getArtist().equals(null) || !track.getArtist().equals("Unbekannt") ;
+            assert !track.getTitle().equals(null) || !track.getTitle().equals("Unbekannt");
             String id = SpotSearchIds.search(track);
 
 
@@ -24,7 +24,7 @@ public class SpotSearchFeats extends AbstractSearch {
 
                 if (feats != null) {
                     track.setAudioFeatures(feats);
-                    System.out.println("Erfolg");
+
                 }
             }
         } catch (IOException e) {
