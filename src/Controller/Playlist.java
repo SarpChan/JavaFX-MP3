@@ -32,7 +32,7 @@ public class Playlist {
         }
     }
 
-    private void compilePlaylist(String path){
+    protected void compilePlaylist(String path){
         try (BufferedReader reader = new BufferedReader( new FileReader(path))){
 
             String trackAbsolPath = reader.readLine();

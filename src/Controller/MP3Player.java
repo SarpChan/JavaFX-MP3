@@ -43,10 +43,16 @@ public class MP3Player {
 
         if(Files.exists(Paths.get("./startValues.cooleGruppe"))){
             try (Reader reader = new BufferedReader(new InputStreamReader(new FileInputStream("startValues.cooleGruppe"), "utf-8"))){
-                aktSong = new Track(((BufferedReader) reader).readLine());
-                aktPlaylist = new Playlist(((BufferedReader) reader).readLine());
-                play(aktSong, aktPlaylist);
+                String song = ((BufferedReader) reader).readLine();
+                aktPlaylist = new Playlist(((BufferedReader) reader).readLine(), "default");
+
+                play(getFirstSongFromPlaylist(aktPlaylist));
                 pause();
+                while(!aktSong.getPath().equalsIgnoreCase(song)){
+                    next();
+                    pause();
+                }
+
 
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
@@ -63,8 +69,6 @@ public class MP3Player {
 
             @Override
             public void run() {
-                System.out.println(aktSong.getPath());
-                System.out.println(aktPlaylist.getPath());
                 try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("startValues.cooleGruppe"), "utf-8"))) {
                     writer.write(aktSong.getPath());
                     ((BufferedWriter) writer).newLine();
