@@ -15,7 +15,7 @@ import java.text.SimpleDateFormat;
 
 public class Track {
 
-    private String path, title="N.A.", album="N.A.", artist="N.A.";
+    private String path, title="Unbekannt", album="Unbekannt", artist="Unbekannt";
     private long songlength=0;
     private Mp3File file;
     private AudioFeatures feats;

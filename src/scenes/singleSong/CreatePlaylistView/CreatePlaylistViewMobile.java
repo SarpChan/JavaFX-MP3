@@ -1,22 +1,15 @@
 package scenes.singleSong.CreatePlaylistView;
 
-
-import Applikation.PlayerGUI;
-import Controller.MP3Player;
-import Controller.Playlist;
-import Controller.PlaylistManager;
-import Controller.Track;
+import Controller.*;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import org.w3c.dom.Document;
@@ -24,6 +17,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import scenes.singleSong.observView.ObservView;
+import scenes.singleSong.observView.Views;
+
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -35,69 +30,198 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-public class CreatePlaylistViewMobile extends ScrollPane {
 
+public class CreatePlaylistViewMobile extends ScrollPane {
     boolean paused = true;
     static VBox dataAndTitle, all;
     static HBox dataAndTitleAndImg, data, playeinstellung;
-    GridPane tableHeader = new GridPane();
-    final int LIST_CELL_HEIGHT = 50;
+
     final double OPACITY = 0.5;
-    ListView<Track> trackListView;
+
 
     Label titel,artist,album,length;
 
-    ObservableList<Playlist> allPlaylists = FXCollections.observableArrayList();;
 
 
-    Text status, newPlaylistName, actPlaylistLength, actTrackAmmount;
+
+    TextField newPlaylistName, actPlaylistLength, actTrackAmmount;
+    TextField [] min, max;
+    Text status;
     ImageView actImg;
-    Button shuffle, repeat;
+    Region r1, r2;
+    GridPane grid = new GridPane();
+    HBox [] param = new HBox[6];
+    HBox playlistErstellButtons;
+    Label bpm, acousticness, valence, instrumentalness, danceability, energy;
     Playlist aktPlaylist;
-    ObservableList<Track> list = FXCollections.observableArrayList();
     DateFormat zeitanzeige = new SimpleDateFormat("mm:ss");
+    Button create, cancel;
+    private Playlist lastOpen;
 
     public CreatePlaylistViewMobile(ObservView observView, MP3Player player) {
         dataAndTitleAndImg = new HBox();
         dataAndTitle = new VBox();
         data = new HBox();
         playeinstellung = new HBox(20);
-        all = new VBox();
+        all = new VBox(20);
         titel = new Label(("Titel").toUpperCase());
         artist = new Label(("Künstler").toUpperCase());
-
+        album = new Label(("Album").toUpperCase());
+        length = new Label(("Länge").toUpperCase());
         titel.setOpacity(OPACITY);
         artist.setOpacity(OPACITY);
+        album.setOpacity(OPACITY);
+        length.setOpacity(OPACITY);
+        r1 = new Region();
+        r2 = new Region();
+        bpm = new Label("BPM");
+        acousticness = new Label("Acousticness");
+        valence = new Label("Valence");
+        instrumentalness = new Label("Instrumentalness");
+        danceability = new Label("Danceability");
+        energy = new Label("Energy");
+        acousticness = new Label("Acousticness");
+        bpm.getStyleClass().add("radio-button");
+        valence.getStyleClass().add("radio-button");
+        energy.getStyleClass().add("radio-button");
+        acousticness.getStyleClass().add("radio-button");
+        instrumentalness.getStyleClass().add("radio-button");
+        danceability.getStyleClass().add("radio-button");
+        min = new TextField[6];
+        max = new TextField[6];
+        playlistErstellButtons = new HBox(20);
 
+        create = new Button("Erstelle Playlist");
+        create.getStyleClass().add("create");
+        cancel = new Button("Abbrechen");
+        cancel.getStyleClass().add("cancel");
+        playlistErstellButtons.getChildren().addAll(cancel,create);
+        playlistErstellButtons.setAlignment(Pos.BOTTOM_CENTER);
+
+        //GridPane Nodes erzeugen
+
+
+        for (int i= 0;i<min.length;i++){
+            max[i] = new TextField();
+            max[i].getStyleClass().add("minmax");
+
+
+            min[i] = new TextField();
+            min[i].getStyleClass().add("minmax");
+
+
+            param[i] = new HBox();
+            param[i].setStyle("-fx-alignment: center-left;");
+
+
+
+        }
+
+
+
+
+        min[0].setPromptText("Min BPM");
+        max[0].setPromptText("Max BPM");
+        min[1].setPromptText("Min Valence");
+        max[1].setPromptText("Max Valence");
+        min[2].setPromptText("Min Energy");
+        max[2].setPromptText("Max Energy");
+        min[3].setPromptText("Min Danceability");
+        max[3].setPromptText("Max Danceability");
+        min[4].setPromptText("Min Instrumentalness");
+        max[4].setPromptText("Max Instrumentalness");
+        min[5].setPromptText("Min Acousticness");
+        max[5].setPromptText("Max Acousticness");
+
+        ColumnConstraints parameter = new ColumnConstraints();
+        parameter.setPercentWidth(30);
+        parameter.setHgrow(Priority.ALWAYS);
+        ColumnConstraints minimal = new ColumnConstraints();
+        minimal.setPercentWidth(30);
+        ColumnConstraints maximal = new ColumnConstraints();
+        maximal.setPercentWidth(30);
+        grid.getColumnConstraints().addAll(parameter, minimal, maximal);
+        RowConstraints bpmRow = new RowConstraints();
+        bpmRow.setPercentHeight(16);
+        RowConstraints valenceRow = new RowConstraints();
+        valenceRow.setPercentHeight(16);
+        RowConstraints energyRow = new RowConstraints();
+        energyRow.setPercentHeight(16);
+        RowConstraints danceRow = new RowConstraints();
+        danceRow.setPercentHeight(16);
+        RowConstraints instrumRow = new RowConstraints();
+        instrumRow.setPercentHeight(16);
+        RowConstraints acoustRow = new RowConstraints();
+        acoustRow.setPercentHeight(16);
+        grid.getRowConstraints().addAll(bpmRow,valenceRow,energyRow,danceRow,instrumRow,acoustRow);
+
+        grid.addColumn(0,bpm,valence,energy,danceability,instrumentalness,acousticness);
+        grid.addColumn(1,min[0],min[1],min[2],min[3],min[4],min[5]);
+        grid.addColumn(2,max[0],max[1],max[2],max[3],max[4],max[5]);
+
+        grid.setPrefHeight(200);
+        grid.setAlignment(Pos.CENTER);
+
+        // GridPane Ende
+
+        create.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+
+            float [] array = new float[12];
+            for(int i= 0; i<=5;i++){
+                min[i].commitValue();
+                max[i].commitValue();
+                try{
+                    array[i+i]= !min[i].isDisabled() && !min[i].getText().isEmpty()?Float.valueOf(min[i].getText()):0f;
+                } catch (NumberFormatException e){
+                    array[i+i] = 0f;
+                }
+                try{
+                    array[i+i+1]=!max[i].isDisabled()&& !max[i].getText().isEmpty()?Float.valueOf(max[i].getText()):0f;
+                } catch (NumberFormatException e){
+                    array[i+i] = 0f;
+                }
+
+
+            }
+            PlaylistCreator.createSuggestionPlaylist(array, newPlaylistName.getText());
+
+        });
+
+        cancel.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            for (int i = 0; i < min.length; i++) {
+                min[i].clear();
+                observView.switchView(Views.ACTPLAYLISTMOBILE);
+
+            }
+
+        });
 
         dataAndTitle.setAlignment(Pos.TOP_LEFT);
         data.setAlignment(Pos.TOP_LEFT);
         dataAndTitleAndImg.setAlignment(Pos.TOP_LEFT);
+        dataAndTitleAndImg.setPadding(new Insets(0, 00, 20, 00));
         data.setPadding(new Insets(0, 00, 8, 00));
         dataAndTitle.setPadding(new Insets(0,30,0,10));
-        data.setPrefWidth(400);
+        data.setPrefWidth(300);
         playeinstellung.setAlignment(Pos.TOP_LEFT);
         playeinstellung.setPadding(new Insets(70, 0, 0, 0));
 
 
-        allPlaylists.addAll(PlaylistManager.getPlaylistArrayList());
 
 
-
-
-        newPlaylistName = new Text("DEFAULT");
-
-
+        newPlaylistName = new TextField();
+        newPlaylistName.setText("Rename");
+        newPlaylistName.getStyleClass().add("playlistname");
+        newPlaylistName.setMaxWidth(200);
 
 
         //PLAYLIST DATA
-        status = new Text(("Create Playlist").toUpperCase());
+        status = new Text();
+        status.setText(("Create compiled Playlist ").toUpperCase());
         status.getStyleClass().add("basictxt");
 
-
-
         data.getChildren().addAll(status);
-        dataAndTitle.getChildren().addAll(data, newPlaylistName);
+        dataAndTitle.getChildren().addAll(data, newPlaylistName, playeinstellung);
 
         //ALL PLAYLIST INFO
         actImg = new ImageView();
@@ -114,8 +238,9 @@ public class CreatePlaylistViewMobile extends ScrollPane {
         */
 
         dataAndTitleAndImg.getChildren().addAll(actImg, dataAndTitle);
-        all.getChildren().addAll(dataAndTitleAndImg);
+        all.getChildren().addAll(dataAndTitleAndImg, r1, grid, playlistErstellButtons);
 
+        grid.setMaxWidth(400);
 
 
         this.setPadding(new Insets(0, 0, 0, 0));
@@ -166,10 +291,29 @@ public class CreatePlaylistViewMobile extends ScrollPane {
         paused = !paused;
     }
 
+    public void setAktPlaylist(Playlist playlist ){
+
+        aktPlaylist = playlist;
+
+
+
+    }
 
     public static ReadOnlyDoubleProperty getPlaylistWidth(){
         return all.widthProperty();
     }
+
+
+
+    public void updatePlaylistInfo(Playlist playlist){
+
+
+    }
+
+    public void setLastOpen(Playlist playlist){
+
+    }
+
 
 
 }

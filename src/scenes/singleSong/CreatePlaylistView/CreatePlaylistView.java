@@ -134,7 +134,7 @@ public class CreatePlaylistView extends ScrollPane {
         max[5].setPromptText("Max Acousticness");
 
         ColumnConstraints parameter = new ColumnConstraints();
-        parameter.setPercentWidth(40);
+        parameter.setPercentWidth(30);
         parameter.setHgrow(Priority.ALWAYS);
         ColumnConstraints minimal = new ColumnConstraints();
         minimal.setPercentWidth(30);
@@ -211,10 +211,10 @@ public class CreatePlaylistView extends ScrollPane {
         }
 
         newPlaylistName = new TextField();
-        newPlaylistName.setText("DEFAULT");
+        newPlaylistName.setText("Rename");
         newPlaylistName.getStyleClass().add("playlistname");
 
-        System.out.println(bpm);
+
 
         //PLAYLIST DATA
         status = new Text();
@@ -241,6 +241,15 @@ public class CreatePlaylistView extends ScrollPane {
         dataAndTitleAndImg.getChildren().addAll(actImg, dataAndTitle);
         all.getChildren().addAll(dataAndTitleAndImg, r1, grid, playlistErstellButtons);
 
+        this.widthProperty().addListener((observableValue, oldValue, newValue) ->{
+            if(newValue.intValue()>=600){
+                playlistErstellButtons.setAlignment(Pos.BOTTOM_RIGHT);
+                grid.setMaxWidth(newValue.intValue()-120);
+            } else if (newValue.intValue() < 600){
+                playlistErstellButtons.setAlignment(Pos.BOTTOM_CENTER);
+                grid.setMaxWidth(newValue.intValue() - 120);
+            }
+        });
 
 
         this.setPadding(new Insets(0, 0, 0, 0));

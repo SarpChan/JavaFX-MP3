@@ -1,10 +1,7 @@
 package Controller;
 
-import Exceptions.SuggestionError;
-
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 
 
@@ -12,12 +9,21 @@ import static Controller.SuggestionParams.*;
 
 public class PlaylistCreator {
 
-    private static LinkedList<newPlaylist> openPlaylists = new LinkedList<>();
-
-
 
 
     public static void createSuggestionPlaylist(float [] array, String ... name){
+
+        boolean testeObLeer= true;
+        for (float f :
+                array) {
+            if(f > 0.0f){
+                testeObLeer = false;
+            }
+        }
+        if(testeObLeer){
+            return;
+        }
+
 
         SuggestionParams [] param = SuggestionParams.values();
 
@@ -155,20 +161,20 @@ public class PlaylistCreator {
 
 
         if(suggestedTracklist.isEmpty()) {
-            System.out.println(name[0] + " konnte nicht erstellt werden - Keine passenden Lieder");
             return;
         }
 
         if(name.length == 1) {
-            PlaylistManager.addPlaylist(new Playlist(name[0], suggestedTracklist));
+            Playlist temp = new Playlist(name[0], suggestedTracklist);
+            PlaylistManager.addPlaylist(temp);
+            try {
+                PlaylistManager.savePlaylist(temp, temp.getName());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } else {
             PlaylistManager.addToSuggestedPlaylist((new Playlist(name[0], suggestedTracklist)));
         }
-		/*try {
-			savePlaylist(playlistArrayList.get(playlistArrayList.size()-1), openPlaylists.getLast().getName());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}*/
 
 
     }

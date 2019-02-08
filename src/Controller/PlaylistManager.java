@@ -18,6 +18,7 @@ import java.util.LinkedList;
 public class PlaylistManager {
 
 	private static ObservableList<Playlist> playlistArrayList = FXCollections.observableArrayList();
+	private static boolean createOnce= true;
 
 	public static ObservableList<Playlist> getSuggestedPlaylists() {
 		return suggestedPlaylists;
@@ -28,6 +29,7 @@ public class PlaylistManager {
 	private static HashMap<String, Track> trackMap = new HashMap<>();
 
 	private static SimpleIntegerProperty playlistsChange = new SimpleIntegerProperty();
+
 
 	/**
 	 * Gibt Playlist mit dem Namen nameOfPlaylist zurück
@@ -197,30 +199,10 @@ public class PlaylistManager {
 			getAllPlaylists();
 		}
 
-
-		/*
-		minmax Paare:
-		BPM,VALENCE,ENERGY,DANCEABITLITY,INSTRUMENTALNESS, ACOUSTICNESS
-		 */
-
-		PlaylistCreator.createSuggestionPlaylist(new float [] {/*BPM*/100f,0.0f, /* VALENCE*/0.2f,0.0f, /*ENERGY*/0.8f,0.0f,
-				/*DANCE*/0.0f,0.0f, /*INSTRU*/0.0f,0.0f, /*ACOUST*/0.0f,0.0f,},"Workout","x");
-
-		PlaylistCreator.createSuggestionPlaylist(new float [] {/*BPM*/0.0f,60f, /* VALENCE*/0.2f,0.0f, /*ENERGY*/0.0f,0.3f,
-				/*DANCE*/0.0f,0.4f, /*INSTRU*/0.0f,1.0f, /*ACOUST*/0.0f,0.0f,},"Chillout","x");
-
-		PlaylistCreator.createSuggestionPlaylist(new float [] {/*BPM*/80f,0.0f, /* VALENCE*/0.6f,0.0f, /*ENERGY*/0.4f,0.0f,
-				/*DANCE*/0.5f,0.0f, /*INSTRU*/0.0f,0.0f, /*ACOUST*/0.0f,0.1f,},"Party","x");
-
-		PlaylistCreator.createSuggestionPlaylist(new float [] {/*BPM*/0.0f,60f, /* VALENCE*/0.0f,0.2f, /*ENERGY*/0.0f,0.4f,
-				/*DANCE*/0.0f,0.3f, /*INSTRU*/0.0f,0.8f, /*ACOUST*/0.0f,0.9f,},"Traurig","x");
-
-		PlaylistCreator.createSuggestionPlaylist(new float [] {/*BPM*/40f,0.0f, /* VALENCE*/0.4f,0.0f, /*ENERGY*/0.0f,0.5f,
-				/*DANCE*/0.4f,0.0f, /*INSTRU*/0.0f,0.9f, /*ACOUST*/0.0f,0.9f,},"Slowdance","x");
-
-		PlaylistCreator.createSuggestionPlaylist(new float [] {/*BPM*/90f,0.0f, /* VALENCE*/0.0f,0.0f, /*ENERGY*/0.4f,0.9f,
-				/*DANCE*/0.0f,1.0f, /*INSTRU*/0.0f,0.9f, /*ACOUST*/1.0f,0.0f,},"Gaming","x");
-
+		if(createOnce) {
+			createSuggestionPlaylists();
+			createOnce = false;
+		}
 
 
 		return playlistArrayList;
@@ -294,6 +276,32 @@ public class PlaylistManager {
 
 	public static void addPlaylist(Playlist playlist) {
 		playlistArrayList.add(playlist);
+
+	}
+
+	private static void createSuggestionPlaylists(){
+		/*
+		minmax Paare:
+		BPM,VALENCE,ENERGY,DANCEABITLITY,INSTRUMENTALNESS, ACOUSTICNESS
+		 */
+
+		PlaylistCreator.createSuggestionPlaylist(new float [] {/*BPM*/100f,0.0f, /* VALENCE*/0.2f,0.0f, /*ENERGY*/0.8f,0.0f,
+				/*DANCE*/0.0f,0.0f, /*INSTRU*/0.0f,0.0f, /*ACOUST*/0.0f,0.0f,},"Workout","x");
+
+		PlaylistCreator.createSuggestionPlaylist(new float [] {/*BPM*/0.0f,60f, /* VALENCE*/0.2f,0.0f, /*ENERGY*/0.0f,0.3f,
+				/*DANCE*/0.0f,0.4f, /*INSTRU*/0.0f,1.0f, /*ACOUST*/0.0f,0.0f,},"Chillout","x");
+
+		PlaylistCreator.createSuggestionPlaylist(new float [] {/*BPM*/80f,0.0f, /* VALENCE*/0.6f,0.0f, /*ENERGY*/0.4f,0.0f,
+				/*DANCE*/0.5f,0.0f, /*INSTRU*/0.0f,0.0f, /*ACOUST*/0.0f,0.1f,},"Party","x");
+
+		PlaylistCreator.createSuggestionPlaylist(new float [] {/*BPM*/0.0f,60f, /* VALENCE*/0.0f,0.2f, /*ENERGY*/0.0f,0.4f,
+				/*DANCE*/0.0f,0.3f, /*INSTRU*/0.0f,0.8f, /*ACOUST*/0.0f,0.9f,},"Traurig","x");
+
+		PlaylistCreator.createSuggestionPlaylist(new float [] {/*BPM*/40f,0.0f, /* VALENCE*/0.4f,0.0f, /*ENERGY*/0.0f,0.5f,
+				/*DANCE*/0.4f,0.0f, /*INSTRU*/0.0f,0.9f, /*ACOUST*/0.0f,0.9f,},"Slowdance","x");
+
+		PlaylistCreator.createSuggestionPlaylist(new float [] {/*BPM*/90f,0.0f, /* VALENCE*/0.0f,0.0f, /*ENERGY*/0.4f,0.9f,
+				/*DANCE*/0.0f,1.0f, /*INSTRU*/0.0f,0.9f, /*ACOUST*/1.0f,0.0f,},"Gaming","x");
 
 	}
 }

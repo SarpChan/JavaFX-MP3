@@ -39,52 +39,6 @@ public class MP3Player {
         minim = new SimpleMinim();
         songProperty = new SimpleObjectProperty<Track>();
         aktTime = new SimpleIntegerProperty();
-
-
-        if(Files.exists(Paths.get("./startValues.cooleGruppe"))){
-            try (Reader reader = new BufferedReader(new InputStreamReader(new FileInputStream("startValues.cooleGruppe"), "utf-8"))){
-                String song = ((BufferedReader) reader).readLine();
-                aktPlaylist = new Playlist(((BufferedReader) reader).readLine(), "default");
-
-                play(getFirstSongFromPlaylist(aktPlaylist));
-                pause();
-                while(!aktSong.getPath().equalsIgnoreCase(song)){
-                    next();
-                    pause();
-                }
-
-
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (keinSongException e) {
-                e.printStackTrace();
-            }
-
-        }
-
-
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-
-            @Override
-            public void run() {
-                try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("startValues.cooleGruppe"), "utf-8"))) {
-                    writer.write(aktSong.getPath());
-                    ((BufferedWriter) writer).newLine();
-                    writer.write(aktPlaylist.getPath());
-
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        });
-
     }
 
 
@@ -146,17 +100,17 @@ public class MP3Player {
 
     public String getSongArtist(){
 
-        return aktSong!=null? aktSong.getArtist():"N.A.";
+        return aktSong!=null? aktSong.getArtist():"Unbekannt";
     }
 
     public String getAlbum(){
 
-        return aktSong!=null? aktSong.getAlbum():"N.A.";
+        return aktSong!=null? aktSong.getAlbum():"Unbekannt";
     }
 
     public String getTrack(){
 
-        return aktSong!=null? aktSong.getTitle():"N.A.";
+        return aktSong!=null? aktSong.getTitle():"Unbekannt";
     }
 
 

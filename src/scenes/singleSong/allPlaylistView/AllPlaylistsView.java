@@ -57,7 +57,7 @@ public class AllPlaylistsView extends ScrollPane {
         neueKompiliertePlaylist.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
 
 
-            observView.switchView(Views.CREATEVIEW);
+            observView.switchView(Views.CREATEVIEWDESKTOP);
             allPlaylists.getSelectionModel().clearSelection();
             suggestedPlaylists.getSelectionModel().clearSelection();
 

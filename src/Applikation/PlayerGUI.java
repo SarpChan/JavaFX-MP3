@@ -35,7 +35,7 @@ public class PlayerGUI extends Application {
         main = primaryStage;
         //main.setMinWidth(550);
         main.setMinHeight(150);
-
+        main.setMinWidth(400);
         szenen = new HashMap<>();
 
         observView = new ObservView();

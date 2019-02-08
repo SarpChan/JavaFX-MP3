@@ -17,8 +17,8 @@ public class SpotSearchIds extends AbstractSearch {
 
     public static String search(Track track) {
 
-        assert !track.getArtist().equals(null) || !track.getArtist().equals("N.A.") ;
-        assert !track.getTitle().equals(null) || !track.getTitle().equals("N.A.");
+        assert !track.getArtist().equals(null) || !track.getArtist().equals("Unbekannt") ;
+        assert !track.getTitle().equals(null) || !track.getTitle().equals("Unbekannt");
 
         if (ids.containsKey(track.getTitle()+track.getArtist())) {
             return ids.get(track.getTitle()+track.getArtist());
@@ -44,9 +44,9 @@ public class SpotSearchIds extends AbstractSearch {
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (IndexOutOfBoundsException e) {
-                System.out.println("Keine Infos zum Song gefunden" + track.getTitle());
+
             } catch (AssertionError e) {
-                System.out.println("Keine Infos zum Song gefunden" + track.getTitle());
+
             } catch (SpotifyWebApiException e) {
                 e.printStackTrace();
             }

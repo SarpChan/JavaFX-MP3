@@ -15,6 +15,7 @@ import javafx.scene.shape.Rectangle;
 import scenes.singleSong.*;
 import scenes.singleSong.CreatePlaylistView.CreatePlaylistView;
 import scenes.singleSong.CreatePlaylistView.CreatePlaylistViewController;
+import scenes.singleSong.CreatePlaylistView.CreatePlaylistViewMobile;
 import scenes.singleSong.actPlaylistView.ActPlaylistView;
 import scenes.singleSong.actPlaylistView.ActPlaylistViewController;
 import scenes.singleSong.actPlaylistView.ActPlaylistViewMobile;
@@ -37,6 +38,7 @@ public class ObservView {
     private MainViewController mainViewController;
     private ActPlaylistViewController aktPlaylistController;
     private CreatePlaylistView createPlaylist;
+    private CreatePlaylistViewMobile createPlaylistMobile;
     private MainViewController mainViewControllerMobile;
     private ActPlaylistViewMobile aktPlaylistViewMobile;
     private HBox playlist = new HBox();
@@ -48,7 +50,8 @@ public class ObservView {
 
 
     public Scene buildScene(PlayerGUI gui, MP3Player player) {
-        createPlaylist = new CreatePlaylistViewController(this, player, SelectMainView.DESKTOP).getView();
+        createPlaylist = new CreatePlaylistView(this, player);
+        createPlaylistMobile = new CreatePlaylistViewMobile(this,player);
         aktPlaylistController = new ActPlaylistViewController(this, player, SelectMainView.DESKTOP);
         aktPlaylistViewWeb = aktPlaylistController.getView();
         aktPlaylistViewMobile= new ActPlaylistViewController(this, player, SelectMainView.MOBILE).getViewMobile();
@@ -57,7 +60,6 @@ public class ObservView {
         all = new VBox();
         observView = new Scene(root, 1024, 750);
         root.setBackground(new Background(new BackgroundFill(new Color(0.2, 0.2, 0.2, 1.0), CornerRadii.EMPTY, Insets.EMPTY)));
-
         currentDesktop = Views.ACTPLAYLISTDESKTOP;
         currentMobile = Views.ACTPLAYLISTMOBILE;
         allePlaylistenView = new AllPlaylistsView(this);
@@ -103,7 +105,7 @@ public class ObservView {
 
 
         ChangeListener<Number> listenToProgress = (observable, oldValue, newValue) -> {
-            progressBackground.setWidth((newValue.doubleValue() / 100)  * observView.getWidth());
+                progressBackground.setWidth((newValue.doubleValue() / 100)  * observView.getWidth());
         };
 
         observView.widthProperty().addListener((observable, oldValue, newValue) -> {
@@ -117,11 +119,6 @@ public class ObservView {
         root.getChildren().addAll(progressBackground, all);
         root.setAlignment(Pos.TOP_LEFT);
 
-        /*observView.widthProperty().addListener(e -> {
-            aktPlaylistController.calcDataWidth(observView.getWidth());
-
-
-        });*/
 
         observView.widthProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue.doubleValue() <= 550){
@@ -193,7 +190,7 @@ public class ObservView {
                 current = Views.ACTPLAYLISTMOBILE;
                 break;
 
-            case CREATEVIEW:
+            case CREATEVIEWDESKTOP:
 
                 webColumns();
 
@@ -201,9 +198,19 @@ public class ObservView {
                 top.add(createPlaylist,2,0);
                 bottom = mainViewController.getView();
                 all.getChildren().addAll(top, region, bottom);
-                currentDesktop = Views.CREATEVIEW;
-                currentMobile = Views.CREATEVIEW;
-                current = Views.CREATEVIEW;
+                currentDesktop = Views.CREATEVIEWDESKTOP;
+                currentMobile = Views.CREATEVIEWMOBILE;
+                current = Views.CREATEVIEWDESKTOP;
+                break;
+
+            case CREATEVIEWMOBILE:
+
+                top.getChildren().add(createPlaylistMobile);
+                bottom = mainViewControllerMobile.getView();
+                all.getChildren().addAll(top,region,bottom);
+                currentDesktop = Views.CREATEVIEWDESKTOP;
+                currentMobile = Views.CREATEVIEWMOBILE;
+                current = Views.CREATEVIEWMOBILE;
                 break;
 
             case SONGINFODESKTOP:
@@ -270,30 +277,6 @@ public class ObservView {
 
     public ActPlaylistView getAktPlaylistViewWeb() {
         return aktPlaylistViewWeb;
-    }
-
-    private void calculateBackgroundProgress(Slider progress, Rectangle bg) {
-        double actValue = progress.getValue();
-        double width = progress.getWidth();
-        double half = (progress.getMax()/2);
-
-        if(actValue == half){
-            bg.setWidth(width/2);
-
-        }
-        else if (actValue < half){
-            double actProgress = 1.0-(actValue/half);
-            double minwidth = progress.getWidth() / 2 + (progress.getWidth()/2) * (actProgress);
-            bg.setWidth(width-minwidth);
-
-
-        }
-        else if (actValue > half ){
-            double actProgress = (actValue-half)/half;
-            double minwidth = progress.getWidth() / 2 + (progress.getWidth()/2) * (actProgress);
-            bg.setWidth(minwidth);
-        }
-
     }
 
 
