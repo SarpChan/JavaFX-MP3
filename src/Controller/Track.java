@@ -16,27 +16,32 @@ import java.text.SimpleDateFormat;
 public class Track {
 
     private String path, title="Unbekannt", album="Unbekannt", artist="Unbekannt";
+    private String spotId;
+    private DateFormat zeitanzeige = new SimpleDateFormat("mm:ss");
+    private byte [] image;
     private long songlength=0;
     private Mp3File file;
     private AudioFeatures feats;
 
+
+    /** Constructor
+     */
+    public Track(String path){
+        this.path = path;
+        loadId3Tags(path);
+    }
+
+    /**
+     * Getter - Spotify-ID des Liedes
+     * @return Spotify-Id
+     */
     public String getSpotId() {
         return spotId;
     }
 
-    private String spotId;
-    private DateFormat zeitanzeige = new SimpleDateFormat("mm:ss");
-    private byte [] image;
-
-
-
-    public Track(String path){
-
-        this.path = path;
-        loadId3Tags(path);
-
-
-    }
+    /**
+     * Läd die Meta-Daten aus der MP3-Datei des Tracks.
+     */
 
     private void loadId3Tags(String path){
         try {
@@ -89,27 +94,50 @@ public class Track {
 
     }
 
+    /**
+     * Getter - Länge des Tracks.
+     * @return Länge des Tracks
+     */
     public long getSonglength() {
-
         return songlength;
     }
 
+    /**
+     * Getter - Titel des Tracks.
+     * @return Titel des Tracks
+     */
     public String getTitle() {
         return title;
     }
 
+    /**
+     * Getter - Zugehöriges Album des Tracks.
+     * @return Zugehöriges Album
+     */
     public String getAlbum() {
         return album;
     }
 
+    /**
+     * Getter - Zugehöriger Kuenstler des Tracks.
+     * @return Zugehöriges Kuenstler
+     */
     public String getArtist() {
         return artist;
     }
 
+    /**
+     * Getter - Dateipfad des Tracks.
+     * @return Dateipfad
+     */
     public String getPath() {
         return path;
     }
 
+    /**
+     * Getter - Hinterlegte Anzeigegrafik des Tracks.
+     * @return Hinterlegte Anzeigegrafik oder Default Bild
+     */
     public Image getImage() {
         if (image != null){
             return new Image(new ByteArrayInputStream(image));
@@ -120,42 +148,75 @@ public class Track {
 
     }
 
+    /**
+     * Setter - AudioFeatures des Tracks werden zugewiesen.
+     */
+
     public void setAudioFeatures(AudioFeatures feats){
         this.feats = feats;
     }
+
+
+    /**
+     * Getter - BMP Werte des Tracks.
+     * @return BMP Werte
+     */
 
     public float getBPM(){
         return feats.getTempo();
     }
 
+    /**
+     * Getter - Valence Werte des Tracks.
+     * @return Valence Werte
+     */
     public float getValence(){
         return feats.getValence();
     }
 
+    /**
+     * Getter - Akustische Werte des Tracks.
+     * @return Akustische Werte
+     */
     public float getAcousticness(){
         return feats.getAcousticness();
     }
 
+    /**
+     * Getter - Tanzbarkeit Werte des Tracks.
+     * @return Tanzbarkeit Werte
+     */
     public float getDanceability(){
         return feats.getDanceability();
     }
 
+    /**
+     * Getter - Energie Werte des Tracks.
+     * @return Energie Werte
+     */
     public float getEnergy(){
         return feats.getEnergy();
     }
 
+    /**
+     * Getter - Instrumentalness Werte des Tracks.
+     * @return Instrumentalness Werte
+     */
     public float getInstrumentalness(){
         return feats.getInstrumentalness();
     }
 
+    /**
+     * Getter - Liveness Werte des Tracks.
+     * @return Liveness Werte
+     */
     public float getLiveness(){
         return feats.getLiveness();
     }
 
-    public float getLoudness(){
-        return feats.getLoudness();
-    }
-
+    /**
+     * Setter - SpotifyId des Tracks.
+     */
     public void setSpotId(String spotId) {
         this.spotId = spotId;
     }

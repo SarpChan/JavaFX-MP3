@@ -12,7 +12,9 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 
 public class ExtendedHBox extends HBox {
-
+    /** Pfade der SVG-Grafiken werden vorbereitet.
+     *
+     */
     protected static String getPathFromSVG(String filename){
         String d = "abc";
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();

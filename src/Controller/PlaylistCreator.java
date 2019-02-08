@@ -9,24 +9,22 @@ import static Controller.SuggestionParams.*;
 
 public class PlaylistCreator {
 
-
-
+    /** Sortiert die auf dem Computer vorhandenen Audiodateien in Themen-Playlisten die vorgeschlagen werden.
+     *
+     */
     public static void createSuggestionPlaylist(float [] array, String ... name){
-
-        boolean testeObLeer= true;
+        boolean checkIfEmpty = true;
         for (float f :
                 array) {
             if(f > 0.0f){
-                testeObLeer = false;
+                checkIfEmpty = false;
             }
         }
-        if(testeObLeer){
+        if(checkIfEmpty){
             return;
         }
 
-
         SuggestionParams [] param = SuggestionParams.values();
-
 
         for (int i = 0; i < array.length; i++) {
             if(array[i] == 0.0f){
@@ -159,7 +157,6 @@ public class PlaylistCreator {
 
         }
 
-
         if(suggestedTracklist.isEmpty()) {
             return;
         }
@@ -175,7 +172,5 @@ public class PlaylistCreator {
         } else {
             PlaylistManager.addToSuggestedPlaylist((new Playlist(name[0], suggestedTracklist)));
         }
-
-
     }
 }

@@ -32,30 +32,29 @@ import java.text.SimpleDateFormat;
 
 
 public class CreatePlaylistView extends ScrollPane {
-    boolean paused = true;
-    static VBox dataAndTitle, all;
-    static HBox dataAndTitleAndImg, data, playeinstellung;
+    private boolean paused = true;
+    private final double OPACITY = 0.5;
 
-    final double OPACITY = 0.5;
+    private static VBox dataAndTitle, all;
+    private static HBox dataAndTitleAndImg, data, playeinstellung;
+
+    private Label titel,artist,album,length;
+
+    private ObservableList<Playlist> allPlaylists = FXCollections.observableArrayList();;
 
 
-    Label titel,artist,album,length;
-
-    ObservableList<Playlist> allPlaylists = FXCollections.observableArrayList();;
-
-
-    TextField newPlaylistName, actPlaylistLength, actTrackAmmount;
-    TextField [] min, max;
-    Text status;
-    ImageView actImg;
-    Region r1, r2;
-    GridPane grid = new GridPane();
-    HBox [] param = new HBox[6];
-    HBox playlistErstellButtons;
-    Label bpm, acousticness, valence, instrumentalness, danceability, energy;
-    Playlist aktPlaylist;
-    DateFormat zeitanzeige = new SimpleDateFormat("mm:ss");
-    Button create, cancel;
+    private TextField newPlaylistName, actPlaylistLength, actTrackAmmount;
+    private TextField [] min, max;
+    private Text status;
+    private ImageView actImg;
+    private Region r1, r2;
+    private GridPane grid = new GridPane();
+    private HBox [] param = new HBox[6];
+    private HBox playlistErstellButtons;
+    private Label bpm, acousticness, valence, instrumentalness, danceability, energy;
+    private Playlist aktPlaylist;
+    protected DateFormat zeitanzeige = new SimpleDateFormat("mm:ss");
+    private Button create, cancel;
     private Playlist lastOpen;
 
     public CreatePlaylistView(ObservView observView, MP3Player player) {

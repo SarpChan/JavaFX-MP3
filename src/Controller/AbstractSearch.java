@@ -11,6 +11,4 @@ public abstract class AbstractSearch {
             .setClientId(clientId)
             .setClientSecret(clientSecret)
             .build();
-
-
 }

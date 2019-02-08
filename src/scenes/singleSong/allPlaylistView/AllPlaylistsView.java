@@ -18,45 +18,50 @@ import scenes.singleSong.observView.ObservView;
 import scenes.singleSong.observView.Views;
 
 public class AllPlaylistsView extends ScrollPane {
-    final int LIST_CELL_HEIGHT = 50;
-    ListView <Playlist> allPlaylists, suggestedPlaylists;
+    protected final int LIST_CELL_HEIGHT = 50;
+    protected ListView <Playlist> allPlaylists, suggestedPlaylists;
 
-    Label bibliothekenTxt,  suggestedPlayliststTxt;
-    Button playlistsTxt,neueKompiliertePlaylist;
-    VBox all, buttons;
-    Region region;
+    protected Label bibliothekenTxt,  suggestedPlayliststTxt;
+    protected Button playlistsTxt,neueKompiliertePlaylist;
+    protected VBox all, buttons;
+    protected Region region;
 
     /** Constructor
      *
      */
     public AllPlaylistsView(ObservView observView){
+        all = new VBox();
         allPlaylists = new ListView<>();
         suggestedPlaylists = new ListView<>();
-        all = new VBox();
+
         buttons = new VBox(10);
         region = new Region();
         region.setPrefHeight(40);
 
+        //FALLS NOCH KEINE VORGESCHLAGENEN PLAYLISTEN ERSTELLT WURDEN, WERDEN SIE HIER ERSTELLT
         if(!PlaylistManager.getSuggestedPlaylists().isEmpty()) {
             suggestedPlaylists.setItems(PlaylistManager.getSuggestedPlaylists());
         }
+
         allPlaylists.setItems(PlaylistManager.getPlaylistArrayList());
 
+        //BUTTONS UND LABELS WERDEN ERSTELLT UND BEKOMMEN CSS-TAGS ZUGEWIESEN
         bibliothekenTxt = new Label(("Bibliotheken").toUpperCase());
         playlistsTxt = new Button("Neue Playlist");
         neueKompiliertePlaylist = new Button("Neue kompilierte Playlist ");
         suggestedPlayliststTxt = new Label(("Playlisten für dich ").toUpperCase());
+
         bibliothekenTxt.setTextAlignment(TextAlignment.LEFT);
         playlistsTxt.setTextAlignment(TextAlignment.LEFT);
         suggestedPlayliststTxt.setTextAlignment(TextAlignment.LEFT);
+
         bibliothekenTxt.getStyleClass().add("headline");
         neueKompiliertePlaylist.getStyleClass().add("create");
         playlistsTxt.getStyleClass().add("create");
         suggestedPlayliststTxt.getStyleClass().add("headline");
 
+        //EVENTHANDLER & LISTENER WERDEN ANGEMELDET
         neueKompiliertePlaylist.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-
-
             observView.switchView(Views.CREATEVIEWDESKTOP);
             allPlaylists.getSelectionModel().clearSelection();
             suggestedPlaylists.getSelectionModel().clearSelection();
@@ -80,8 +85,6 @@ public class AllPlaylistsView extends ScrollPane {
             suggestedPlaylists.setItems(PlaylistManager.getSuggestedPlaylists());
         });
 
-
-
         allPlaylists.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->{
             observView.getAktPlaylistViewWeb().setActPlaylist(allPlaylists.getSelectionModel().getSelectedItem());
             observView.getAktPlaylistViewWeb().updatePlaylistInfo(allPlaylists.getSelectionModel().getSelectedItem());
@@ -101,14 +104,9 @@ public class AllPlaylistsView extends ScrollPane {
             }
         });
 
-
-
-buttons.getChildren().addAll(playlistsTxt,neueKompiliertePlaylist);
-
+        //BOXEN WERDEN ZUGEWIESEN
+        buttons.getChildren().addAll(playlistsTxt,neueKompiliertePlaylist);
         all.getChildren().addAll(bibliothekenTxt, allPlaylists, buttons, region, suggestedPlayliststTxt, suggestedPlaylists);
-
-
-
         this.setContent(all);
         this.getStyleClass().add("allPlaylistsView");
         this.setHbarPolicy(ScrollBarPolicy.NEVER);

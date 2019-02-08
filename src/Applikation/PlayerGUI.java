@@ -15,23 +15,32 @@ import scenes.singleSong.observView.Views;
 
 import java.util.HashMap;
 
-
 public class PlayerGUI extends Application {
-    MP3Player player;
-    static Stage main;
-    HashMap<String,Scene > szenen;
+    private MP3Player player;
+    private static Stage main;
+    private HashMap<String,Scene > szenen;
     private ObservView observView;
 
+    /** Main-Methode.
+     *
+     */
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+    /** Initialisiert den MP3-Player.
+     *
+     */
     @Override
     public void init(){
         player = new MP3Player();
-
     }
 
-
+    /** Startet die grafische Anzeige des MP3-Players.
+     *
+     */
     @Override
     public void start(Stage primaryStage) {
-
         main = primaryStage;
         //main.setMinWidth(550);
         main.setMinHeight(150);
@@ -44,20 +53,7 @@ public class PlayerGUI extends Application {
         primaryStage.setScene(szenen.get("01"));
 
         primaryStage.show();
-
-
-
     }
-
-
-    public static void main(String[] args) {
-        launch(args);
-    }
-    public static double getStageWidth(){
-        return main.getWidth();
-    }
-
-
 }
 
 

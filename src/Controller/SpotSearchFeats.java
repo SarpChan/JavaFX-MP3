@@ -8,16 +8,12 @@ import java.io.IOException;
 
 public class SpotSearchFeats extends AbstractSearch {
 
-
-
     public static void search(Track track) {
 
         try {
             assert !track.getArtist().equals(null) || !track.getArtist().equals("Unbekannt") ;
             assert !track.getTitle().equals(null) || !track.getTitle().equals("Unbekannt");
             String id = SpotSearchIds.search(track);
-
-
 
             if (id != null) {
                 AudioFeatures feats = spotifyApi.getAudioFeaturesForTrack(id).build().execute();

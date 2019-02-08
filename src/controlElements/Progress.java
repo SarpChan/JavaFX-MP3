@@ -12,8 +12,8 @@ public class Progress extends StackPane {
         ProgressBar progressBar;
         Line progressLine;
 
-    public Progress() {
 
+    public Progress() {
         //SLIDER
         progressSlider = new Slider();
         progressSlider.setMin(0);
