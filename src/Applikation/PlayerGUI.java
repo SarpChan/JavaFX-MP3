@@ -40,12 +40,6 @@ public class PlayerGUI extends Application {
 
         observView = new ObservView();
         szenen.put("01", observView.buildScene(this, player));
-
-
-
-
-
-
         primaryStage.setTitle("Coolste Gruppe");
         primaryStage.setScene(szenen.get("01"));
 
@@ -59,12 +53,6 @@ public class PlayerGUI extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-
-
-
-
-
-
     public static double getStageWidth(){
         return main.getWidth();
     }

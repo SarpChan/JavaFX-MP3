@@ -37,23 +37,23 @@ import scenes.singleSong.observView.ObservView;
 public class ActPlaylistView extends ScrollPane {
 
     boolean paused = true;
-    private static VBox dataAndTitle, all;
-    private static HBox dataAndTitleAndImg, data, playeinstellung;
+    static VBox dataAndTitle, all;
+    static HBox dataAndTitleAndImg, data, playeinstellung;
 
     private final int LIST_CELL_HEIGHT = 50;
     private final double OPACITY = 0.5;
 
-    private ListView <Track> trackListView;
+    ListView <Track> trackListView;
     private ObservableList<Playlist> allPlaylists = FXCollections.observableArrayList();
-    private ObservableList<Track> list = FXCollections.observableArrayList();
+    ObservableList<Track> list = FXCollections.observableArrayList();
 
-    private GridPane tableHeader;
-    private Label titel,artist,album,length;
-    private Text status, actPlaylistTitle, actPlaylistLength, actTrackAmmount;
-    private ImageView actImg;
-    private Button shuffle, repeat;
-    private Playlist actPlaylist;
-    private DateFormat zeitanzeige;
+    GridPane tableHeader;
+    Label titel,artist,album,length;
+    Text status, actPlaylistTitle, actPlaylistLength, actTrackAmmount;
+    ImageView actImg;
+    Button shuffle, repeat;
+    Playlist actPlaylist;
+    DateFormat zeitanzeige;
 
     /** Constructor
      *
