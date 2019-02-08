@@ -103,7 +103,7 @@ public class ObservView {
 
 
         ChangeListener<Number> listenToProgress = (observable, oldValue, newValue) -> {
-            progressBackground.setWidth((newValue.doubleValue() / 100)  * observView.getWidth());
+                progressBackground.setWidth((newValue.doubleValue() / 100)  * observView.getWidth());
         };
 
         observView.widthProperty().addListener((observable, oldValue, newValue) -> {
@@ -117,11 +117,6 @@ public class ObservView {
         root.getChildren().addAll(progressBackground, all);
         root.setAlignment(Pos.TOP_LEFT);
 
-        /*observView.widthProperty().addListener(e -> {
-            aktPlaylistController.calcDataWidth(observView.getWidth());
-
-
-        });*/
 
         observView.widthProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue.doubleValue() <= 550){
@@ -270,30 +265,6 @@ public class ObservView {
 
     public ActPlaylistView getAktPlaylistViewWeb() {
         return aktPlaylistViewWeb;
-    }
-
-    private void calculateBackgroundProgress(Slider progress, Rectangle bg) {
-        double actValue = progress.getValue();
-        double width = progress.getWidth();
-        double half = (progress.getMax()/2);
-
-        if(actValue == half){
-            bg.setWidth(width/2);
-
-        }
-        else if (actValue < half){
-            double actProgress = 1.0-(actValue/half);
-            double minwidth = progress.getWidth() / 2 + (progress.getWidth()/2) * (actProgress);
-            bg.setWidth(width-minwidth);
-
-
-        }
-        else if (actValue > half ){
-            double actProgress = (actValue-half)/half;
-            double minwidth = progress.getWidth() / 2 + (progress.getWidth()/2) * (actProgress);
-            bg.setWidth(minwidth);
-        }
-
     }
 
 
